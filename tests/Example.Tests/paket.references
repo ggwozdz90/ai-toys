@@ -1,0 +1,7 @@
+FluentAssertions
+Microsoft.NET.Test.Sdk
+NSubstitute
+NUnit
+System.IO.Abstractions
+System.IO.Abstractions.TestingHelpers
+NUnit3TestAdapter

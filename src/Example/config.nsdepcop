@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<NsDepCopConfig InheritanceDepth="2">
+  <!-- Adapters Layer -->
+  <Allowed From="?.Adapter.Adapters" To="?.Application.UseCases" />
+
+  <!-- Application Layer -->
+  <Allowed From="?.Application.UseCases" To="?.Domain.Services" />
+  <Allowed From="?.Application.UseCases" To="?.Domain.ErrorCodes" />
+
+  <!-- Domain Layer -->
+  <Allowed From="?.Domain.Services" To="?.Domain.Repositories" />
+
+  <!-- Data Layer -->
+  <Allowed From="?.Data.Repositories" To="?.Domain.Repositories" />
+  <Allowed From="?.Data.Repositories" To="?.Adapter.Adapters" />
+</NsDepCopConfig>

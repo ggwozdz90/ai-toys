@@ -1,0 +1,44 @@
+{
+  "editor.formatOnSave": true,
+  "editor.rulers": [120],
+  "files.exclude": {
+    "**/.vs": true,
+    "**/bin": true,
+    "**/obj": true,
+    "**/paket-files": true,
+    "**/.paket": true,
+    "**/node_modules": true,
+    "**/packages": true
+  },
+  "dotnet.backgroundAnalysis.analyzerDiagnosticsScope": "fullSolution",
+  "dotnet.backgroundAnalysis.compilerDiagnosticsScope": "fullSolution",
+  "dotnet-test-explorer.testProjectPath": "**/*Tests.csproj",
+  "github.copilot.chat.testGeneration.instructions": [
+    {
+      "file": ".github/copilot-instructions/copilot-test-instructions.md"
+    }
+  ],
+  "github.copilot.chat.commitMessageGeneration.instructions": [
+    {
+      "file": ".github/copilot-instructions/copilot-commit-instructions.md"
+    }
+  ],
+  "github.copilot.chat.reviewSelection.instructions": [
+    {
+      "file": ".github/copilot-instructions/copilot-code-and-review-instructions.md"
+    }
+  ],
+  "github.copilot.chat.codeGeneration.instructions": [
+    {
+      "file": ".github/copilot-instructions/copilot-code-and-review-instructions.md"
+    }
+  ],
+  "github.copilot.chat.generateTests.codeLens": true,
+  "github.copilot.enable": {
+    "*": true,
+    "yaml": true,
+    "plaintext": true,
+    "markdown": true,
+    "json": true
+  }
+}
