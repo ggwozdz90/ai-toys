@@ -5,7 +5,7 @@ on:
 
 jobs:
   deploy-github-release:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     env:
       GITHUB_TOKEN: ${{ secrets.REPOSITORY_TOKEN }}
       GITHUB_USERNAME: ${{ github.repository_owner }}
@@ -24,16 +24,19 @@ jobs:
       - name: Restore .NET tools
         run: dotnet tool restore
 
-      - name: Create dll
+      - name: Create EXE
         run: |
-          dotnet publish src/Example/Example.csproj \
-            --configuration Release \
-            --output publish
+          dotnet publish src/AiToys/AiToys.csproj `
+            /p:Configuration=Release `
+            /p:Platform=x64 `
+            /p:WindowsPackageType=None
+        shell: pwsh
 
-      - name: Zip dll
+      - name: Zip EXE
         run: |
-          mkdir -p release
-          zip -r -j release/example.zip publish/
+          New-Item -Path "release" -ItemType Directory -Force
+          Compress-Archive -Path "publish/*" -DestinationPath "release/ai-toys-exe.zip" -Force
+        shell: pwsh
 
       - name: Deploy GitHub Release
         uses: softprops/action-gh-release@v2

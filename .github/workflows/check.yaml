@@ -6,7 +6,7 @@ on:
 
 jobs:
   check:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     env:
       GITHUB_TOKEN: ${{ secrets.REPOSITORY_TOKEN }}
       GITHUB_USERNAME: ${{ github.repository_owner }}
@@ -26,6 +26,9 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 23.x
+
+      - name: Set up MSBuild
+        uses: microsoft/setup-msbuild@v1
 
       - name: Restore .NET tools
         run: dotnet tool restore
@@ -51,8 +54,24 @@ jobs:
       - name: Run CSpell
         run: npx cspell "**/*.{md,txt,json,yaml,cs}" --config .config/cspell.json
 
-      - name: Build
+      - name: Verify CER file
+        run: |
+          $cerFilePath = ".\msix\cert\AiToys.cer"
+          if (Test-Path $cerFilePath) {
+            Write-Output "CER file found at $cerFilePath"
+            try {
+              $cert = New-Object System.Security.Cryptography.X509Certificates.X509Certificate2($cerFilePath)
+              Write-Output "CER file is valid and ready for packaging."
+            } catch {
+              Write-Error "CER file is corrupted or invalid. Error details: $_"
+            }
+          } else {
+            Write-Error "CER file is missing."
+          }
+        shell: pwsh
+
+      - name: Build .NET
         run: dotnet build
 
-      - name: Test
+      - name: Test .NET
         run: dotnet test

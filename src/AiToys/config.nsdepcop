@@ -1,0 +1,3 @@
+﻿<NsDepCopConfig InheritanceDepth="2">
+    <Allowed From="*" To="*" />
+</NsDepCopConfig>
