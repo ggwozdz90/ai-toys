@@ -21,6 +21,12 @@
       "args": ["csharpier", ".", "--check", "--loglevel", "debug"]
     },
     {
+      "name": "xstyler",
+      "group": "pre-commit-operations",
+      "command": "dotnet",
+      "args": ["xstyler", "--directory", ".", "--recursive"]
+    },
+    {
       "name": "prettier",
       "group": "pre-commit-operations",
       "command": "npx",
