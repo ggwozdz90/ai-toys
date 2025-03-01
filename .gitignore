@@ -138,3 +138,12 @@ paket-files/
 *.msix
 *.msm
 *.msp
+**/AppPackages/
+**/BundleArtifacts/
+
+# Ignore cache files
+*.cache
+*.temp
+
+# Ignore certificate files
+*.pfx

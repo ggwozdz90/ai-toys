@@ -11,7 +11,9 @@
     "packages",
     "cspell.json",
     "**/bin/**",
-    "**/obj/**"
+    "**/obj/**",
+    "**/publish/**",
+    "**/BundleArtifacts/**"
   ],
   "flagWords": [
     "blacklist: denylist",
@@ -27,6 +29,13 @@
     "Meziantou",
     "Roslynator",
     "nsdepcop",
-    "Versionize"
+    "Versionize",
+    "IDISP",
+    "healthcheck",
+    "msix",
+    "appsettings",
+    "wapproj",
+    "msbuild",
+    "pwsh"
   ]
 }
