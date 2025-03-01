@@ -8,7 +8,8 @@
     "**/paket-files": true,
     "**/.paket": true,
     "**/node_modules": true,
-    "**/packages": true
+    "**/packages": true,
+    "**/*.user": true
   },
   "dotnet.backgroundAnalysis.analyzerDiagnosticsScope": "fullSolution",
   "dotnet.backgroundAnalysis.compilerDiagnosticsScope": "fullSolution",
@@ -40,5 +41,6 @@
     "plaintext": true,
     "markdown": true,
     "json": true
-  }
+  },
+  "dotnet.preferCSharpExtension": true
 }
