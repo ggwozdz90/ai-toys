@@ -1,0 +1,34 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "build-packed",
+      "command": "dotnet",
+      "type": "process",
+      "args": [
+        "build",
+        "${workspaceFolder}/AiToys.sln",
+        "/property:GenerateFullPaths=true",
+        "/consoleloggerparameters:NoSummary;ForceNoAlign",
+        "/p:Platform=x64",
+        "/p:Configuration=Debug"
+      ],
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "build-unpackaged",
+      "command": "dotnet",
+      "type": "process",
+      "args": [
+        "build",
+        "${workspaceFolder}/AiToys.sln",
+        "/property:GenerateFullPaths=true",
+        "/consoleloggerparameters:NoSummary;ForceNoAlign",
+        "/p:WindowsPackageType=None",
+        "/p:Platform=x64",
+        "/p:Configuration=Debug"
+      ],
+      "problemMatcher": "$msCompile"
+    }
+  ]
+}

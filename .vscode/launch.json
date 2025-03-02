@@ -1,0 +1,27 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "WinUI 3 Unpackaged",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build-unpackaged",
+      "program": "${workspaceFolder}/src/AiToys/bin/x64/Debug/net9.0-windows10.0.19041.0/win-x64/AiToys.exe",
+      "args": [],
+      "cwd": "${workspaceFolder}",
+      "stopAtEntry": false,
+      "console": "internalConsole"
+    },
+    {
+      "name": "WinUI 3 Packaged",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build-packed",
+      "program": "${workspaceFolder}/src/AiToys/bin/x64/Debug/net9.0-windows10.0.19041.0/win-x64/AiToys.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}",
+      "stopAtEntry": false,
+      "console": "internalConsole"
+    }
+  ]
+}
