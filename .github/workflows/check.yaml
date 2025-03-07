@@ -71,7 +71,7 @@ jobs:
         shell: pwsh
 
       - name: Build .NET
-        run: dotnet build
+        run: dotnet build /p:AppxPackageSigningEnabled=false
 
       - name: Test .NET
         run: dotnet test

@@ -23,6 +23,10 @@
     <ProjectCapability Include="Msix" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Extensions.Hosting.WinUi\Extensions.Hosting.WinUi.csproj" />
+  </ItemGroup>
+
   <PropertyGroup Condition="'$(DisableHasPackageAndPublishMenuAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
     <HasPackageAndPublishMenu>true</HasPackageAndPublishMenu>
   </PropertyGroup>
@@ -39,6 +43,7 @@
     <AppxPackageDir>..\..\msix\AppPackages\</AppxPackageDir>
     <AppxBundle>Never</AppxBundle>
     <UapAppxPackageBuildMode>SideloadOnly</UapAppxPackageBuildMode>
+    <GenerateAppxPackageOnBuild>True</GenerateAppxPackageOnBuild>
   </PropertyGroup>
 
   <Import Project="..\..\.paket\Paket.Restore.targets" />

@@ -1,6 +1,6 @@
 using Microsoft.Extensions.Hosting;
 
-namespace AiToys.Hosting;
+namespace Extensions.Hosting.WinUi;
 
 internal sealed class WinUiHostedService(WinUiThread winUIThread, WinUIContext winUIContext) : IHostedService
 {

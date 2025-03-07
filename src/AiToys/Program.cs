@@ -1,5 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
-using AiToys.Hosting;
+using Extensions.Hosting.WinUi;
 using Microsoft.Extensions.Hosting;
 
 namespace AiToys;

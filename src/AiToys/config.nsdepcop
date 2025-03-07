@@ -1,3 +1,5 @@
 ﻿<NsDepCopConfig InheritanceDepth="2">
-    <Allowed From="*" To="*" />
+    <Allowed From="AiToys" To="System.*" />
+    <Allowed From="AiToys" To="Microsoft.*" />
+    <Allowed From="AiToys" To="Extensions.Hosting.WinUi" />
 </NsDepCopConfig>
