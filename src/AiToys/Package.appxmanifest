@@ -5,7 +5,7 @@
   xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
   xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities" IgnorableNamespaces="uap rescap">
 
-  <Identity Name="AiToys" Publisher="CN=Grzegorz Gwóźdź" Version="0.0.1.0" />
+  <Identity Name="AiToys" Publisher="CN=Grzegorz Gwóźdź" Version="0.1.0.0" />
 
   <Properties>
     <DisplayName>AiToys</DisplayName>

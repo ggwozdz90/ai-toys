@@ -27,9 +27,6 @@ jobs:
       - name: Restore .NET tools
         run: dotnet tool restore
 
-      - name: Build .NET
-        run: dotnet build
-
       - name: Decode and save certificate
         run: |
           $certBytes = [Convert]::FromBase64String("${{ secrets.CODE_SIGNING_CERTIFICATE }}")
@@ -42,13 +39,13 @@ jobs:
 
       - name: Build MSIX
         run: |
-          msbuild .\src\AiToys\AiToys.csproj `
-            -restore:True `
+          dotnet build .\src\AiToys\AiToys.csproj `
             /p:Configuration=Release `
+            /p:RuntimeIdentifier=win-x64 `
             /p:Platform=x64 `
             /p:PackageCertificateKeyFile=$env:CERTIFICATE_PATH `
-            /p:PackageCertificateThumbprint=${{ secrets.CODE_SIGNING_CERTIFICATE_THUMBPRINT }} `
-            /p:GenerateAppxPackageOnBuild=true
+            /p:PackageCertificateThumbprint=${{ secrets.CODE_SIGNING_CERTIFICATE_THUMBPRINT }}
+
         shell: pwsh
 
       - name: Prepare publish directory

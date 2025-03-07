@@ -3,3 +3,8 @@ source https://api.nuget.org/v3/index.json
 storage: none
 nuget Microsoft.Windows.SDK.BuildTools 10.0.26100.1742
 nuget Microsoft.WindowsAppSDK 1.6.250205002
+nuget Microsoft.Extensions.Configuration
+nuget Microsoft.Extensions.DependencyInjection
+nuget Microsoft.Extensions.Hosting
+nuget Microsoft.Extensions.Logging
+nuget Microsoft.Extensions.Options

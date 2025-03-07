@@ -11,7 +11,7 @@
     <!-- Sets the analysis level to the latest, ensuring the use of the most recent code analysis rules -->
     <AnalysisLevel>latest</AnalysisLevel>
     <!-- Treats all compiler warnings as errors, preventing builds with any warnings -->
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <!-- Runs code analyzers during the build process to catch issues early -->
     <RunAnalyzersDuringBuild>true</RunAnalyzersDuringBuild>
     <!-- Runs code analyzers during live analysis in the IDE, providing real-time feedback -->

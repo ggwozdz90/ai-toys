@@ -42,5 +42,13 @@
     "markdown": true,
     "json": true
   },
-  "dotnet.preferCSharpExtension": true
+  "dotnet.preferCSharpExtension": true,
+  "emeraldwalk.runonsave": {
+    "commands": [
+      {
+        "match": "\\.xaml$",
+        "cmd": "dotnet tool run xstyler --file ${file}"
+      }
+    ]
+  }
 }
