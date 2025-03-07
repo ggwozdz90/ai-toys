@@ -26,7 +26,9 @@
         "/consoleloggerparameters:NoSummary;ForceNoAlign",
         "/p:WindowsPackageType=None",
         "/p:Platform=x64",
-        "/p:Configuration=Debug"
+        "/p:Configuration=Debug",
+        "/p:AppxPackageSigningEnabled=false",
+        "/p:GenerateAppxPackageOnBuild=false"
       ],
       "problemMatcher": "$msCompile"
     }
