@@ -2,7 +2,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.UI.Xaml;
 
-namespace AiToys.Hosting;
+namespace Extensions.Hosting.WinUi;
 
 /// <summary>
 /// Provides extension methods for configuring WinUI with the .NET Generic Host.

@@ -28,6 +28,7 @@ jobs:
         run: |
           dotnet publish src/AiToys/AiToys.csproj `
             /p:Configuration=Release `
+            /p:RuntimeIdentifier=win-x64 `
             /p:Platform=x64 `
             /p:WindowsPackageType=None
         shell: pwsh

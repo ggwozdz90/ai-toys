@@ -4,7 +4,7 @@ using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml;
 using WinRT;
 
-namespace AiToys.Hosting;
+namespace Extensions.Hosting.WinUi;
 
 #pragma warning disable CsWinRT1028
 internal class WinUiThread : IDisposable

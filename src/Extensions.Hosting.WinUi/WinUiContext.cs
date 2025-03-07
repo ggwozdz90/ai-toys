@@ -1,7 +1,7 @@
 using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml;
 
-namespace AiToys.Hosting;
+namespace Extensions.Hosting.WinUi;
 
 internal sealed class WinUIContext
 {
