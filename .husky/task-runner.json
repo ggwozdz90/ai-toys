@@ -65,7 +65,7 @@
       "name": "dotnet build",
       "group": "pre-push-operations",
       "command": "dotnet",
-      "args": ["build"]
+      "args": ["build", "/p:AppxPackageSigningEnabled=false"]
     },
     {
       "name": "dotnet test",

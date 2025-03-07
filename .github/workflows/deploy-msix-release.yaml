@@ -27,9 +27,6 @@ jobs:
       - name: Restore .NET tools
         run: dotnet tool restore
 
-      - name: Build .NET
-        run: dotnet build
-
       - name: Decode and save certificate
         run: |
           $certBytes = [Convert]::FromBase64String("${{ secrets.CODE_SIGNING_CERTIFICATE }}")
