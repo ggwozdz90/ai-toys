@@ -1,6 +1,6 @@
 using Microsoft.UI.Xaml;
 
-namespace AiToys;
+namespace AiToys.Presentation.Views;
 
 /// <summary>
 /// Provides application-specific behavior to supplement the default Window class.

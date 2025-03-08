@@ -38,12 +38,13 @@
     <PublishTrimmed Condition="'$(Configuration)' != 'Debug'">True</PublishTrimmed>
     <PublishProfile>Properties\PublishProfiles\win-$(Platform).pubxml</PublishProfile>
     <GenerateAppInstallerFile>False</GenerateAppInstallerFile>
-    <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
     <AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
     <AppxPackageDir>..\..\msix\AppPackages\</AppxPackageDir>
     <AppxBundle>Never</AppxBundle>
     <UapAppxPackageBuildMode>SideloadOnly</UapAppxPackageBuildMode>
     <GenerateAppxPackageOnBuild>True</GenerateAppxPackageOnBuild>
+    <AppxPackageSigningEnabled Condition="'$(BuildingInsideVisualStudio)' == 'true'">False</AppxPackageSigningEnabled>
+    <AppxPackageSigningEnabled Condition="'$(BuildingInsideVisualStudio)' != 'true'">True</AppxPackageSigningEnabled>
   </PropertyGroup>
 
   <Import Project="..\..\.paket\Paket.Restore.targets" />
