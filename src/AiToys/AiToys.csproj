@@ -24,6 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Extensions.Hosting.ReactiveUi.Microsoft\Extensions.Hosting.ReactiveUi.Microsoft.csproj" />
     <ProjectReference Include="..\Extensions.Hosting.WinUi\Extensions.Hosting.WinUi.csproj" />
   </ItemGroup>
 

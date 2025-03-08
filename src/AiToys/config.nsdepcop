@@ -2,4 +2,6 @@
     <Allowed From="AiToys" To="System.*" />
     <Allowed From="AiToys" To="Microsoft.*" />
     <Allowed From="AiToys" To="Extensions.Hosting.WinUi" />
+    <Allowed From="AiToys" To="Extensions.Hosting.ReactiveUi.Microsoft" />
+    <Allowed From="AiToys" To="AiToys.Presentation.*" />
 </NsDepCopConfig>

@@ -8,3 +8,6 @@ nuget Microsoft.Extensions.DependencyInjection
 nuget Microsoft.Extensions.Hosting
 nuget Microsoft.Extensions.Logging
 nuget Microsoft.Extensions.Options
+nuget ReactiveMarbles.ObservableEvents.SourceGenerator
+nuget ReactiveUI.WinUI
+nuget Splat.Microsoft.Extensions.DependencyInjection

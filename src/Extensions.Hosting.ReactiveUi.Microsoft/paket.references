@@ -1,0 +1,4 @@
+ReactiveUI.WinUI
+Microsoft.Extensions.DependencyInjection
+Microsoft.Extensions.Hosting
+Splat.Microsoft.Extensions.DependencyInjection

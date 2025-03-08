@@ -24,6 +24,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AiToys", "src\AiToys\AiToys
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Extensions.Hosting.WinUi", "src\Extensions.Hosting.WinUi\Extensions.Hosting.WinUi.csproj", "{BECAC7D1-9AF3-409D-BF87-026C4F14542F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Extensions.Hosting.ReactiveUi.Microsoft", "src\Extensions.Hosting.ReactiveUi.Microsoft\Extensions.Hosting.ReactiveUi.Microsoft.csproj", "{44BC41AF-1C60-4D85-8419-B2D0FF949001}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|ARM64 = Debug|ARM64
@@ -64,6 +66,18 @@ Global
 		{BECAC7D1-9AF3-409D-BF87-026C4F14542F}.Release|x64.Build.0 = Release|Any CPU
 		{BECAC7D1-9AF3-409D-BF87-026C4F14542F}.Release|x86.ActiveCfg = Release|Any CPU
 		{BECAC7D1-9AF3-409D-BF87-026C4F14542F}.Release|x86.Build.0 = Release|Any CPU
+		{44BC41AF-1C60-4D85-8419-B2D0FF949001}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{44BC41AF-1C60-4D85-8419-B2D0FF949001}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{44BC41AF-1C60-4D85-8419-B2D0FF949001}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{44BC41AF-1C60-4D85-8419-B2D0FF949001}.Debug|x64.Build.0 = Debug|Any CPU
+		{44BC41AF-1C60-4D85-8419-B2D0FF949001}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{44BC41AF-1C60-4D85-8419-B2D0FF949001}.Debug|x86.Build.0 = Debug|Any CPU
+		{44BC41AF-1C60-4D85-8419-B2D0FF949001}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{44BC41AF-1C60-4D85-8419-B2D0FF949001}.Release|ARM64.Build.0 = Release|Any CPU
+		{44BC41AF-1C60-4D85-8419-B2D0FF949001}.Release|x64.ActiveCfg = Release|Any CPU
+		{44BC41AF-1C60-4D85-8419-B2D0FF949001}.Release|x64.Build.0 = Release|Any CPU
+		{44BC41AF-1C60-4D85-8419-B2D0FF949001}.Release|x86.ActiveCfg = Release|Any CPU
+		{44BC41AF-1C60-4D85-8419-B2D0FF949001}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -71,5 +85,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{D6FB8AAF-0C54-4827-A407-74B1CA490290} = {372272BA-3993-42B3-BC58-7B9CE81D2724}
 		{BECAC7D1-9AF3-409D-BF87-026C4F14542F} = {372272BA-3993-42B3-BC58-7B9CE81D2724}
+		{44BC41AF-1C60-4D85-8419-B2D0FF949001} = {372272BA-3993-42B3-BC58-7B9CE81D2724}
 	EndGlobalSection
 EndGlobal

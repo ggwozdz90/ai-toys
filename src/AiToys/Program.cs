@@ -1,5 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 using AiToys.Presentation.Views;
+using Extensions.Hosting.ReactiveUi.Microsoft;
 using Extensions.Hosting.WinUi;
 using Microsoft.Extensions.Hosting;
 
@@ -14,7 +15,10 @@ internal static class Program
     [STAThread]
     public static void Main(string[] args)
     {
-        var host = Host.CreateDefaultBuilder(args).ConfigureWinUi<App, MainWindow>().Build();
+        var host = Host.CreateDefaultBuilder(args)
+            .ConfigureReactiveUiForMicrosoftDependencyResolver()
+            .ConfigureWinUi<App, MainWindow>()
+            .Build();
 
         host.Run();
     }

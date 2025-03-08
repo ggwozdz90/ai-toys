@@ -5,3 +5,5 @@ Microsoft.Extensions.DependencyInjection
 Microsoft.Extensions.Hosting
 Microsoft.Extensions.Logging
 Microsoft.Extensions.Options
+ReactiveUI.WinUI
+ReactiveMarbles.ObservableEvents.SourceGenerator
