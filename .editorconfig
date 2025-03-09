@@ -309,6 +309,9 @@ dotnet_diagnostic.SA1600.severity = none
 # SA1649: File name should match first type name -> Justification: Want to allow small interfaces and implementations to be in the same file.
 dotnet_diagnostic.SA1649.severity = none
 
+# SA1402: File may only contain a single type -> Justification: Want to allow small base classes and implementations to be in the same file.
+dotnet_diagnostic.SA1402.severity = none
+
 # MA0048: File name must match type name -> Justification: Want to allow small interfaces and implementations to be in the same file.
 dotnet_diagnostic.MA0048.severity = none
 
@@ -343,3 +346,6 @@ dotnet_diagnostic.VSTHRD003.severity = none
 
 # IDE1006: Naming rule violation: Missing prefix: '_' -> Justification: This is a style preference.
 dotnet_diagnostic.IDE1006.severity = none
+
+# SA1601: Partial elements should be documented -> Justification: Want to document only public APIs.
+dotnet_diagnostic.SA1601.severity = none

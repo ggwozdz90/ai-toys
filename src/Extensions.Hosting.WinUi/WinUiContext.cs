@@ -5,11 +5,15 @@ namespace Extensions.Hosting.WinUi;
 
 internal sealed class WinUIContext
 {
-    public Window? MainWindow { get; set; }
-
     public Application? Application { get; set; }
 
+    public Window? MainWindow { get; set; }
+
     public required Type MainWindowType { get; set; }
+
+    public IMainViewModel? MainViewModel { get; set; }
+
+    public required Type MainViewModelType { get; set; }
 
     public DispatcherQueue? DispatcherQueue { get; set; }
 

@@ -1,14 +1,15 @@
-using Microsoft.UI.Xaml;
+using Extensions.Hosting.WinUi;
 
 namespace AiToys.Presentation.Views;
 
-/// <summary>
-/// Provides application-specific behavior to supplement the default Window class.
-/// </summary>
-internal sealed partial class MainWindow : Window
+internal sealed partial class MainWindow : IWinUiWindow
 {
-    public MainWindow()
+    public MainWindow(IMainViewModel viewModel)
     {
+        ViewModel = viewModel;
+        ExtendsContentIntoTitleBar = true;
         InitializeComponent();
     }
+
+    public IMainViewModel ViewModel { get; set; }
 }
