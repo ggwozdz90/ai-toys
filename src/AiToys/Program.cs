@@ -1,9 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
-using AiToys.Presentation.ViewModels;
+using AiToys.Presentation.Extensions;
 using AiToys.Presentation.Views;
-using Extensions.Hosting.ReactiveUi.Microsoft;
 using Extensions.Hosting.WinUi;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 namespace AiToys;
@@ -18,23 +16,10 @@ internal static class Program
     public static void Main(string[] args)
     {
         var host = Host.CreateDefaultBuilder(args)
-            .ConfigureReactiveUiForMicrosoftDependencyResolver()
-            .ConfigureWinUi<App, MainWindow, MainViewModel>()
-            .ConfigureViewModels()
+            .ConfigurePresentationLayer()
+            .ConfigureWinUi<App, MainWindow>()
             .Build();
 
         host.Run();
-    }
-
-    public static IHostBuilder ConfigureViewModels(this IHostBuilder hostBuilder)
-    {
-        ArgumentNullException.ThrowIfNull(hostBuilder);
-
-        hostBuilder.ConfigureServices(services =>
-        {
-            services.AddSingleton<ShellViewModel>();
-        });
-
-        return hostBuilder;
     }
 }

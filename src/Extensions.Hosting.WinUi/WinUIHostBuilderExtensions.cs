@@ -18,33 +18,25 @@ public static class WinUiHostBuilderExtensions
     /// </summary>
     /// <typeparam name="TApplication">The type of the WinUI application.</typeparam>
     /// <typeparam name="TWindow">The type of the main window of the WinUI application.</typeparam>
-    /// <typeparam name="TViewModel">The type of the view model associated with the main window.</typeparam>
     /// <param name="hostBuilder">The host builder to configure.</param>
     /// <returns>The configured host builder.</returns>
     /// <exception cref="ArgumentNullException">Thrown if <paramref name="hostBuilder"/> is null.</exception>
-    public static IHostBuilder ConfigureWinUi<TApplication, TWindow, TViewModel>(this IHostBuilder hostBuilder)
+    public static IHostBuilder ConfigureWinUi<TApplication, TWindow>(this IHostBuilder hostBuilder)
         where TApplication : Application
-        where TWindow : Window, IWinUiWindow
-        where TViewModel : class, IMainViewModel
+        where TWindow : Window
     {
         ArgumentNullException.ThrowIfNull(hostBuilder);
 
         hostBuilder.ConfigureServices(
             (_, services) =>
             {
-                var winUiContext = new WinUIContext
-                {
-                    MainWindowType = typeof(TWindow),
-                    MainViewModelType = typeof(TViewModel),
-                    IsLifetimeLinked = true,
-                };
+                var winUiContext = new WinUIContext { MainWindowType = typeof(TWindow), IsLifetimeLinked = true };
 
                 services.AddSingleton(winUiContext);
                 services.AddSingleton(serviceProvider => new WinUiThread(serviceProvider));
                 services.AddHostedService<WinUiHostedService>();
                 services.AddSingleton<TApplication>();
                 services.AddSingleton<Application>(sp => sp.GetRequiredService<TApplication>());
-                services.AddSingleton<TViewModel>();
             }
         );
 

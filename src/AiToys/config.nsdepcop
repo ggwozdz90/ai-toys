@@ -2,12 +2,12 @@
     <Allowed From="AiToys" To="System.*" />
     <Allowed From="AiToys" To="Microsoft.*" />
     <Allowed From="AiToys" To="Extensions.Hosting.WinUi" />
-    <Allowed From="AiToys" To="Extensions.Hosting.ReactiveUi.Microsoft" />
     <Allowed From="AiToys" To="AiToys.Presentation.*" />
 
-    <Allowed From="AiToys.Presentation.Views" To="ReactiveUI" />
+    <Allowed From="AiToys.Presentation.*" To="AiToys.Presentation.Contracts" />
+    
+    <Allowed From="AiToys.Presentation.Extensions" To="AiToys.Presentation.*" />
+
     <Allowed From="AiToys.Presentation.Views" To="AiToys.Presentation.ViewModels" />
     <Allowed From="AiToys.Presentation.Views" To="Extensions.Hosting.WinUi" />
-    <Allowed From="AiToys.Presentation.ViewModels" To="ReactiveUI" />
-    <Allowed From="AiToys.Presentation.ViewModels" To="Extensions.Hosting.WinUi" />
 </NsDepCopConfig>

@@ -1,15 +1,18 @@
-using Extensions.Hosting.WinUi;
+using AiToys.Presentation.Contracts;
+using AiToys.Presentation.ViewModels;
 
 namespace AiToys.Presentation.Views;
 
-internal sealed partial class MainWindow : IWinUiWindow
+internal sealed partial class MainWindow : IView<MainViewModel>
 {
-    public MainWindow(IMainViewModel viewModel)
+    public MainWindow(MainViewModel viewModel, INavigationService navigationService)
     {
-        ViewModel = viewModel;
-        ExtendsContentIntoTitleBar = true;
         InitializeComponent();
+        navigationService.SetNavigationFrame(NavigationFrame);
+
+        ViewModel = viewModel;
+        ViewModel.NavigateTo<HomeViewModel>();
     }
 
-    public IMainViewModel ViewModel { get; set; }
+    public MainViewModel ViewModel { get; set; }
 }

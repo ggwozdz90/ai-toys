@@ -63,19 +63,8 @@ internal class WinUiThread : IDisposable
 
             winUiContext.Application = serviceProvider.GetRequiredService<Application>();
 
-            winUiContext.MainViewModel = serviceProvider.GetService(winUiContext.MainViewModelType) as IMainViewModel;
-
-            if (winUiContext.MainViewModel == null)
-            {
-                throw new InvalidOperationException("MainViewModel could not be created.");
-            }
-
             winUiContext.MainWindow =
-                ActivatorUtilities.CreateInstance(
-                    serviceProvider,
-                    winUiContext.MainWindowType,
-                    winUiContext.MainViewModel
-                ) as Window;
+                ActivatorUtilities.CreateInstance(serviceProvider, winUiContext.MainWindowType) as Window;
 
             if (winUiContext.MainWindow == null)
             {

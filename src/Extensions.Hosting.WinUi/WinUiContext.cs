@@ -11,10 +11,6 @@ internal sealed class WinUIContext
 
     public required Type MainWindowType { get; set; }
 
-    public IMainViewModel? MainViewModel { get; set; }
-
-    public required Type MainViewModelType { get; set; }
-
     public DispatcherQueue? DispatcherQueue { get; set; }
 
     public bool IsLifetimeLinked { get; set; }
