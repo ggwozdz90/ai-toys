@@ -1,15 +1,11 @@
-using AiToys.Presentation.Contracts;
+using AiToys.Core.Presentation.Contracts;
 using AiToys.Presentation.ViewModels;
 
 namespace AiToys.Presentation.Views;
 
 internal sealed partial class HomePage : IView<HomeViewModel>
 {
-    public HomePage(HomeViewModel viewModel)
-    {
-        InitializeComponent();
-        ViewModel = viewModel;
-    }
+    public HomePage() => InitializeComponent();
 
-    public HomeViewModel ViewModel { get; set; }
+    public HomeViewModel ViewModel { get; set; } = null!;
 }

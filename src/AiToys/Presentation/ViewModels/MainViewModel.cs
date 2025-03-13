@@ -1,4 +1,4 @@
-using AiToys.Presentation.Contracts;
+using AiToys.Core.Presentation.Contracts;
 using Microsoft.UI.Composition.SystemBackdrops;
 using Microsoft.UI.Xaml.Media;
 
@@ -13,6 +13,6 @@ internal sealed class MainViewModel(INavigationService navigationService) : IVie
     public void NavigateTo<TViewModel>()
         where TViewModel : IViewModel
     {
-        navigationService.Navigate<TViewModel>();
+        navigationService.NavigateTo<TViewModel>();
     }
 }

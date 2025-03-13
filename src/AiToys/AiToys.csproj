@@ -24,6 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AiToys.Core\AiToys.Core.csproj" />
     <ProjectReference Include="..\Extensions.Hosting.WinUi\Extensions.Hosting.WinUi.csproj" />
   </ItemGroup>
 

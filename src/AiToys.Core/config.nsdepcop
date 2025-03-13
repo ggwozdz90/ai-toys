@@ -2,6 +2,6 @@
 <NsDepCopConfig ChildCanDependOnParentImplicitly="true" CheckAssemblyDependencies="false">
     <Allowed From="*" To="System.*" />
     <Allowed From="*" To="Microsoft.*" />
-    <Allowed From="*" To="Splat.*" />
-    <Allowed From="*" To="ReactiveUI.*" />
+    
+    <Allowed From="AiToys.Core.*" To="*" />
 </NsDepCopConfig>

@@ -1,4 +1,4 @@
-using AiToys.Presentation.Contracts;
+using AiToys.Core.Presentation.Contracts;
 
 namespace AiToys.Presentation.ViewModels;
 

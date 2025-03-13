@@ -1,8 +1,8 @@
-using AiToys.Presentation.Contracts;
+using AiToys.Core.Presentation.Contracts;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml.Controls;
 
-namespace AiToys.Presentation.Services;
+namespace AiToys.Core.Presentation.Services;
 
 internal sealed class NavigationService(IServiceProvider serviceProvider, IViewResolver viewResolver)
     : INavigationService
@@ -14,7 +14,7 @@ internal sealed class NavigationService(IServiceProvider serviceProvider, IViewR
         navigationFrame = frame ?? throw new ArgumentNullException(nameof(frame));
     }
 
-    public void Navigate<TViewModel>()
+    public void NavigateTo<TViewModel>()
         where TViewModel : IViewModel
     {
         if (navigationFrame is null)
@@ -23,9 +23,13 @@ internal sealed class NavigationService(IServiceProvider serviceProvider, IViewR
         }
 
         var viewType = viewResolver.ResolveViewType<TViewModel>();
+        var viewModel = serviceProvider.GetRequiredService<TViewModel>();
 
-        var view = ActivatorUtilities.CreateInstance(serviceProvider, viewType);
+        navigationFrame.Navigate(viewType);
 
-        navigationFrame.Content = view;
+        if (navigationFrame.Content is IView<TViewModel> view)
+        {
+            view.ViewModel = viewModel;
+        }
     }
 }

@@ -1,6 +1,6 @@
-using AiToys.Presentation.Contracts;
+using AiToys.Core.Presentation.Contracts;
 
-namespace AiToys.Presentation.Services;
+namespace AiToys.Core.Presentation.Services;
 
 internal sealed class ViewResolver : IViewResolver
 {
