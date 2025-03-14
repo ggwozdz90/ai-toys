@@ -1,4 +1,5 @@
 using AiToys.Core.Presentation.Contracts;
+using AiToys.HomeFeature.Constants;
 using AiToys.Presentation.ViewModels;
 
 namespace AiToys.Presentation.Views;
@@ -11,7 +12,7 @@ internal sealed partial class MainWindow : IView<MainViewModel>
         navigationService.SetNavigationFrame(NavigationFrame);
 
         ViewModel = viewModel;
-        ViewModel.NavigateTo<HomeViewModel>();
+        navigationService.NavigateToRoute(HomeRouteNames.HomePage);
     }
 
     public MainViewModel ViewModel { get; set; }

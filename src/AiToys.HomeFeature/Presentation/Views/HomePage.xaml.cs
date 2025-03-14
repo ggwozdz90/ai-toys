@@ -1,7 +1,7 @@
 using AiToys.Core.Presentation.Contracts;
-using AiToys.Presentation.ViewModels;
+using AiToys.HomeFeature.Presentation.ViewModels;
 
-namespace AiToys.Presentation.Views;
+namespace AiToys.HomeFeature.Presentation.Views;
 
 internal sealed partial class HomePage : IView<HomeViewModel>
 {

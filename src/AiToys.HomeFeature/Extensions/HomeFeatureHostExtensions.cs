@@ -1,14 +1,22 @@
 using AiToys.Core.Presentation.Contracts;
-using AiToys.Presentation.ViewModels;
-using AiToys.Presentation.Views;
+using AiToys.HomeFeature.Presentation.ViewModels;
+using AiToys.HomeFeature.Presentation.Views;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace AiToys.Extensions;
+namespace AiToys.HomeFeature.Extensions;
 
-internal static class AppHostExtensions
+/// <summary>
+/// Extension methods for configuring the home feature views.
+/// </summary>
+public static class HomeFeatureHostExtensions
 {
-    public static IHost ConfigureViews(this IHost host)
+    /// <summary>
+    /// Configures the home views.
+    /// </summary>
+    /// <param name="host">The host.</param>
+    /// <returns>The configured host with home views registered.</returns>
+    public static IHost ConfigureHomeViews(this IHost host)
     {
         ArgumentNullException.ThrowIfNull(host);
 

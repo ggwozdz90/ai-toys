@@ -21,4 +21,10 @@ public interface INavigationService
     /// <typeparam name="TViewModel">The view model to navigate to.</typeparam>
     void NavigateTo<TViewModel>()
         where TViewModel : IViewModel;
+
+    /// <summary>
+    /// Navigates to the view associated with the specified route.
+    /// </summary>
+    /// <param name="route">The route name (view name) to navigate to.</param>
+    void NavigateToRoute(string route);
 }

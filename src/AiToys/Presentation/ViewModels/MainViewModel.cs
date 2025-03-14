@@ -4,15 +4,9 @@ using Microsoft.UI.Xaml.Media;
 
 namespace AiToys.Presentation.ViewModels;
 
-internal sealed class MainViewModel(INavigationService navigationService) : IViewModel
+internal sealed class MainViewModel : IViewModel
 {
     public bool ExtendsContentIntoTitleBar { get; set; } = true;
 
     public SystemBackdrop SystemBackdrop { get; set; } = new MicaBackdrop() { Kind = MicaKind.Base };
-
-    public void NavigateTo<TViewModel>()
-        where TViewModel : IViewModel
-    {
-        navigationService.NavigateTo<TViewModel>();
-    }
 }

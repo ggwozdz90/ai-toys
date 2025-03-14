@@ -17,19 +17,45 @@ internal sealed class NavigationService(IServiceProvider serviceProvider, IViewR
     public void NavigateTo<TViewModel>()
         where TViewModel : IViewModel
     {
-        if (navigationFrame is null)
-        {
-            throw new InvalidOperationException("Navigation frame is not set.");
-        }
+        EnsureNavigationFrameIsSet();
 
         var viewType = viewResolver.ResolveViewType<TViewModel>();
         var viewModel = serviceProvider.GetRequiredService<TViewModel>();
 
-        navigationFrame.Navigate(viewType);
+        NavigateAndSetViewModel(viewType, typeof(TViewModel), viewModel);
+    }
 
-        if (navigationFrame.Content is IView<TViewModel> view)
+    public void NavigateToRoute(string route)
+    {
+        EnsureNavigationFrameIsSet();
+
+        var (viewType, viewModelType) = viewResolver.ResolveRoute(route);
+        var viewModel = serviceProvider.GetRequiredService(viewModelType);
+
+        NavigateAndSetViewModel(viewType, viewModelType, viewModel);
+    }
+
+    private void EnsureNavigationFrameIsSet()
+    {
+        if (navigationFrame is null)
         {
-            view.ViewModel = viewModel;
+            throw new InvalidOperationException("Navigation frame is not set.");
+        }
+    }
+
+    private void NavigateAndSetViewModel(Type viewType, Type viewModelType, object viewModel)
+    {
+        navigationFrame!.Navigate(viewType);
+
+        if (navigationFrame.Content is not null)
+        {
+            var viewInterfaceType = typeof(IView<>).MakeGenericType(viewModelType);
+
+            if (viewInterfaceType.IsInstanceOfType(navigationFrame.Content))
+            {
+                var viewModelProperty = viewInterfaceType.GetProperty("ViewModel");
+                viewModelProperty?.SetValue(navigationFrame.Content, viewModel);
+            }
         }
     }
 }

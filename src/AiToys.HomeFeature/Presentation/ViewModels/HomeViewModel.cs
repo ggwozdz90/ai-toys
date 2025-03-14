@@ -1,6 +1,6 @@
 using AiToys.Core.Presentation.Contracts;
 
-namespace AiToys.Presentation.ViewModels;
+namespace AiToys.HomeFeature.Presentation.ViewModels;
 
 internal sealed class HomeViewModel : IViewModel
 {

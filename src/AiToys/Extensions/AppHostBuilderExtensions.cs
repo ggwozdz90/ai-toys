@@ -1,5 +1,4 @@
 using AiToys.Presentation.ViewModels;
-using AiToys.Presentation.Views;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -11,14 +10,7 @@ internal static class AppHostBuilderExtensions
     {
         ArgumentNullException.ThrowIfNull(hostBuilder);
 
-        hostBuilder.ConfigureServices(
-            (_, services) =>
-            {
-                services.AddSingleton<MainViewModel>();
-                services.AddTransient<HomeViewModel>();
-                services.AddTransient<HomePage>();
-            }
-        );
+        hostBuilder.ConfigureServices((_, services) => services.AddSingleton<MainViewModel>());
 
         return hostBuilder;
     }

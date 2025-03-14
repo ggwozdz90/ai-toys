@@ -1,6 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 using AiToys.Core;
 using AiToys.Extensions;
+using AiToys.HomeFeature.Extensions;
 using AiToys.Presentation.Views;
 using Extensions.Hosting.WinUi;
 using Microsoft.Extensions.Hosting;
@@ -19,10 +20,11 @@ internal static class Program
         var host = Host.CreateDefaultBuilder(args)
             .ConfigureCore()
             .ConfigureApp()
+            .ConfigureHomeFeature()
             .ConfigureWinUi<App, MainWindow>()
             .Build();
 
-        host.ConfigureViews();
+        host.ConfigureHomeViews();
 
         host.Run();
     }
