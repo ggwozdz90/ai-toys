@@ -1,5 +1,3 @@
-using Microsoft.UI.Xaml.Controls;
-
 namespace AiToys.Core.Presentation.Contracts;
 
 /// <summary>
@@ -8,12 +6,6 @@ namespace AiToys.Core.Presentation.Contracts;
 /// </summary>
 public interface INavigationService
 {
-    /// <summary>
-    /// Sets the main frame that will be used for navigation.
-    /// </summary>
-    /// <param name="frame">The main frame.</param>
-    void SetNavigationFrame(Frame frame);
-
     /// <summary>
     /// Navigates to the view represented by the specified view model.
     /// View and view model must be registered in the dependency injection container and must be configured in the <see cref="IViewResolver"/>.

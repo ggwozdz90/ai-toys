@@ -5,7 +5,8 @@ using Microsoft.UI.Xaml.Controls;
 namespace AiToys.Core.Presentation.Services;
 
 internal sealed class NavigationService(IServiceProvider serviceProvider, IViewResolver viewResolver)
-    : INavigationService
+    : INavigationService,
+        INavigationFrameProvider
 {
     private Frame? navigationFrame;
 

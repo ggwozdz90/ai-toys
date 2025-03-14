@@ -22,7 +22,10 @@ public static class CoreHostBuilderExtensions
         hostBuilder.ConfigureServices(
             (_, services) =>
             {
-                services.AddSingleton<INavigationService, NavigationService>();
+                services.AddSingleton<NavigationService>();
+                services.AddSingleton<INavigationService>(sp => sp.GetRequiredService<NavigationService>());
+                services.AddSingleton<INavigationFrameProvider>(sp => sp.GetRequiredService<NavigationService>());
+
                 services.AddSingleton<IViewResolver, ViewResolver>();
             }
         );
