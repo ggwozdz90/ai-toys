@@ -5,11 +5,19 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:organisms="using:AiToys.Presentation.Components.Organisms"
     Title="AiToys"
     ExtendsContentIntoTitleBar="{x:Bind ViewModel.ExtendsContentIntoTitleBar}"
     SystemBackdrop="{x:Bind ViewModel.SystemBackdrop}"
     mc:Ignorable="d">
-    <StackPanel>
-        <Frame x:Name="NavigationFrame" />
-    </StackPanel>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <organisms:AppTitleBar x:Name="AppTitleBar" Grid.Row="0" />
+
+        <Frame x:Name="NavigationFrame" Grid.Row="1" />
+    </Grid>
 </Window>

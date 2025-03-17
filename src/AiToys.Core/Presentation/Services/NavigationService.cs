@@ -1,4 +1,5 @@
-using AiToys.Core.Presentation.Contracts;
+using AiToys.Core.Presentation.ViewModels;
+using AiToys.Core.Presentation.Views;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml.Controls;
 
@@ -9,6 +10,8 @@ internal sealed class NavigationService(IServiceProvider serviceProvider, IViewR
         INavigationFrameProvider
 {
     private Frame? navigationFrame;
+
+    public bool CanGoBack => navigationFrame?.CanGoBack ?? false;
 
     public void SetNavigationFrame(Frame frame)
     {
@@ -34,6 +37,16 @@ internal sealed class NavigationService(IServiceProvider serviceProvider, IViewR
         var viewModel = serviceProvider.GetRequiredService(viewModelType);
 
         NavigateAndSetViewModel(viewType, viewModelType, viewModel);
+    }
+
+    public void GoBack()
+    {
+        EnsureNavigationFrameIsSet();
+
+        if (CanGoBack)
+        {
+            navigationFrame!.GoBack();
+        }
     }
 
     private void EnsureNavigationFrameIsSet()

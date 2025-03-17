@@ -10,7 +10,9 @@
     <Allowed From="AiToys.Extensions" To="AiToys.Presentation.*" />
     <Allowed From="AiToys.Extensions" To="AiToys.Core.*" />
 
-    <Allowed From="AiToys.Presentation.*" To="AiToys.Core.Presentation.Contracts" />
+    <Allowed From="AiToys.Presentation.*" To="AiToys.Core.Presentation.*" />
     <Allowed From="AiToys.Presentation.Views" To="AiToys.Presentation.ViewModels" />
+    <Allowed From="AiToys.Presentation.Views" To="AiToys.Presentation.Components.*" />
+    <Allowed From="AiToys.Presentation.Components.*" To="AiToys.Presentation.ViewModels" />
     <Allowed From="AiToys.Presentation.ViewModels" To="AiToys.*.Constants" />
 </NsDepCopConfig>

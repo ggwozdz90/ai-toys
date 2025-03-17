@@ -1,6 +1,6 @@
 using Microsoft.UI.Xaml.Controls;
 
-namespace AiToys.Core.Presentation.Contracts;
+namespace AiToys.Core.Presentation.Services;
 
 /// <summary>
 /// Contract for providing and managing the navigation frame.

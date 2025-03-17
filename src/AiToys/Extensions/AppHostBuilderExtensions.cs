@@ -10,7 +10,13 @@ internal static class AppHostBuilderExtensions
     {
         ArgumentNullException.ThrowIfNull(hostBuilder);
 
-        hostBuilder.ConfigureServices((_, services) => services.AddSingleton<MainViewModel>());
+        hostBuilder.ConfigureServices(
+            (_, services) =>
+            {
+                services.AddSingleton<MainViewModel>();
+                services.AddSingleton<AppTitleBarViewModel>();
+            }
+        );
 
         return hostBuilder;
     }

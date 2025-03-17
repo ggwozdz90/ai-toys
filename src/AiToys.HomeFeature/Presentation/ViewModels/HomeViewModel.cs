@@ -1,8 +1,8 @@
-using AiToys.Core.Presentation.Contracts;
+using AiToys.Core.Presentation.ViewModels;
 
 namespace AiToys.HomeFeature.Presentation.ViewModels;
 
-internal sealed class HomeViewModel : IViewModel
+internal sealed partial class HomeViewModel : ViewModelBase
 {
     public string? ButtonText { get; set; } = "Click Me";
 }

@@ -7,6 +7,6 @@
     <Allowed From="AiToys.HomeFeature.Extensions" To="AiToys.Core.*" />
     <Allowed From="AiToys.HomeFeature.Extensions" To="AiToys.HomeFeature.Presentation.*" />
 
-    <Allowed From="AiToys.HomeFeature.Presentation.*" To="AiToys.Core.Presentation.Contracts" />
+    <Allowed From="AiToys.HomeFeature.Presentation.*" To="AiToys.Core.Presentation.*" />
     <Allowed From="AiToys.HomeFeature.Presentation.Views" To="AiToys.HomeFeature.Presentation.ViewModels" />
 </NsDepCopConfig>

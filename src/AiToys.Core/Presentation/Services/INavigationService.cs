@@ -1,4 +1,7 @@
-namespace AiToys.Core.Presentation.Contracts;
+using AiToys.Core.Presentation.ViewModels;
+using AiToys.Core.Presentation.Views;
+
+namespace AiToys.Core.Presentation.Services;
 
 /// <summary>
 /// Contract for the navigation service.
@@ -6,6 +9,16 @@ namespace AiToys.Core.Presentation.Contracts;
 /// </summary>
 public interface INavigationService
 {
+    /// <summary>
+    /// Gets a value indicating whether the navigation service can navigate back.
+    /// </summary>
+    bool CanGoBack { get; }
+
+    /// <summary>
+    /// Navigates back to the previous view.
+    /// </summary>
+    void GoBack();
+
     /// <summary>
     /// Navigates to the view represented by the specified view model.
     /// View and view model must be registered in the dependency injection container and must be configured in the <see cref="IViewResolver"/>.

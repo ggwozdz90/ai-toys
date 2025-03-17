@@ -1,5 +1,5 @@
-using AiToys.Core.Presentation.Contracts;
 using AiToys.Core.Presentation.Services;
+using AiToys.Core.Presentation.Views;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 

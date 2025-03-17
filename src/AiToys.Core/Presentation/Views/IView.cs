@@ -1,4 +1,6 @@
-namespace AiToys.Core.Presentation.Contracts;
+using AiToys.Core.Presentation.ViewModels;
+
+namespace AiToys.Core.Presentation.Views;
 
 /// <summary>
 /// Contract for a view.
