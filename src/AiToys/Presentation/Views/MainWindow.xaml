@@ -3,6 +3,7 @@
     x:Class="AiToys.Presentation.Views.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:coreViewModels="using:AiToys.Core.Presentation.ViewModels"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:organisms="using:AiToys.Presentation.Components.Organisms"
@@ -18,6 +19,20 @@
 
         <organisms:AppTitleBar x:Name="AppTitleBar" Grid.Row="0" />
 
-        <Frame x:Name="NavigationFrame" Grid.Row="1" />
+        <NavigationView
+            Grid.Row="1"
+            IsBackButtonVisible="Collapsed"
+            IsSettingsVisible="False"
+            MenuItemsSource="{x:Bind ViewModel.NavigationItems}"
+            SelectedItem="{x:Bind ViewModel.SelectedNavigationItem, Mode=TwoWay}">
+
+            <NavigationView.MenuItemTemplate>
+                <DataTemplate x:DataType="coreViewModels:INavigationItemViewModel">
+                    <NavigationViewItem Content="{x:Bind Label}" />
+                </DataTemplate>
+            </NavigationView.MenuItemTemplate>
+
+            <Frame x:Name="NavigationFrame" />
+        </NavigationView>
     </Grid>
 </Window>

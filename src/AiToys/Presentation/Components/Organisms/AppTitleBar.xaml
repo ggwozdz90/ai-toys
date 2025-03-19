@@ -10,26 +10,29 @@
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
         <Button
             x:Name="BackButton"
             Grid.Column="0"
-            Width="36"
-            Height="36"
-            Margin="12,4,0,4"
             VerticalAlignment="Center"
             Command="{x:Bind ViewModel.GoBackCommand}"
             Style="{StaticResource NavigationBackButtonNormalStyle}" />
 
-        <TextBlock
+        <Image
             Grid.Column="1"
+            Width="20"
             Margin="12,0,0,0"
             VerticalAlignment="Center"
-            FontSize="12"
+            Source="ms-appx:///Assets/Icon/Icon.ico" />
+
+        <TextBlock
+            Grid.Column="2"
+            Margin="12,8,0,8"
+            VerticalAlignment="Center"
             FontWeight="SemiBold"
-            Style="{StaticResource TitleTextBlockStyle}"
             Text="AiToys" />
     </Grid>
 </UserControl>

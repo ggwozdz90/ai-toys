@@ -22,12 +22,12 @@ public static class HomeFeatureHostExtensions
 
         var viewResolver = host.Services.GetRequiredService<IViewResolver>();
 
-        RegisterApplicationViews(viewResolver);
+        RegisterFeatureViews(viewResolver);
 
         return host;
     }
 
-    private static void RegisterApplicationViews(IViewResolver viewResolver)
+    private static void RegisterFeatureViews(IViewResolver viewResolver)
     {
         ArgumentNullException.ThrowIfNull(viewResolver);
 

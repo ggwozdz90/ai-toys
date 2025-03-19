@@ -1,3 +1,5 @@
+using AiToys.Core.Presentation.Services;
+using AiToys.HomeFeature.Presentation.Services;
 using AiToys.HomeFeature.Presentation.ViewModels;
 using AiToys.HomeFeature.Presentation.Views;
 using Microsoft.Extensions.DependencyInjection;
@@ -24,6 +26,9 @@ public static class HomeFeatureHostBuilderExtensions
             {
                 services.AddTransient<HomeViewModel>();
                 services.AddTransient<HomePage>();
+
+                services.AddTransient<HomeNavigationItemViewModel>();
+                services.AddTransient<INavigationItemsProvider, HomeFeatureNavigationItemsProvider>();
             }
         );
 
