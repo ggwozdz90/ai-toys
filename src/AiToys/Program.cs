@@ -1,4 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
+using AiToys.AudioFeature.Extensions;
 using AiToys.Core;
 using AiToys.Extensions;
 using AiToys.HomeFeature.Extensions;
@@ -21,10 +22,11 @@ internal static class Program
             .ConfigureCore()
             .ConfigureApp()
             .ConfigureHomeFeature()
+            .ConfigureAudioFeature()
             .ConfigureWinUi<App, MainWindow>()
             .Build();
 
-        host.ConfigureHomeViews();
+        host.ConfigureHomeViews().ConfigureAudioViews();
 
         host.Run();
     }
