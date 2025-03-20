@@ -3,7 +3,7 @@ using AiToys.Core.Presentation.ViewModels;
 
 namespace AiToys.AudioFeature.Presentation.ViewModels;
 
-internal class SpeechToTextNavigationItemViewModel : INavigationItemViewModel
+internal sealed class SpeechToTextNavigationItemViewModel : INavigationItemViewModel
 {
     public string Label => PageNames.SpeechToTextPage;
     public string Route => RouteNames.SpeechToTextPage;

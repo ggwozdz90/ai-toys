@@ -3,7 +3,7 @@ using AiToys.HomeFeature.Constants;
 
 namespace AiToys.HomeFeature.Presentation.ViewModels;
 
-internal class HomeNavigationItemViewModel : INavigationItemViewModel
+internal sealed class HomeNavigationItemViewModel : INavigationItemViewModel
 {
     public string Label => PageNames.HomePage;
     public string Route => HomeRouteNames.HomePage;
