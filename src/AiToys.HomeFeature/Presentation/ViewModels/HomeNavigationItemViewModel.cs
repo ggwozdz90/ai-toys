@@ -8,4 +8,5 @@ internal class HomeNavigationItemViewModel : INavigationItemViewModel
     public string Label => HomePageNames.HomePage;
     public string Route => HomeRouteNames.HomePage;
     public int Order => 100;
+    public string IconKey => HomeIconKeys.Home;
 }
