@@ -30,7 +30,7 @@
                 <DataTemplate x:DataType="coreViewModels:INavigationItemViewModel">
                     <NavigationViewItem Content="{x:Bind Label}">
                         <NavigationViewItem.Icon>
-                            <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="{x:Bind IconKey}" />
+                            <FontIcon FontFamily="Segoe Fluent Icons" Glyph="{x:Bind IconKey}" />
                         </NavigationViewItem.Icon>
                     </NavigationViewItem>
                 </DataTemplate>

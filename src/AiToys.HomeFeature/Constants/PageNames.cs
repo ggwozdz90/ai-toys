@@ -1,12 +1,12 @@
 namespace AiToys.HomeFeature.Constants;
 
 /// <summary>
-/// Defines page name constants for the home feature.
+/// Defines page name constants for the feature.
 /// </summary>
-public static class HomePageNames
+internal static class PageNames
 {
     /// <summary>
     /// Page name for the home page.
     /// </summary>
-    public const string HomePage = "Home";
+    internal const string HomePage = "Home";
 }

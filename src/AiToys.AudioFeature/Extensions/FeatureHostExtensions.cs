@@ -7,15 +7,15 @@ using Microsoft.Extensions.Hosting;
 namespace AiToys.AudioFeature.Extensions;
 
 /// <summary>
-/// Extension methods for configuring the audio feature views.
+/// Extension methods for configuring the feature views.
 /// </summary>
-public static class AudioFeatureHostExtensions
+public static class FeatureHostExtensions
 {
     /// <summary>
-    /// Configures the audio views.
+    /// Configures the views.
     /// </summary>
     /// <param name="host">The host.</param>
-    /// <returns>The configured host with audio views registered.</returns>
+    /// <returns>The configured host with views registered.</returns>
     public static IHost ConfigureAudioViews(this IHost host)
     {
         ArgumentNullException.ThrowIfNull(host);

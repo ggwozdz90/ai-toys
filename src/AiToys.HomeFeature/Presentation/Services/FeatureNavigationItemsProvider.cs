@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace AiToys.HomeFeature.Presentation.Services;
 
-internal sealed class HomeFeatureNavigationItemsProvider(IServiceProvider serviceProvider) : INavigationItemsProvider
+internal sealed class FeatureNavigationItemsProvider(IServiceProvider serviceProvider) : INavigationItemsProvider
 {
     public IEnumerable<INavigationItemViewModel> GetNavigationItems()
     {

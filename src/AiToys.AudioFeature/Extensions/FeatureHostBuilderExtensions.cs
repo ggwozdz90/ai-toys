@@ -8,15 +8,15 @@ using Microsoft.Extensions.Hosting;
 namespace AiToys.AudioFeature.Extensions;
 
 /// <summary>
-/// Extension methods for configuring the audio feature.
+/// Extension methods for configuring the feature.
 /// </summary>
-public static class AudioFeatureHostBuilderExtensions
+public static class FeatureHostBuilderExtensions
 {
     /// <summary>
-    /// Configures the audio services.
+    /// Configures the services.
     /// </summary>
     /// <param name="hostBuilder">The host builder.</param>
-    /// <returns>The configured host builder with audio services registered.</returns>
+    /// <returns>The configured host builder with services registered.</returns>
     public static IHostBuilder ConfigureAudioFeature(this IHostBuilder hostBuilder)
     {
         ArgumentNullException.ThrowIfNull(hostBuilder);
@@ -28,7 +28,7 @@ public static class AudioFeatureHostBuilderExtensions
                 services.AddTransient<SpeechToTextPage>();
 
                 services.AddTransient<SpeechToTextNavigationItemViewModel>();
-                services.AddTransient<INavigationItemsProvider, AudioFeatureNavigationItemsProvider>();
+                services.AddTransient<INavigationItemsProvider, FeatureNavigationItemsProvider>();
             }
         );
 

@@ -7,15 +7,15 @@ using Microsoft.Extensions.Hosting;
 namespace AiToys.HomeFeature.Extensions;
 
 /// <summary>
-/// Extension methods for configuring the home feature views.
+/// Extension methods for configuring the feature views.
 /// </summary>
-public static class HomeFeatureHostExtensions
+public static class FeatureHostExtensions
 {
     /// <summary>
-    /// Configures the home views.
+    /// Configures the views.
     /// </summary>
     /// <param name="host">The host.</param>
-    /// <returns>The configured host with home views registered.</returns>
+    /// <returns>The configured host with views registered.</returns>
     public static IHost ConfigureHomeViews(this IHost host)
     {
         ArgumentNullException.ThrowIfNull(host);

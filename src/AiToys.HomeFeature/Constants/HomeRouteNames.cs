@@ -1,7 +1,7 @@
 namespace AiToys.HomeFeature.Constants;
 
 /// <summary>
-/// Defines route name constants for the home feature.
+/// Defines route name constants for the feature.
 /// </summary>
 public static class HomeRouteNames
 {

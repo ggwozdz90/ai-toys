@@ -8,15 +8,15 @@ using Microsoft.Extensions.Hosting;
 namespace AiToys.HomeFeature.Extensions;
 
 /// <summary>
-/// Extension methods for configuring the home feature.
+/// Extension methods for configuring the feature.
 /// </summary>
-public static class HomeFeatureHostBuilderExtensions
+public static class FeatureHostBuilderExtensions
 {
     /// <summary>
-    /// Configures the home services.
+    /// Configures the services.
     /// </summary>
     /// <param name="hostBuilder">The host builder.</param>
-    /// <returns>The configured host builder with home services registered.</returns>
+    /// <returns>The configured host builder with services registered.</returns>
     public static IHostBuilder ConfigureHomeFeature(this IHostBuilder hostBuilder)
     {
         ArgumentNullException.ThrowIfNull(hostBuilder);
@@ -28,7 +28,7 @@ public static class HomeFeatureHostBuilderExtensions
                 services.AddTransient<HomePage>();
 
                 services.AddTransient<HomeNavigationItemViewModel>();
-                services.AddTransient<INavigationItemsProvider, HomeFeatureNavigationItemsProvider>();
+                services.AddTransient<INavigationItemsProvider, FeatureNavigationItemsProvider>();
             }
         );
 

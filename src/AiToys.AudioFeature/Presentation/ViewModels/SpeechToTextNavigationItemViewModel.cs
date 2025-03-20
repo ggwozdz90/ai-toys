@@ -5,8 +5,8 @@ namespace AiToys.AudioFeature.Presentation.ViewModels;
 
 internal class SpeechToTextNavigationItemViewModel : INavigationItemViewModel
 {
-    public string Label => AudioPageNames.SpeechToTextPage;
-    public string Route => AudioRouteNames.SpeechToTextPage;
+    public string Label => PageNames.SpeechToTextPage;
+    public string Route => RouteNames.SpeechToTextPage;
     public int Order => 200;
-    public string IconKey => AudioIconKeys.SpeechToText;
+    public string IconKey => IconKeys.SpeechToText;
 }

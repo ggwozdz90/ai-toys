@@ -24,7 +24,7 @@
         <Image
             Grid.Column="1"
             Width="20"
-            Margin="12,0,0,0"
+            Margin="2,0,0,0"
             VerticalAlignment="Center"
             Source="ms-appx:///Assets/Icon/Icon.ico" />
 

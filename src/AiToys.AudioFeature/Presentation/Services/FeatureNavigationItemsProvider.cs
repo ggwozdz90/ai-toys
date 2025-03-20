@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace AiToys.AudioFeature.Presentation.Services;
 
-internal sealed class AudioFeatureNavigationItemsProvider(IServiceProvider serviceProvider) : INavigationItemsProvider
+internal sealed class FeatureNavigationItemsProvider(IServiceProvider serviceProvider) : INavigationItemsProvider
 {
     public IEnumerable<INavigationItemViewModel> GetNavigationItems()
     {
