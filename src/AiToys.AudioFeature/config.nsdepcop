@@ -4,9 +4,11 @@
     <Allowed From="*" To="Microsoft.*" />
     <Allowed From="*" To="WinRT" />
 
+    <Allowed From="AiToys.AudioFeature.*" To="AiToys.AudioFeature.Constants" />
     <Allowed From="AiToys.AudioFeature.Extensions" To="AiToys.Core.*" />
     <Allowed From="AiToys.AudioFeature.Extensions" To="AiToys.AudioFeature.Presentation.*" />
 
     <Allowed From="AiToys.AudioFeature.Presentation.*" To="AiToys.Core.Presentation.*" />
     <Allowed From="AiToys.AudioFeature.Presentation.Views" To="AiToys.AudioFeature.Presentation.ViewModels" />
+    <Allowed From="AiToys.AudioFeature.Presentation.Services" To="AiToys.AudioFeature.Presentation.ViewModels" />
 </NsDepCopConfig>
