@@ -1,4 +1,4 @@
-namespace AiToys.Core.Presentation.Services;
+namespace AiToys.Core.Presentation.Events;
 
 /// <summary>
 /// Provides data for the navigated events.

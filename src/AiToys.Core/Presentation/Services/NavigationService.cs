@@ -1,3 +1,4 @@
+using AiToys.Core.Presentation.Events;
 using AiToys.Core.Presentation.ViewModels;
 using AiToys.Core.Presentation.Views;
 using Microsoft.Extensions.DependencyInjection;

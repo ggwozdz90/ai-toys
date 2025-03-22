@@ -1,5 +1,6 @@
 using System.Windows.Input;
 using AiToys.Core.Presentation.Commands;
+using AiToys.Core.Presentation.Events;
 using AiToys.Core.Presentation.Services;
 using AiToys.Core.Presentation.ViewModels;
 
