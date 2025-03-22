@@ -8,19 +8,26 @@ internal sealed partial class MainWindow : IView<MainViewModel>
 {
     public MainWindow(MainViewModel viewModel, INavigationFrameProvider navigationFrameProvider)
     {
-        InitializeComponent();
-
-        ExtendsContentIntoTitleBar = true;
-        AppTitleBar.ViewModel = viewModel.AppTitleBarViewModel;
-        SetTitleBar(AppTitleBar);
-
-        navigationFrameProvider.SetNavigationFrame(NavigationFrame);
-
         ViewModel = viewModel;
-
-        var firstRoute = ViewModel.NavigationItems.OrderBy(item => item.Order).FirstOrDefault()?.Route;
-        ViewModel.Navigate(firstRoute);
+        InitializeComponent();
+        InitializeAppTitleBar();
+        InitializeNavigationView(navigationFrameProvider);
     }
 
     public MainViewModel ViewModel { get; set; }
+
+    private void InitializeAppTitleBar()
+    {
+        ExtendsContentIntoTitleBar = true;
+        AppTitleBar.ViewModel = ViewModel.AppTitleBarViewModel;
+        SetTitleBar(AppTitleBar);
+    }
+
+    private void InitializeNavigationView(INavigationFrameProvider navigationFrameProvider)
+    {
+        navigationFrameProvider.SetNavigationFrame(NavigationFrame);
+
+        var firstRoute = ViewModel.NavigationItems.Any() ? ViewModel.NavigationItems[0].Route : null;
+        ViewModel.NavigateTo(firstRoute);
+    }
 }

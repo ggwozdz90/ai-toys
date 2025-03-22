@@ -5,7 +5,7 @@ namespace AiToys.Core.Presentation.Views;
 /// <summary>
 /// Contract for a view.
 /// </summary>
-#pragma warning disable CA1040 // Avoid empty interfaces
+#pragma warning disable CA1040
 public interface IView;
 #pragma warning restore CA1040
 

@@ -4,7 +4,7 @@ using Microsoft.UI.Xaml.Data;
 
 namespace AiToys.Presentation.Converters;
 
-internal partial class NavigationItemInvokedToRouteConverter : IValueConverter
+internal sealed partial class NavigationItemInvokedToRouteConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, string language)
     {

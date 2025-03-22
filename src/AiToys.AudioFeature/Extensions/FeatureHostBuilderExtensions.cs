@@ -2,7 +2,7 @@ using AiToys.AudioFeature.Constants;
 using AiToys.AudioFeature.Presentation.Services;
 using AiToys.AudioFeature.Presentation.ViewModels;
 using AiToys.AudioFeature.Presentation.Views;
-using AiToys.Core.Presentation.Extensions;
+using AiToys.Core;
 using AiToys.Core.Presentation.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;

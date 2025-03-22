@@ -1,9 +1,9 @@
-namespace AiToys.Core.Presentation.Extensions;
+namespace AiToys.Core.Presentation.Options;
 
 /// <summary>
 /// Options for configuring route registrations.
 /// </summary>
-internal class RouteRegistryOptions
+internal sealed class RouteRegistryOptions
 {
     /// <summary>
     /// Gets the route mappings.

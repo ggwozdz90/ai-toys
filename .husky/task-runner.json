@@ -43,6 +43,8 @@
         "--ignore",
         "node_modules",
         "--ignore",
+        "paket-files",
+        "--ignore",
         "packages",
         "--ignore",
         "CHANGELOG.md",

@@ -19,13 +19,16 @@ internal sealed partial class MainViewModel : ViewModelBase
     {
         this.navigationService = navigationService;
         AppTitleBarViewModel = appTitleBarViewModel;
+
         NavigationItems = navigationItemsService.GetNavigationItems();
         navigationService.Navigated += OnNavigated;
 
-        NavigateCommand = new RelayCommand<string>(Navigate);
+        NavigateCommand = new RelayCommand<string>(NavigateTo);
     }
 
     public AppTitleBarViewModel AppTitleBarViewModel { get; }
+    public IReadOnlyList<INavigationItemViewModel> NavigationItems { get; }
+    public ICommand NavigateCommand { get; }
 
     public INavigationItemViewModel? SelectedNavigationItem
     {
@@ -33,11 +36,7 @@ internal sealed partial class MainViewModel : ViewModelBase
         set => SetProperty(ref selectedItem, value);
     }
 
-    public IReadOnlyList<INavigationItemViewModel> NavigationItems { get; }
-
-    public ICommand NavigateCommand { get; }
-
-    public void Navigate(string? route)
+    public void NavigateTo(string? route)
     {
         if (string.IsNullOrEmpty(route))
         {
@@ -47,14 +46,16 @@ internal sealed partial class MainViewModel : ViewModelBase
         navigationService.NavigateTo(route);
     }
 
-    private void OnNavigated(object? sender, NavigatedEventArgs args)
+    private void OnNavigated(object? sender, NavigatedEventArgs navigatedEventArgs)
     {
-        if (string.IsNullOrEmpty(args.Route))
+        if (string.IsNullOrEmpty(navigatedEventArgs.Route))
         {
             return;
         }
 
-        var matchingItem = NavigationItems.FirstOrDefault(item => item.Route == args.Route);
+        var matchingItem = NavigationItems.FirstOrDefault(item =>
+            string.Equals(item.Route, navigatedEventArgs.Route, StringComparison.Ordinal)
+        );
 
         if (matchingItem != null && !Equals(SelectedNavigationItem, matchingItem))
         {

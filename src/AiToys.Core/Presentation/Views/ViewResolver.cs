@@ -17,12 +17,4 @@ internal sealed class ViewResolver(IRouteRegistry routeRegistry) : IViewResolver
 
         return viewType;
     }
-
-    public void RegisterRoute(string route, Type viewType)
-    {
-        ArgumentException.ThrowIfNullOrEmpty(route);
-        ArgumentNullException.ThrowIfNull(viewType);
-
-        routeRegistry.RegisterRoute(route, viewType);
-    }
 }

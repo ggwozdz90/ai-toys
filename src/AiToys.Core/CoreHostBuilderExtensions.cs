@@ -1,4 +1,4 @@
-using AiToys.Core.Presentation.Extensions;
+using AiToys.Core.Presentation.Options;
 using AiToys.Core.Presentation.Services;
 using AiToys.Core.Presentation.Views;
 using Microsoft.Extensions.DependencyInjection;

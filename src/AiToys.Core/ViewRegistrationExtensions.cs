@@ -1,9 +1,10 @@
+using AiToys.Core.Presentation.Options;
 using AiToys.Core.Presentation.ViewModels;
 using AiToys.Core.Presentation.Views;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
-namespace AiToys.Core.Presentation.Extensions;
+namespace AiToys.Core;
 
 /// <summary>
 /// Extension methods for view registration.
@@ -14,8 +15,8 @@ public static class ViewRegistrationExtensions
     /// Registers a view with its associated view model and route.
     /// </summary>
     /// <typeparam name="TView">The view type implementing IView.</typeparam>
-    /// <typeparam name="TViewModel">The view model type.</typeparam>
-    /// <typeparam name="TNavigationItemViewModel">The navigation item view model type.</typeparam>
+    /// <typeparam name="TViewModel">The view model type implementing IViewModel.</typeparam>
+    /// <typeparam name="TNavigationItemViewModel">The navigation item type implementing INavigationItemViewModel.</typeparam>
     /// <param name="services">The service collection.</param>
     /// <param name="route">The route to register for this view.</param>
     /// <returns>The service collection for chaining.</returns>

@@ -3,7 +3,7 @@ using Microsoft.UI.Xaml;
 
 namespace Extensions.Hosting.WinUi;
 
-internal sealed class WinUIContext
+internal sealed class WinUiContext
 {
     public Application? Application { get; set; }
 

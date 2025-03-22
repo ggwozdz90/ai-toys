@@ -12,15 +12,18 @@ internal class WinUiThread : IDisposable
 {
     private readonly ManualResetEvent manualResetEvent = new(initialState: false);
     private readonly IHostApplicationLifetime hostApplicationLifetime;
-    private readonly WinUIContext winUiContext;
+    private readonly WinUiContext winUiContext;
     private readonly IServiceProvider serviceProvider;
 
-    internal WinUiThread(IServiceProvider serviceProvider)
+    internal WinUiThread(
+        IServiceProvider serviceProvider,
+        WinUiContext winUiContext,
+        IHostApplicationLifetime hostApplicationLifetime
+    )
     {
         this.serviceProvider = serviceProvider;
-
-        winUiContext = serviceProvider.GetRequiredService<WinUIContext>();
-        hostApplicationLifetime = serviceProvider.GetRequiredService<IHostApplicationLifetime>();
+        this.winUiContext = winUiContext;
+        this.hostApplicationLifetime = hostApplicationLifetime;
 
         StartUiThread();
     }
@@ -44,6 +47,7 @@ internal class WinUiThread : IDisposable
     private void StartUiThread()
     {
         var uiThread = new Thread(InternalUiThreadStart) { IsBackground = true };
+
         uiThread.SetApartmentState(ApartmentState.STA);
         uiThread.Start();
     }
@@ -62,15 +66,8 @@ internal class WinUiThread : IDisposable
             SynchronizationContext.SetSynchronizationContext(context);
 
             winUiContext.Application = serviceProvider.GetRequiredService<Application>();
-
             winUiContext.MainWindow =
                 ActivatorUtilities.CreateInstance(serviceProvider, winUiContext.MainWindowType) as Window;
-
-            if (winUiContext.MainWindow == null)
-            {
-                throw new InvalidOperationException("MainWindow could not be created.");
-            }
-
             winUiContext.MainWindow!.Activate();
         });
 
