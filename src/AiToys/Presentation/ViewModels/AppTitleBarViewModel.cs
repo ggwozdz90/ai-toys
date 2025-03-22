@@ -1,18 +1,17 @@
-using System.Windows.Input;
 using AiToys.Core.Presentation.Commands;
 using AiToys.Core.Presentation.Services;
 using AiToys.Core.Presentation.ViewModels;
 
 namespace AiToys.Presentation.ViewModels;
 
-internal sealed partial class AppTitleBarViewModel(INavigationService navigationService) : ViewModelBase
+internal sealed partial class AppTitleBarViewModel : ViewModelBase
 {
-    private ICommand? goBackCommand;
-
-    public ICommand GoBackCommand => goBackCommand ??= new RelayCommand(GoBack);
-
-    public void GoBack()
+    public AppTitleBarViewModel(INavigationService navigationService)
     {
-        navigationService.GoBack();
+        navigationService.Navigated += (_, _) => GoBackCommand?.NotifyCanExecuteChanged();
+
+        GoBackCommand = new RelayCommand(navigationService.NavigateBack, () => navigationService.CanNavigateBack);
     }
+
+    public RelayCommand GoBackCommand { get; }
 }

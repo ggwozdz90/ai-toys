@@ -19,17 +19,9 @@ public interface IViewResolver
         where TViewModel : IViewModel;
 
     /// <summary>
-    /// Resolves the view type for a given view model.
-    /// </summary>
-    /// <typeparam name="TViewModel">The view model type.</typeparam>
-    /// <returns>The view type.</returns>
-    Type ResolveViewType<TViewModel>()
-        where TViewModel : IViewModel;
-
-    /// <summary>
     /// Resolves view and view model types for a specified route.
     /// </summary>
     /// <param name="route">The route name (view name).</param>
     /// <returns>A tuple containing the view type and view model type.</returns>
-    (Type ViewType, Type ViewModelType) ResolveRoute(string route);
+    Type ResolveRouteView(string route);
 }

@@ -1,4 +1,5 @@
 using System.Windows.Input;
+using AiToys.Core.Presentation.Commands;
 using AiToys.Core.Presentation.Services;
 using AiToys.Core.Presentation.ViewModels;
 
@@ -11,14 +12,15 @@ internal sealed partial class MainViewModel : ViewModelBase
     private INavigationItemViewModel? selectedItem;
 
     public MainViewModel(
-    INavigationService navigationService,
-    INavigationItemsService navigationItemsService,
-    AppTitleBarViewModel appTitleBarViewModel
+        INavigationService navigationService,
+        INavigationItemsService navigationItemsService,
+        AppTitleBarViewModel appTitleBarViewModel
     )
-{
+    {
         this.navigationService = navigationService;
         AppTitleBarViewModel = appTitleBarViewModel;
         NavigationItems = navigationItemsService.GetNavigationItems();
+        navigationService.Navigated += OnNavigated;
 
         NavigateCommand = new RelayCommand<string>(Navigate);
     }
@@ -36,18 +38,27 @@ internal sealed partial class MainViewModel : ViewModelBase
     public ICommand NavigateCommand { get; }
 
     public void Navigate(string? route)
-        {
+    {
         if (string.IsNullOrEmpty(route))
-            {
+        {
             return;
-            }
-
-        navigationService.NavigateToRoute(route);
         }
+
+        navigationService.NavigateTo(route);
     }
 
-    public void NavigateToHome()
+    private void OnNavigated(object? sender, NavigatedEventArgs args)
     {
-        navigationService.NavigateToRoute(HomeRouteNames.HomePage);
+        if (string.IsNullOrEmpty(args.Route))
+        {
+            return;
+        }
+
+        var matchingItem = NavigationItems.FirstOrDefault(item => item.Route == args.Route);
+
+        if (matchingItem != null && !Equals(SelectedNavigationItem, matchingItem))
+        {
+            SelectedNavigationItem = matchingItem;
+        }
     }
 }

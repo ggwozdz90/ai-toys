@@ -12,7 +12,9 @@ internal sealed class NavigationService(IServiceProvider serviceProvider, IViewR
 {
     private Frame? navigationFrame;
 
-    public bool CanGoBack => navigationFrame?.CanGoBack ?? false;
+    public event EventHandler<NavigatedEventArgs>? Navigated;
+
+    public bool CanNavigateBack => navigationFrame?.CanGoBack ?? false;
 
     public void SetNavigationFrame(Frame frame)
     {
@@ -21,34 +23,20 @@ internal sealed class NavigationService(IServiceProvider serviceProvider, IViewR
         SubscribeNavigationEvents();
     }
 
-    public void NavigateTo<TViewModel>()
-        where TViewModel : IViewModel
+    public void NavigateTo(string route)
     {
         EnsureNavigationFrameIsSet();
 
-        var viewType = viewResolver.ResolveViewType<TViewModel>();
-        var viewModel = serviceProvider.GetRequiredService<TViewModel>();
+        var viewType = viewResolver.ResolveRouteView(route);
 
         navigationFrame!.Navigate(viewType);
-        SetViewModelOnNavigatedView(typeof(TViewModel), viewModel);
     }
 
-    public void NavigateToRoute(string route)
+    public void NavigateBack()
     {
         EnsureNavigationFrameIsSet();
 
-        var (viewType, viewModelType) = viewResolver.ResolveRoute(route);
-        var viewModel = serviceProvider.GetRequiredService(viewModelType);
-
-        navigationFrame!.Navigate(viewType);
-        SetViewModelOnNavigatedView(viewModelType, viewModel);
-    }
-
-    public void GoBack()
-    {
-        EnsureNavigationFrameIsSet();
-
-        if (CanGoBack)
+        if (CanNavigateBack)
         {
             navigationFrame!.GoBack();
         }
@@ -94,6 +82,7 @@ internal sealed class NavigationService(IServiceProvider serviceProvider, IViewR
         if (navigationFrame != null)
         {
             navigationFrame.Navigated += OnNavigationFrameNavigated;
+            navigationFrame.Navigated += PropagateNavigatedEvent;
         }
     }
 
@@ -102,20 +91,49 @@ internal sealed class NavigationService(IServiceProvider serviceProvider, IViewR
         if (navigationFrame != null)
         {
             navigationFrame.Navigated -= OnNavigationFrameNavigated;
+            navigationFrame.Navigated -= PropagateNavigatedEvent;
+        }
+    }
+
+    private void PropagateNavigatedEvent(object sender, NavigationEventArgs e)
+    {
+        if (navigationFrame?.Content == null)
+        {
+            return;
+        }
+
+        var content = navigationFrame.Content;
+
+        var viewInterface = content
+            .GetType()
+            .GetInterfaces()
+            .FirstOrDefault(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IView<>));
+
+        if (viewInterface != null)
+        {
+            var viewModelProperty = viewInterface.GetProperty("ViewModel");
+            var viewModel = viewModelProperty?.GetValue(content);
+
+            if (viewModel is IRouteAwareViewModel routeAwareViewModel)
+            {
+                Navigated?.Invoke(this, new NavigatedEventArgs(routeAwareViewModel.Route));
+            }
         }
     }
 
     private void OnNavigationFrameNavigated(object sender, NavigationEventArgs e)
     {
-        if (e.NavigationMode == NavigationMode.Back && navigationFrame?.Content != null)
+        if (navigationFrame?.Content == null)
         {
-            EnsureNavigationFrameIsSet();
-
-            var viewType = navigationFrame.Content.GetType();
-            var viewModelType = ResolveViewModelType(viewType);
-
-            var viewModel = serviceProvider.GetRequiredService(viewModelType);
-            SetViewModelOnNavigatedView(viewModelType, viewModel);
+            return;
         }
+
+        EnsureNavigationFrameIsSet();
+
+        var viewType = navigationFrame.Content.GetType();
+        var viewModelType = ResolveViewModelType(viewType);
+        var viewModel = serviceProvider.GetRequiredService(viewModelType);
+
+        SetViewModelOnNavigatedView(viewModelType, viewModel);
     }
 }

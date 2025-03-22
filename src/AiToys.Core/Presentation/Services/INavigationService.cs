@@ -1,6 +1,3 @@
-using AiToys.Core.Presentation.ViewModels;
-using AiToys.Core.Presentation.Views;
-
 namespace AiToys.Core.Presentation.Services;
 
 /// <summary>
@@ -17,24 +14,16 @@ public interface INavigationService
     /// <summary>
     /// Gets a value indicating whether the navigation service can navigate back.
     /// </summary>
-    bool CanGoBack { get; }
+    bool CanNavigateBack { get; }
 
     /// <summary>
     /// Navigates back to the previous view.
     /// </summary>
-    void GoBack();
-
-    /// <summary>
-    /// Navigates to the view represented by the specified view model.
-    /// View and view model must be registered in the dependency injection container and must be configured in the <see cref="IViewResolver"/>.
-    /// </summary>
-    /// <typeparam name="TViewModel">The view model to navigate to.</typeparam>
-    void NavigateTo<TViewModel>()
-        where TViewModel : IViewModel;
+    void NavigateBack();
 
     /// <summary>
     /// Navigates to the view associated with the specified route.
     /// </summary>
     /// <param name="route">The route name (view name) to navigate to.</param>
-    void NavigateToRoute(string route);
+    void NavigateTo(string route);
 }
