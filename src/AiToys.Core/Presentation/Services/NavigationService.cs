@@ -9,6 +9,7 @@ namespace AiToys.Core.Presentation.Services;
 internal sealed class NavigationService(
     IServiceProvider serviceProvider,
     IViewResolver viewResolver,
+    IViewModelResolver viewModelResolver,
     INavigationItemsRegistry navigationItemsRegistry
 ) : INavigationService, INavigationFrameProvider
 {
@@ -46,19 +47,6 @@ internal sealed class NavigationService(
 
     public IReadOnlyList<INavigationItemViewModel> GetNavigationItems() =>
         [.. navigationItemsRegistry.GetNavigationItems()];
-
-    private static Type ResolveViewModelType(Type viewType)
-    {
-        foreach (var interfaceType in viewType.GetInterfaces())
-        {
-            if (interfaceType.IsGenericType && interfaceType.GetGenericTypeDefinition() == typeof(IView<>))
-            {
-                return interfaceType.GetGenericArguments()[0];
-            }
-        }
-
-        throw new InvalidOperationException($"View '{viewType}' does not implement IView<TViewModel>.");
-    }
 
     private void EnsureNavigationFrameIsSet()
     {
@@ -136,7 +124,7 @@ internal sealed class NavigationService(
         EnsureNavigationFrameIsSet();
 
         var viewType = navigationFrame.Content.GetType();
-        var viewModelType = ResolveViewModelType(viewType);
+        var viewModelType = viewModelResolver.ResolveViewModelType(viewType);
         var viewModel = serviceProvider.GetRequiredService(viewModelType);
 
         SetViewModelOnNavigatedView(viewModelType, viewModel);

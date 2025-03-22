@@ -1,5 +1,6 @@
 using AiToys.Core.Presentation.Options;
 using AiToys.Core.Presentation.Services;
+using AiToys.Core.Presentation.ViewModels;
 using AiToys.Core.Presentation.Views;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -37,6 +38,8 @@ public static class CoreHostBuilderExtensions
 
                 services.AddSingleton<ViewResolver>();
                 services.AddSingleton<IViewResolver>(sp => sp.GetRequiredService<ViewResolver>());
+                services.AddSingleton<ViewModelResolver>();
+                services.AddSingleton<IViewModelResolver>(sp => sp.GetRequiredService<ViewModelResolver>());
             }
         );
 
