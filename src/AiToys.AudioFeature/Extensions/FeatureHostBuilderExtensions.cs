@@ -1,6 +1,8 @@
+using AiToys.AudioFeature.Constants;
 using AiToys.AudioFeature.Presentation.Services;
 using AiToys.AudioFeature.Presentation.ViewModels;
 using AiToys.AudioFeature.Presentation.Views;
+using AiToys.Core.Presentation.Extensions;
 using AiToys.Core.Presentation.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -24,10 +26,10 @@ public static class FeatureHostBuilderExtensions
         hostBuilder.ConfigureServices(
             (_, services) =>
             {
-                services.AddTransient<SpeechToTextViewModel>();
-                services.AddTransient<SpeechToTextPage>();
+                services.RegisterView<SpeechToTextPage, SpeechToTextViewModel, SpeechToTextNavigationItemViewModel>(
+                    RouteNames.SpeechToTextPage
+                );
 
-                services.AddTransient<SpeechToTextNavigationItemViewModel>();
                 services.AddTransient<INavigationItemsProvider, FeatureNavigationItemsProvider>();
             }
         );

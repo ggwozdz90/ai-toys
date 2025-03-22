@@ -1,4 +1,6 @@
+using AiToys.Core.Presentation.Extensions;
 using AiToys.Core.Presentation.Services;
+using AiToys.HomeFeature.Constants;
 using AiToys.HomeFeature.Presentation.Services;
 using AiToys.HomeFeature.Presentation.ViewModels;
 using AiToys.HomeFeature.Presentation.Views;
@@ -24,10 +26,8 @@ public static class FeatureHostBuilderExtensions
         hostBuilder.ConfigureServices(
             (_, services) =>
             {
-                services.AddTransient<HomeViewModel>();
-                services.AddTransient<HomePage>();
+                services.RegisterView<HomePage, HomeViewModel, HomeNavigationItemViewModel>(RouteNames.HomePage);
 
-                services.AddTransient<HomeNavigationItemViewModel>();
                 services.AddTransient<INavigationItemsProvider, FeatureNavigationItemsProvider>();
             }
         );

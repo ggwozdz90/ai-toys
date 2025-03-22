@@ -1,27 +1,21 @@
-using AiToys.Core.Presentation.ViewModels;
-
 namespace AiToys.Core.Presentation.Views;
 
 /// <summary>
-/// Resolves the view type for a given view model.
-/// Used by navigation service to resolve the view type for a given view model when navigating.
+/// Resolves views based on routes.
 /// </summary>
 public interface IViewResolver
 {
     /// <summary>
-    /// Registers the view type for a given view model in the view resolver.
-    /// Registration is not affecting the IoC container and is used only for view resolution.
+    /// Resolves a route to a view type.
     /// </summary>
-    /// <typeparam name="TView">The view type.</typeparam>
-    /// <typeparam name="TViewModel">The view model type.</typeparam>
-    void RegisterView<TView, TViewModel>()
-        where TView : IView<TViewModel>
-        where TViewModel : IViewModel;
+    /// <param name="route">The route to resolve.</param>
+    /// <returns>The view type associated with the route.</returns>
+    Type ResolveRouteView(string route);
 
     /// <summary>
-    /// Resolves view and view model types for a specified route.
+    /// Registers a route-to-view mapping.
     /// </summary>
-    /// <param name="route">The route name (view name).</param>
-    /// <returns>A tuple containing the view type and view model type.</returns>
-    Type ResolveRouteView(string route);
+    /// <param name="route">The route to register.</param>
+    /// <param name="viewType">The view type to associate with the route.</param>
+    void RegisterRoute(string route, Type viewType);
 }

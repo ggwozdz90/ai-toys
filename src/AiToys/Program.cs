@@ -26,8 +26,6 @@ internal static class Program
             .ConfigureWinUi<App, MainWindow>()
             .Build();
 
-        host.ConfigureHomeViews().ConfigureAudioViews();
-
         host.Run();
     }
 }

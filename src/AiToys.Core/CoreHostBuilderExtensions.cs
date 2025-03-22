@@ -1,3 +1,4 @@
+using AiToys.Core.Presentation.Extensions;
 using AiToys.Core.Presentation.Services;
 using AiToys.Core.Presentation.Views;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,7 +28,12 @@ public static class CoreHostBuilderExtensions
                 services.AddSingleton<INavigationFrameProvider>(sp => sp.GetRequiredService<NavigationService>());
                 services.AddSingleton<INavigationItemsService, NavigationItemsService>();
 
-                services.AddSingleton<IViewResolver, ViewResolver>();
+                services.AddOptions<RouteRegistryOptions>();
+
+                services.AddSingleton<RouteRegistry>();
+                services.AddSingleton<IRouteRegistry>(sp => sp.GetRequiredService<RouteRegistry>());
+                services.AddSingleton<ViewResolver>();
+                services.AddSingleton<IViewResolver>(sp => sp.GetRequiredService<ViewResolver>());
             }
         );
 

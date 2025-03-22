@@ -1,32 +1,28 @@
-using AiToys.Core.Presentation.ViewModels;
+using AiToys.Core.Presentation.Services;
 
 namespace AiToys.Core.Presentation.Views;
 
-internal sealed class ViewResolver : IViewResolver
+internal sealed class ViewResolver(IRouteRegistry routeRegistry) : IViewResolver
 {
-    private readonly Dictionary<string, (Type ViewType, Type ViewModelType)> routeMappings = [];
-
-    public void RegisterView<TView, TViewModel>()
-        where TView : IView<TViewModel>
-        where TViewModel : IViewModel
-    {
-        var viewModelType = typeof(TViewModel);
-        var viewType = typeof(TView);
-
-        var routeName = viewType.Name;
-
-        routeMappings[routeName] = (viewType, viewModelType);
-    }
-
     public Type ResolveRouteView(string route)
     {
         ArgumentException.ThrowIfNullOrEmpty(route);
 
-        if (!routeMappings.TryGetValue(route, out var typeMapping))
+        var routes = routeRegistry.GetRoutes();
+
+        if (!routes.TryGetValue(route, out var viewType))
         {
             throw new ArgumentException($"Route '{route}' is not registered.", nameof(route));
         }
 
-        return typeMapping.ViewType;
+        return viewType;
+    }
+
+    public void RegisterRoute(string route, Type viewType)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(route);
+        ArgumentNullException.ThrowIfNull(viewType);
+
+        routeRegistry.RegisterRoute(route, viewType);
     }
 }
