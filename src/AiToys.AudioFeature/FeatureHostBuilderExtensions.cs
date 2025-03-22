@@ -4,7 +4,7 @@ using AiToys.AudioFeature.Presentation.Views;
 using AiToys.Core;
 using Microsoft.Extensions.Hosting;
 
-namespace AiToys.AudioFeature.Extensions;
+namespace AiToys.AudioFeature;
 
 /// <summary>
 /// Extension methods for configuring the feature.

@@ -4,9 +4,9 @@
     <Allowed From="*" To="Microsoft.*" />
     <Allowed From="*" To="WinRT" />
 
+    <Allowed From="AiToys.HomeFeature" To="AiToys.Core.*" />
+    <Allowed From="AiToys.HomeFeature" To="AiToys.HomeFeature.Presentation.*" />
     <Allowed From="AiToys.HomeFeature.*" To="AiToys.HomeFeature.Constants" />
-    <Allowed From="AiToys.HomeFeature.Extensions" To="AiToys.Core.*" />
-    <Allowed From="AiToys.HomeFeature.Extensions" To="AiToys.HomeFeature.Presentation.*" />
 
     <Allowed From="AiToys.HomeFeature.Presentation.*" To="AiToys.Core.Presentation.*" />
     <Allowed From="AiToys.HomeFeature.Presentation.Views" To="AiToys.HomeFeature.Presentation.ViewModels" />

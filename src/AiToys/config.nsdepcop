@@ -5,7 +5,7 @@
     <Allowed From="AiToys" To="AiToys.Presentation.*" />
     <Allowed From="AiToys" To="AiToys.Core" />
     <Allowed From="AiToys" To="AiToys.Extensions" />
-    <Allowed From="AiToys" To="AiToys.*.Extensions" />
+    <Allowed From="AiToys" To="AiToys.*" />
 
     <Allowed From="AiToys.Extensions" To="AiToys.Presentation.*" />
     <Allowed From="AiToys.Extensions" To="AiToys.Core.*" />

@@ -4,7 +4,7 @@ using AiToys.HomeFeature.Presentation.ViewModels;
 using AiToys.HomeFeature.Presentation.Views;
 using Microsoft.Extensions.Hosting;
 
-namespace AiToys.HomeFeature.Extensions;
+namespace AiToys.HomeFeature;
 
 /// <summary>
 /// Extension methods for configuring the feature.
