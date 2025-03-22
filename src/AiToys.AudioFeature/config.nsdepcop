@@ -10,5 +10,4 @@
 
     <Allowed From="AiToys.AudioFeature.Presentation.*" To="AiToys.Core.Presentation.*" />
     <Allowed From="AiToys.AudioFeature.Presentation.Views" To="AiToys.AudioFeature.Presentation.ViewModels" />
-    <Allowed From="AiToys.AudioFeature.Presentation.Services" To="AiToys.AudioFeature.Presentation.ViewModels" />
 </NsDepCopConfig>

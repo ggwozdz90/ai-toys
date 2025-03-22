@@ -1,3 +1,5 @@
+using AiToys.Core.Presentation.ViewModels;
+
 namespace AiToys.Core.Presentation.Services;
 
 /// <summary>
@@ -26,4 +28,10 @@ public interface INavigationService
     /// </summary>
     /// <param name="route">The route name (view name) to navigate to.</param>
     void NavigateTo(string route);
+
+    /// <summary>
+    /// Gets the navigation items.
+    /// </summary>
+    /// <returns>The navigation items.</returns>
+    IReadOnlyList<INavigationItemViewModel> GetNavigationItems();
 }

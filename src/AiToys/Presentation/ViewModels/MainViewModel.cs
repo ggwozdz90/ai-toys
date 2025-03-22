@@ -11,16 +11,12 @@ internal sealed partial class MainViewModel : ViewModelBase
 
     private INavigationItemViewModel? selectedItem;
 
-    public MainViewModel(
-        INavigationService navigationService,
-        INavigationItemsService navigationItemsService,
-        AppTitleBarViewModel appTitleBarViewModel
-    )
+    public MainViewModel(INavigationService navigationService, AppTitleBarViewModel appTitleBarViewModel)
     {
         this.navigationService = navigationService;
         AppTitleBarViewModel = appTitleBarViewModel;
 
-        NavigationItems = navigationItemsService.GetNavigationItems();
+        NavigationItems = navigationService.GetNavigationItems();
         navigationService.Navigated += OnNavigated;
 
         NavigateCommand = new RelayCommand<string>(NavigateTo);

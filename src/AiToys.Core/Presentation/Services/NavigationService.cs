@@ -6,9 +6,11 @@ using Microsoft.UI.Xaml.Navigation;
 
 namespace AiToys.Core.Presentation.Services;
 
-internal sealed class NavigationService(IServiceProvider serviceProvider, IViewResolver viewResolver)
-    : INavigationService,
-        INavigationFrameProvider
+internal sealed class NavigationService(
+    IServiceProvider serviceProvider,
+    IViewResolver viewResolver,
+    INavigationItemsRegistry navigationItemsRegistry
+) : INavigationService, INavigationFrameProvider
 {
     private Frame? navigationFrame;
 
@@ -23,15 +25,6 @@ internal sealed class NavigationService(IServiceProvider serviceProvider, IViewR
         SubscribeNavigationEvents();
     }
 
-    public void NavigateTo(string route)
-    {
-        EnsureNavigationFrameIsSet();
-
-        var viewType = viewResolver.ResolveRouteView(route);
-
-        navigationFrame!.Navigate(viewType);
-    }
-
     public void NavigateBack()
     {
         EnsureNavigationFrameIsSet();
@@ -41,6 +34,18 @@ internal sealed class NavigationService(IServiceProvider serviceProvider, IViewR
             navigationFrame!.GoBack();
         }
     }
+
+    public void NavigateTo(string route)
+    {
+        EnsureNavigationFrameIsSet();
+
+        var viewType = viewResolver.ResolveRouteView(route);
+
+        navigationFrame!.Navigate(viewType);
+    }
+
+    public IReadOnlyList<INavigationItemViewModel> GetNavigationItems() =>
+        [.. navigationItemsRegistry.GetNavigationItems()];
 
     private static Type ResolveViewModelType(Type viewType)
     {

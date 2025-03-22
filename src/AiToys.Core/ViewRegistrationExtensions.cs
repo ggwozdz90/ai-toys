@@ -37,6 +37,10 @@ public static class ViewRegistrationExtensions
 
         services.Configure<RouteRegistryOptions>(options => options.RouteMappings[route] = typeof(TView));
 
+        services.Configure<NavigationItemsRegistryOptions>(options =>
+            options.NavigationItemTypes.Add(typeof(TNavigationItemViewModel))
+        );
+
         return services;
     }
 }

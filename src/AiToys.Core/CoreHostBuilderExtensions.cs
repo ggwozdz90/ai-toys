@@ -26,12 +26,15 @@ public static class CoreHostBuilderExtensions
                 services.AddSingleton<NavigationService>();
                 services.AddSingleton<INavigationService>(sp => sp.GetRequiredService<NavigationService>());
                 services.AddSingleton<INavigationFrameProvider>(sp => sp.GetRequiredService<NavigationService>());
-                services.AddSingleton<INavigationItemsService, NavigationItemsService>();
 
                 services.AddOptions<RouteRegistryOptions>();
-
                 services.AddSingleton<RouteRegistry>();
                 services.AddSingleton<IRouteRegistry>(sp => sp.GetRequiredService<RouteRegistry>());
+
+                services.AddOptions<NavigationItemsRegistryOptions>();
+                services.AddSingleton<NavigationItemsRegistry>();
+                services.AddSingleton<INavigationItemsRegistry>(sp => sp.GetRequiredService<NavigationItemsRegistry>());
+
                 services.AddSingleton<ViewResolver>();
                 services.AddSingleton<IViewResolver>(sp => sp.GetRequiredService<ViewResolver>());
             }
