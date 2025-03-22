@@ -10,6 +10,11 @@ namespace AiToys.Core.Presentation.Services;
 public interface INavigationService
 {
     /// <summary>
+    /// Occurs after navigation to a view has completed.
+    /// </summary>
+    event EventHandler<NavigatedEventArgs> Navigated;
+
+    /// <summary>
     /// Gets a value indicating whether the navigation service can navigate back.
     /// </summary>
     bool CanGoBack { get; }

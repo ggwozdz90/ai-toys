@@ -8,3 +8,4 @@ nuget Microsoft.Extensions.DependencyInjection
 nuget Microsoft.Extensions.Hosting
 nuget Microsoft.Extensions.Logging
 nuget Microsoft.Extensions.Options
+nuget Microsoft.Xaml.Behaviors.WinUI.Managed

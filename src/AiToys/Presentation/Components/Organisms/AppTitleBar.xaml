@@ -15,7 +15,6 @@
         </Grid.ColumnDefinitions>
 
         <Button
-            x:Name="BackButton"
             Grid.Column="0"
             VerticalAlignment="Center"
             Command="{x:Bind ViewModel.GoBackCommand}"
@@ -32,7 +31,7 @@
             Grid.Column="2"
             Margin="12,8,0,8"
             VerticalAlignment="Center"
-            FontWeight="SemiBold"
+            Style="{StaticResource CaptionTextBlockStyle}"
             Text="AiToys" />
     </Grid>
 </UserControl>

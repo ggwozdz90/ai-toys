@@ -7,7 +7,8 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
-                <ResourceDictionary Source="Presentation/Styles/NavigationBackButton.xaml" />
+                <ResourceDictionary Source="Presentation/Styles/ButtonStyles.xaml" />
+                <ResourceDictionary Source="Presentation/Converters/Converters.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

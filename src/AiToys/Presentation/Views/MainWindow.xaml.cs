@@ -10,13 +10,19 @@ internal sealed partial class MainWindow : IView<MainViewModel>
     {
         InitializeComponent();
 
+        ExtendsContentIntoTitleBar = true;
         AppTitleBar.ViewModel = viewModel.AppTitleBarViewModel;
         SetTitleBar(AppTitleBar);
 
         navigationFrameProvider.SetNavigationFrame(NavigationFrame);
 
         ViewModel = viewModel;
-        ViewModel.NavigateToHome();
+
+        if (ViewModel.NavigationItems.Any())
+        {
+            var firstRoute = ViewModel.NavigationItems.OrderBy(item => item.Order).First().Route;
+            ViewModel.Navigate(firstRoute);
+        }
     }
 
     public MainViewModel ViewModel { get; set; }

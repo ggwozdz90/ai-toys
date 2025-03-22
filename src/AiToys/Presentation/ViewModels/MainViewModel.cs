@@ -1,37 +1,48 @@
+using System.Windows.Input;
 using AiToys.Core.Presentation.Services;
 using AiToys.Core.Presentation.ViewModels;
-using AiToys.HomeFeature.Constants;
-using Microsoft.UI.Composition.SystemBackdrops;
-using Microsoft.UI.Xaml.Media;
 
 namespace AiToys.Presentation.ViewModels;
 
-internal sealed partial class MainViewModel(
+internal sealed partial class MainViewModel : ViewModelBase
+{
+    private readonly INavigationService navigationService;
+
+    private INavigationItemViewModel? selectedItem;
+
+    public MainViewModel(
     INavigationService navigationService,
     INavigationItemsService navigationItemsService,
     AppTitleBarViewModel appTitleBarViewModel
-) : ViewModelBase
+    )
 {
-    private INavigationItemViewModel? selectedItem;
+        this.navigationService = navigationService;
+        AppTitleBarViewModel = appTitleBarViewModel;
+        NavigationItems = navigationItemsService.GetNavigationItems();
 
-    public AppTitleBarViewModel AppTitleBarViewModel { get; } = appTitleBarViewModel;
+        NavigateCommand = new RelayCommand<string>(Navigate);
+    }
 
-    public bool ExtendsContentIntoTitleBar { get; set; } = true;
-
-    public SystemBackdrop SystemBackdrop { get; set; } = new MicaBackdrop() { Kind = MicaKind.Base };
-
-    public IReadOnlyList<INavigationItemViewModel> NavigationItems { get; } =
-        navigationItemsService.GetNavigationItems();
+    public AppTitleBarViewModel AppTitleBarViewModel { get; }
 
     public INavigationItemViewModel? SelectedNavigationItem
     {
         get => selectedItem;
-        set
+        set => SetProperty(ref selectedItem, value);
+    }
+
+    public IReadOnlyList<INavigationItemViewModel> NavigationItems { get; }
+
+    public ICommand NavigateCommand { get; }
+
+    public void Navigate(string? route)
         {
-            if (SetProperty(ref selectedItem, value) && value != null)
+        if (string.IsNullOrEmpty(route))
             {
-                navigationService.NavigateToRoute(value.Route);
+            return;
             }
+
+        navigationService.NavigateToRoute(route);
         }
     }
 
