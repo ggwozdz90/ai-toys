@@ -18,11 +18,8 @@ internal sealed partial class MainWindow : IView<MainViewModel>
 
         ViewModel = viewModel;
 
-        if (ViewModel.NavigationItems.Any())
-        {
-            var firstRoute = ViewModel.NavigationItems.OrderBy(item => item.Order).First().Route;
-            ViewModel.Navigate(firstRoute);
-        }
+        var firstRoute = ViewModel.NavigationItems.OrderBy(item => item.Order).FirstOrDefault()?.Route;
+        ViewModel.Navigate(firstRoute);
     }
 
     public MainViewModel ViewModel { get; set; }

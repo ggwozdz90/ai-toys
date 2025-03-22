@@ -28,7 +28,7 @@
             IsBackButtonVisible="Collapsed"
             IsSettingsVisible="False"
             MenuItemsSource="{x:Bind ViewModel.NavigationItems}"
-            SelectedItem="{x:Bind ViewModel.SelectedNavigationItem}">
+            SelectedItem="{x:Bind ViewModel.SelectedNavigationItem, Mode=TwoWay}">
 
             <i:Interaction.Behaviors>
                 <i:EventTriggerBehavior EventName="ItemInvoked">
