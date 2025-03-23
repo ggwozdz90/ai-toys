@@ -4,6 +4,7 @@ using AiToys.Extensions;
 using AiToys.Home;
 using AiToys.Presentation.Views;
 using AiToys.SpeechToText;
+using AiToys.Translation;
 using Extensions.Hosting.WinUi;
 using Microsoft.Extensions.Hosting;
 
@@ -23,6 +24,7 @@ internal static class Program
             .ConfigureApp()
             .ConfigureHomeFeature()
             .ConfigureAudioFeature()
+            .ConfigureTranslationFeature()
             .ConfigureWinUi<App, MainWindow>()
             .Build();
 
