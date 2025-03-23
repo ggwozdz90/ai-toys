@@ -26,4 +26,9 @@ public interface INavigationItemViewModel : IViewModel
     /// See https://learn.microsoft.com/en-us/windows/apps/design/style/segoe-fluent-icons-font for more information.
     /// </summary>
     string IconKey { get; }
+
+    /// <summary>
+    /// Gets the description of the navigation item.
+    /// </summary>
+    string Description { get; }
 }

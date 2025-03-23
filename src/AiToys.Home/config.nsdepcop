@@ -10,4 +10,7 @@
 
     <Allowed From="AiToys.Home.Presentation.*" To="AiToys.Core.Presentation.*" />
     <Allowed From="AiToys.Home.Presentation.Views" To="AiToys.Home.Presentation.ViewModels" />
+    <Allowed From="AiToys.Home.Presentation.Components.*" To="AiToys.Home.Presentation.ViewModels" />
+    <Allowed From="AiToys.Home.Presentation.Factories" To="AiToys.Home.Presentation.ViewModels" />
+    <Allowed From="AiToys.Home.Presentation.ViewModels" To="AiToys.Home.Presentation.Factories" />
 </NsDepCopConfig>

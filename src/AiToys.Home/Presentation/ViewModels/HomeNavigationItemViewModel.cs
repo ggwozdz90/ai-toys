@@ -9,4 +9,5 @@ internal sealed class HomeNavigationItemViewModel : INavigationItemViewModel
     public string Route => RouteNames.HomePage;
     public int Order => 100;
     public string IconKey => IconKeys.Home;
+    public string Description => PageDescriptions.HomePage;
 }

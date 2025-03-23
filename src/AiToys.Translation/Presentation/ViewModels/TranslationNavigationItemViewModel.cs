@@ -9,4 +9,5 @@ internal sealed class TranslationNavigationItemViewModel : INavigationItemViewMo
     public string Route => RouteNames.TranslationPage;
     public int Order => 300;
     public string IconKey => IconKeys.Translation;
+    public string Description => PageDescriptions.TranslationPage;
 }

@@ -9,4 +9,5 @@ internal sealed class SpeechToTextNavigationItemViewModel : INavigationItemViewM
     public string Route => RouteNames.SpeechToTextPage;
     public int Order => 200;
     public string IconKey => IconKeys.SpeechToText;
+    public string Description => PageDescriptions.SpeechToTextPage;
 }
