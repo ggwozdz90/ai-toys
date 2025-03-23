@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<NsDepCopConfig ChildCanDependOnParentImplicitly="true" CheckAssemblyDependencies="false">
+    <Allowed From="*" To="System.*" />
+    <Allowed From="*" To="Microsoft.*" />
+    <Allowed From="*" To="WinRT" />
+
+    <Allowed From="AiToys.SpeechToText" To="AiToys.Core.*" />
+    <Allowed From="AiToys.SpeechToText" To="AiToys.SpeechToText.Presentation.*" />
+    <Allowed From="AiToys.SpeechToText.*" To="AiToys.SpeechToText.Constants" />
+
+    <Allowed From="AiToys.SpeechToText.Presentation.*" To="AiToys.Core.Presentation.*" />
+    <Allowed From="AiToys.SpeechToText.Presentation.Views" To="AiToys.SpeechToText.Presentation.ViewModels" />
+</NsDepCopConfig>

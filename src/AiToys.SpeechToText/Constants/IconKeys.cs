@@ -1,4 +1,4 @@
-namespace AiToys.HomeFeature.Constants;
+namespace AiToys.SpeechToText.Constants;
 
 /// <summary>
 /// Contains constants for icon keys used in the feature.
@@ -7,7 +7,7 @@ namespace AiToys.HomeFeature.Constants;
 internal static class IconKeys
 {
     /// <summary>
-    /// Icon key for the home page.
+    /// Icon key for the Speech to Text page.
     /// </summary>
-    internal const string Home = "\uE80F";
+    internal const string SpeechToText = "\uE720";
 }

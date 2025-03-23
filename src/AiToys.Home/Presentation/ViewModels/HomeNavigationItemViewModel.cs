@@ -1,7 +1,7 @@
 using AiToys.Core.Presentation.ViewModels;
-using AiToys.HomeFeature.Constants;
+using AiToys.Home.Constants;
 
-namespace AiToys.HomeFeature.Presentation.ViewModels;
+namespace AiToys.Home.Presentation.ViewModels;
 
 internal sealed class HomeNavigationItemViewModel : INavigationItemViewModel
 {

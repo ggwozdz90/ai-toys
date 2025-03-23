@@ -26,9 +26,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Extensions.Hosting.WinUi", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AiToys.Core", "src\AiToys.Core\AiToys.Core.csproj", "{9C1AF506-5875-43F8-9526-0A50787FB641}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AiToys.HomeFeature", "src\AiToys.HomeFeature\AiToys.HomeFeature.csproj", "{A971548A-F056-4F96-BEDE-CF31A1124963}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AiToys.Home", "src\AiToys.Home\AiToys.Home.csproj", "{A971548A-F056-4F96-BEDE-CF31A1124963}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AiToys.AudioFeature", "src\AiToys.AudioFeature\AiToys.AudioFeature.csproj", "{620601D9-B1FB-4746-83B6-C7858A810F72}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AiToys.SpeechToText", "src\AiToys.SpeechToText\AiToys.SpeechToText.csproj", "{620601D9-B1FB-4746-83B6-C7858A810F72}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

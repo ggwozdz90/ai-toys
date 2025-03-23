@@ -1,4 +1,4 @@
-namespace AiToys.AudioFeature.Constants;
+namespace AiToys.SpeechToText.Constants;
 
 /// <summary>
 /// Defines route name constants for the audio feature.

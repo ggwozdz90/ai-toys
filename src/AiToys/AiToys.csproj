@@ -24,9 +24,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AiToys.AudioFeature\AiToys.AudioFeature.csproj" />
+    <ProjectReference Include="..\AiToys.SpeechToText\AiToys.SpeechToText.csproj" />
     <ProjectReference Include="..\AiToys.Core\AiToys.Core.csproj" />
-    <ProjectReference Include="..\AiToys.HomeFeature\AiToys.HomeFeature.csproj" />
+    <ProjectReference Include="..\AiToys.Home\AiToys.Home.csproj" />
     <ProjectReference Include="..\Extensions.Hosting.WinUi\Extensions.Hosting.WinUi.csproj" />
   </ItemGroup>
 

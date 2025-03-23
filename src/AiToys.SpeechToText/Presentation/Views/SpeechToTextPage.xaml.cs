@@ -1,7 +1,7 @@
-using AiToys.AudioFeature.Presentation.ViewModels;
 using AiToys.Core.Presentation.Views;
+using AiToys.SpeechToText.Presentation.ViewModels;
 
-namespace AiToys.AudioFeature.Presentation.Views;
+namespace AiToys.SpeechToText.Presentation.Views;
 
 internal sealed partial class SpeechToTextPage : IView<SpeechToTextViewModel>
 {

@@ -1,4 +1,4 @@
-namespace AiToys.AudioFeature.Constants;
+namespace AiToys.SpeechToText.Constants;
 
 /// <summary>
 /// Defines page label constants for the feature.

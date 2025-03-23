@@ -1,7 +1,7 @@
-using AiToys.AudioFeature.Constants;
 using AiToys.Core.Presentation.ViewModels;
+using AiToys.SpeechToText.Constants;
 
-namespace AiToys.AudioFeature.Presentation.ViewModels;
+namespace AiToys.SpeechToText.Presentation.ViewModels;
 
 internal sealed class SpeechToTextNavigationItemViewModel : INavigationItemViewModel
 {

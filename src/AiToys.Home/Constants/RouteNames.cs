@@ -1,4 +1,4 @@
-namespace AiToys.HomeFeature.Constants;
+namespace AiToys.Home.Constants;
 
 /// <summary>
 /// Defines route name constants for the feature.

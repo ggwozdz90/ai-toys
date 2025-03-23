@@ -1,9 +1,9 @@
 using System.Diagnostics.CodeAnalysis;
-using AiToys.AudioFeature;
 using AiToys.Core;
 using AiToys.Extensions;
-using AiToys.HomeFeature;
+using AiToys.Home;
 using AiToys.Presentation.Views;
+using AiToys.SpeechToText;
 using Extensions.Hosting.WinUi;
 using Microsoft.Extensions.Hosting;
 
