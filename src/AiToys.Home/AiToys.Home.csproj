@@ -13,7 +13,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="Assets\Images\HomeBackground.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\AiToys.Core\AiToys.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Assets\Images\HomeBackground.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <Import Project="..\..\.paket\Paket.Restore.targets" />
