@@ -12,6 +12,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\translation-api-client\src\TranslationApiClient\TranslationApiClient.csproj" />
     <ProjectReference Include="..\AiToys.Core\AiToys.Core.csproj" />
   </ItemGroup>
 

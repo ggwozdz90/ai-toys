@@ -9,6 +9,6 @@
     mc:Ignorable="d">
 
     <Grid>
-        <Button Content="{x:Bind ViewModel.ButtonText}" />
+        <Button Command="{x:Bind ViewModel.TranslateCommand}" Content="{x:Bind ViewModel.ButtonText}" />
     </Grid>
 </Page>

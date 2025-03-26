@@ -3,6 +3,7 @@ using AiToys.Translation.Constants;
 using AiToys.Translation.Presentation.ViewModels;
 using AiToys.Translation.Presentation.Views;
 using Microsoft.Extensions.Hosting;
+using TranslationApiClient.DependencyInjection;
 
 namespace AiToys.Translation;
 
@@ -21,10 +22,14 @@ public static class FeatureHostBuilderExtensions
         ArgumentNullException.ThrowIfNull(hostBuilder);
 
         hostBuilder.ConfigureServices(
-            (_, services) =>
+            (context, services) =>
+            {
                 services.RegisterView<TranslationPage, TranslationViewModel, TranslationNavigationItemViewModel>(
                     RouteNames.TranslationPage
-                )
+                );
+
+                services.AddTranslationProcessor(context.Configuration);
+            }
         );
 
         return hostBuilder;

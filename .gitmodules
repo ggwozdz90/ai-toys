@@ -1,0 +1,3 @@
+[submodule "external/translation-api-client"]
+	path = external/translation-api-client
+	url = https://github.com/ggwozdz90/translation-api-client.git

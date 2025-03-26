@@ -59,22 +59,27 @@ internal sealed class NavigationService(
 
     private void SetViewModelOnNavigatedView(Type viewModelType, object viewModel)
     {
-        if (navigationFrame!.Content is not null)
+        if (navigationFrame!.Content is null)
         {
-            var viewInterfaceType = typeof(IView<>).MakeGenericType(viewModelType);
-
-            if (viewInterfaceType.IsInstanceOfType(navigationFrame.Content))
-            {
-                var viewModelProperty = viewInterfaceType.GetProperty("ViewModel");
-                viewModelProperty?.SetValue(navigationFrame.Content, viewModel);
-            }
+            return;
         }
+
+        var viewInterfaceType = typeof(IView<>).MakeGenericType(viewModelType);
+
+        if (!viewInterfaceType.IsInstanceOfType(navigationFrame.Content))
+        {
+            return;
+        }
+
+        var viewModelProperty = viewInterfaceType.GetProperty("ViewModel");
+        viewModelProperty?.SetValue(navigationFrame.Content, viewModel);
     }
 
     private void SubscribeNavigationEvents()
     {
         if (navigationFrame != null)
         {
+            navigationFrame.Navigating += OnNavigationFrameNavigating;
             navigationFrame.Navigated += OnNavigationFrameNavigated;
             navigationFrame.Navigated += PropagateNavigatedEvent;
         }
@@ -84,6 +89,7 @@ internal sealed class NavigationService(
     {
         if (navigationFrame != null)
         {
+            navigationFrame.Navigating -= OnNavigationFrameNavigating;
             navigationFrame.Navigated -= OnNavigationFrameNavigated;
             navigationFrame.Navigated -= PropagateNavigatedEvent;
         }
@@ -103,15 +109,17 @@ internal sealed class NavigationService(
             .GetInterfaces()
             .FirstOrDefault(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IView<>));
 
-        if (viewInterface != null)
+        if (viewInterface == null)
         {
-            var viewModelProperty = viewInterface.GetProperty("ViewModel");
-            var viewModel = viewModelProperty?.GetValue(content);
+            return;
+        }
 
-            if (viewModel is IRouteAwareViewModel routeAwareViewModel)
-            {
-                Navigated?.Invoke(this, new NavigatedEventArgs(routeAwareViewModel.Route));
-            }
+        var viewModelProperty = viewInterface.GetProperty("ViewModel");
+        var viewModel = viewModelProperty?.GetValue(content);
+
+        if (viewModel is IRouteAwareViewModel routeAwareViewModel)
+        {
+            Navigated?.Invoke(this, new NavigatedEventArgs(routeAwareViewModel.Route));
         }
     }
 
@@ -129,5 +137,41 @@ internal sealed class NavigationService(
         var viewModel = serviceProvider.GetRequiredService(viewModelType);
 
         SetViewModelOnNavigatedView(viewModelType, viewModel);
+    }
+
+    private void OnNavigationFrameNavigating(object sender, NavigatingCancelEventArgs e)
+    {
+        if (navigationFrame?.Content == null)
+        {
+            return;
+        }
+
+        var currentView = navigationFrame.Content;
+
+        var viewInterfaces = currentView
+            .GetType()
+            .GetInterfaces()
+            .Where(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IView<>))
+            .ToList();
+
+        if (viewInterfaces.Count == 0)
+        {
+            return;
+        }
+
+        var viewInterface = viewInterfaces[0];
+        var viewModelProperty = viewInterface.GetProperty(nameof(IView<IViewModel>.ViewModel));
+
+        if (viewModelProperty == null)
+        {
+            return;
+        }
+
+        var viewModel = viewModelProperty.GetValue(currentView);
+
+        if (viewModel is IDisposable disposableViewModel)
+        {
+            disposableViewModel.Dispose();
+        }
     }
 }

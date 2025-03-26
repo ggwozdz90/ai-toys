@@ -45,6 +45,8 @@
         "--ignore",
         "paket-files",
         "--ignore",
+        "external",
+        "--ignore",
         "packages",
         "--ignore",
         "CHANGELOG.md",

@@ -10,4 +10,6 @@
 
     <Allowed From="AiToys.Translation.Presentation.*" To="AiToys.Core.Presentation.*" />
     <Allowed From="AiToys.Translation.Presentation.Views" To="AiToys.Translation.Presentation.ViewModels" />
+
+    <Allowed From="AiToys.Translation.*" To="TranslationApiClient.*" />
 </NsDepCopConfig>
