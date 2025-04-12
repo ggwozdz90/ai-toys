@@ -1,5 +1,6 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using Microsoft.UI.Dispatching;
 
 namespace AiToys.Core.Presentation.ViewModels;
 
@@ -9,6 +10,16 @@ namespace AiToys.Core.Presentation.ViewModels;
 /// </summary>
 public partial class ViewModelBase : IViewModel, INotifyPropertyChanged
 {
+    private readonly DispatcherQueue? dispatcherQueue;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ViewModelBase"/> class.
+    /// </summary>
+    public ViewModelBase()
+    {
+        dispatcherQueue = DispatcherQueue.GetForCurrentThread();
+    }
+
     /// <inheritdoc />
     public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -23,6 +34,7 @@ public partial class ViewModelBase : IViewModel, INotifyPropertyChanged
 
     /// <summary>
     /// Sets the property value and raises the <see cref="PropertyChanged"/> event.
+    /// Automatically marshals the property change notification to the UI thread if needed.
     /// </summary>
     /// <typeparam name="T">The type of the property.</typeparam>
     /// <param name="field">The backing field of the property.</param>
@@ -38,7 +50,14 @@ public partial class ViewModelBase : IViewModel, INotifyPropertyChanged
 
         field = value;
 
-        OnPropertyChanged(propertyName);
+        if (dispatcherQueue != null && !dispatcherQueue.HasThreadAccess)
+        {
+            dispatcherQueue.TryEnqueue(() => OnPropertyChanged(propertyName));
+        }
+        else
+        {
+            OnPropertyChanged(propertyName);
+        }
 
         return true;
     }
