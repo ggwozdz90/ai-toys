@@ -38,6 +38,7 @@
     "wapproj",
     "msbuild",
     "pwsh",
-    "Segoe"
+    "Segoe",
+    "Initializable"
   ]
 }

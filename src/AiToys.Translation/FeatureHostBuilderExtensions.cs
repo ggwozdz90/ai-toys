@@ -1,7 +1,11 @@
 using AiToys.Core;
+using AiToys.Translation.Application.UseCases;
 using AiToys.Translation.Constants;
+using AiToys.Translation.Data.Repositories;
+using AiToys.Translation.Domain.Repositories;
 using AiToys.Translation.Presentation.ViewModels;
 using AiToys.Translation.Presentation.Views;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using TranslationApiClient.DependencyInjection;
 
@@ -24,6 +28,11 @@ public static class FeatureHostBuilderExtensions
         hostBuilder.ConfigureServices(
             (context, services) =>
             {
+                services.AddScoped<ITranslationRepository, TranslationRepository>();
+
+                services.AddScoped<ITranslateTextUseCase, TranslateTextUseCase>();
+                services.AddScoped<IGetSupportedLanguagesUseCase, GetSupportedLanguagesUseCase>();
+
                 services.RegisterView<TranslationPage, TranslationViewModel, TranslationNavigationItemViewModel>(
                     RouteNames.TranslationPage
                 );

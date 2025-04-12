@@ -50,7 +50,7 @@ public partial class ViewModelBase : IViewModel, INotifyPropertyChanged
 
         field = value;
 
-        if (dispatcherQueue != null && !dispatcherQueue.HasThreadAccess)
+        if (dispatcherQueue?.HasThreadAccess == false)
         {
             dispatcherQueue.TryEnqueue(() => OnPropertyChanged(propertyName));
         }
