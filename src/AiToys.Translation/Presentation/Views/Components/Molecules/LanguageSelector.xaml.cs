@@ -9,21 +9,21 @@ internal sealed partial class LanguageSelector
         nameof(LabelText),
         typeof(string),
         typeof(LanguageSelector),
-        new PropertyMetadata(string.Empty)
+        new PropertyMetadata(defaultValue: string.Empty)
     );
 
     public static readonly DependencyProperty ItemsSourceProperty = DependencyProperty.Register(
         nameof(ItemsSource),
         typeof(IEnumerable<LanguageModel>),
         typeof(LanguageSelector),
-        new PropertyMetadata(null)
+        new PropertyMetadata(defaultValue: null)
     );
 
     public static readonly DependencyProperty SelectedItemProperty = DependencyProperty.Register(
         nameof(SelectedItem),
         typeof(LanguageModel),
         typeof(LanguageSelector),
-        new PropertyMetadata(null)
+        new PropertyMetadata(defaultValue: null)
     );
 
     public LanguageSelector()

@@ -11,28 +11,28 @@ internal sealed partial class LanguageSelectionPanel : UserControl
         nameof(Languages),
         typeof(IEnumerable<LanguageModel>),
         typeof(LanguageSelectionPanel),
-        new PropertyMetadata(null)
+        new PropertyMetadata(defaultValue: null)
     );
 
     public static readonly DependencyProperty SourceLanguageProperty = DependencyProperty.Register(
         nameof(SourceLanguage),
         typeof(LanguageModel),
         typeof(LanguageSelectionPanel),
-        new PropertyMetadata(null)
+        new PropertyMetadata(defaultValue: null)
     );
 
     public static readonly DependencyProperty TargetLanguageProperty = DependencyProperty.Register(
         nameof(TargetLanguage),
         typeof(LanguageModel),
         typeof(LanguageSelectionPanel),
-        new PropertyMetadata(null)
+        new PropertyMetadata(defaultValue: null)
     );
 
     public static readonly DependencyProperty SwapLanguagesCommandProperty = DependencyProperty.Register(
         nameof(SwapLanguagesCommand),
         typeof(ICommand),
         typeof(LanguageSelectionPanel),
-        new PropertyMetadata(null)
+        new PropertyMetadata(defaultValue: null)
     );
 
     public LanguageSelectionPanel()

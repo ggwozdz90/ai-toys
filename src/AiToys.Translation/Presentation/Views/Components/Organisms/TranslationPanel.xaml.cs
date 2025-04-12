@@ -8,21 +8,21 @@ internal sealed partial class TranslationPanel
         nameof(SourceText),
         typeof(string),
         typeof(TranslationPanel),
-        new PropertyMetadata(string.Empty)
+        new PropertyMetadata(defaultValue: string.Empty)
     );
 
     public static readonly DependencyProperty TranslatedTextProperty = DependencyProperty.Register(
         nameof(TranslatedText),
         typeof(string),
         typeof(TranslationPanel),
-        new PropertyMetadata(string.Empty)
+        new PropertyMetadata(defaultValue: string.Empty)
     );
 
     public static readonly DependencyProperty IsTranslatingProperty = DependencyProperty.Register(
         nameof(IsTranslating),
         typeof(bool),
         typeof(TranslationPanel),
-        new PropertyMetadata(false)
+        new PropertyMetadata(defaultValue: false)
     );
 
     public TranslationPanel()

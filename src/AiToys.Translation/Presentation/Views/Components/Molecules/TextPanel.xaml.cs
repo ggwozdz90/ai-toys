@@ -8,28 +8,28 @@ internal sealed partial class TextPanel
         nameof(Title),
         typeof(string),
         typeof(TextPanel),
-        new PropertyMetadata(string.Empty)
+        new PropertyMetadata(defaultValue: string.Empty)
     );
 
     public static readonly DependencyProperty TextProperty = DependencyProperty.Register(
         nameof(Text),
         typeof(string),
         typeof(TextPanel),
-        new PropertyMetadata(string.Empty)
+        new PropertyMetadata(defaultValue: string.Empty)
     );
 
     public static readonly DependencyProperty PlaceholderTextProperty = DependencyProperty.Register(
         nameof(PlaceholderText),
         typeof(string),
         typeof(TextPanel),
-        new PropertyMetadata(string.Empty)
+        new PropertyMetadata(defaultValue: string.Empty)
     );
 
     public static readonly DependencyProperty IsReadOnlyProperty = DependencyProperty.Register(
         nameof(IsReadOnly),
         typeof(bool),
         typeof(TextPanel),
-        new PropertyMetadata(false)
+        new PropertyMetadata(defaultValue: false)
     );
 
     public TextPanel()
