@@ -5,11 +5,17 @@
     <Allowed From="*" To="WinRT" />
 
     <Allowed From="AiToys.Translation" To="AiToys.Core.*" />
-    <Allowed From="AiToys.Translation" To="AiToys.Translation.Presentation.*" />
+    <Allowed From="AiToys.Translation" To="AiToys.Translation.*" />
     <Allowed From="AiToys.Translation.*" To="AiToys.Translation.Constants" />
+    <Allowed From="AiToys.Translation.*" To="AiToys.Translation.Domain.Models" />
 
     <Allowed From="AiToys.Translation.Presentation.*" To="AiToys.Core.Presentation.*" />
     <Allowed From="AiToys.Translation.Presentation.Views" To="AiToys.Translation.Presentation.ViewModels" />
+    <Allowed From="AiToys.Translation.Presentation.ViewModels" To="AiToys.Translation.Application.*" />
 
+    <Allowed From="AiToys.Translation.Application.UseCases" To="AiToys.Translation.Domain.Repositories" />
+
+    <Allowed From="AiToys.Translation.Data.Repositories" To="AiToys.Translation.Domain.Repositories" />
+    
     <Allowed From="AiToys.Translation.*" To="TranslationApiClient.*" />
 </NsDepCopConfig>
