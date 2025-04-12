@@ -1,3 +1,4 @@
+using AiToys.Translation.Domain.Exceptions;
 using AiToys.Translation.Domain.Models;
 using AiToys.Translation.Domain.Repositories;
 using Microsoft.Extensions.Logging;
@@ -32,7 +33,7 @@ internal sealed class GetSupportedLanguagesUseCase(
         {
             logger.LogError(ex, "Error retrieving supported languages: {ErrorMessage}", ex.Message);
 
-            throw;
+            throw new GetSupportedLanguagesException(ex);
         }
     }
 }

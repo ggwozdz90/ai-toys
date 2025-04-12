@@ -1,3 +1,4 @@
+using AiToys.Translation.Domain.Exceptions;
 using AiToys.Translation.Domain.Repositories;
 using Microsoft.Extensions.Logging;
 
@@ -53,8 +54,31 @@ internal sealed class TranslateTextUseCase(
             targetLanguageCode
         );
 
-        return await translationRepository
-            .TranslateTextAsync(sourceText, sourceLanguageCode, targetLanguageCode, cancellationToken)
-            .ConfigureAwait(false);
+        try
+        {
+            var translatedText = await translationRepository
+                .TranslateTextAsync(sourceText, sourceLanguageCode, targetLanguageCode, cancellationToken)
+                .ConfigureAwait(false);
+
+            logger.LogInformation(
+                "Successfully translated text from {SourceLanguageCode} to {TargetLanguageCode}",
+                sourceLanguageCode,
+                targetLanguageCode
+            );
+
+            return translatedText;
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(
+                ex,
+                "Error translating text from {SourceLanguageCode} to {TargetLanguageCode}: {ErrorMessage}",
+                sourceLanguageCode,
+                targetLanguageCode,
+                ex.Message
+            );
+
+            throw new TranslateTextException(ex);
+        }
     }
 }
