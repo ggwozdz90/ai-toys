@@ -1,11 +1,9 @@
-using System.Windows.Input;
-
 namespace AiToys.Core.Presentation.Commands;
 
 /// <summary>
 /// Base interface for asynchronous commands with common functionality.
 /// </summary>
-public interface IAsyncRelayCommandBase : ICommand
+public interface IAsyncRelayCommandBase : ICommandBase
 {
     /// <summary>
     /// Gets a value indicating whether the command is currently executing.

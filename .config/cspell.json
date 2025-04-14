@@ -39,6 +39,7 @@
     "msbuild",
     "pwsh",
     "Segoe",
-    "Initializable"
+    "Initializable",
+    "finalizer"
   ]
 }

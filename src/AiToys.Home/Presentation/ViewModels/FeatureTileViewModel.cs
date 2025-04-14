@@ -1,17 +1,16 @@
-using System.Windows.Input;
 using AiToys.Core.Presentation.Commands;
 using AiToys.Core.Presentation.Services;
 using AiToys.Core.Presentation.ViewModels;
 
 namespace AiToys.Home.Presentation.ViewModels;
 
-internal interface IFeatureTileViewModel
+internal interface IFeatureTileViewModel : IDisposable
 {
     string Label { get; }
     string Route { get; }
     string IconKey { get; }
     string Description { get; }
-    ICommand NavigateCommand { get; }
+    ICommandBase NavigateCommand { get; }
 }
 
 internal sealed partial class FeatureTileViewModel(
@@ -30,7 +29,7 @@ internal sealed partial class FeatureTileViewModel(
 
     public string Description { get; } = description;
 
-    public ICommand NavigateCommand { get; } =
+    public ICommandBase NavigateCommand { get; } =
         new RelayCommand<string>(route =>
         {
             if (!string.IsNullOrEmpty(route))
@@ -38,4 +37,14 @@ internal sealed partial class FeatureTileViewModel(
                 navigationService.NavigateTo(route);
             }
         });
+
+    protected override void Dispose(bool disposing)
+    {
+        if (disposing)
+        {
+            NavigateCommand.Dispose();
+        }
+
+        base.Dispose(disposing);
+    }
 }

@@ -1,11 +1,9 @@
-using System.Windows.Input;
-
 namespace AiToys.Core.Presentation.Commands;
 
 /// <summary>
 /// Defines a command that supports synchronous operations.
 /// </summary>
-public interface IRelayCommand : ICommand
+public interface IRelayCommand : ICommandBase
 {
     /// <summary>
     /// Executes the command synchronously.
@@ -17,18 +15,13 @@ public interface IRelayCommand : ICommand
     /// </summary>
     /// <returns>True if the command can execute; otherwise, false.</returns>
     bool CanExecute();
-
-    /// <summary>
-    /// Manually raises the CanExecuteChanged event.
-    /// </summary>
-    void NotifyCanExecuteChanged();
 }
 
 /// <summary>
 /// Defines a command that supports synchronous operations with a parameter.
 /// </summary>
 /// <typeparam name="T">The type of parameter passed to the command.</typeparam>
-public interface IRelayCommand<in T> : ICommand
+public interface IRelayCommand<in T> : ICommandBase
 {
     /// <summary>
     /// Executes the command synchronously with the provided parameter.
@@ -42,9 +35,4 @@ public interface IRelayCommand<in T> : ICommand
     /// <param name="parameter">Data used to determine if command can execute.</param>
     /// <returns>True if the command can execute; otherwise, false.</returns>
     bool CanExecute(T? parameter);
-
-    /// <summary>
-    /// Manually raises the CanExecuteChanged event.
-    /// </summary>
-    void NotifyCanExecuteChanged();
 }

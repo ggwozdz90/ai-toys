@@ -1,5 +1,4 @@
 using System.Collections.ObjectModel;
-using System.Windows.Input;
 using AiToys.Core.Presentation.Commands;
 using AiToys.Core.Presentation.ViewModels;
 using AiToys.Translation.Application.UseCases;
@@ -10,18 +9,13 @@ using Microsoft.Extensions.Logging;
 
 namespace AiToys.Translation.Presentation.ViewModels;
 
-internal sealed partial class TranslationViewModel
-    : ViewModelBase,
-        IRouteAwareViewModel,
-        IInitializableViewModel,
-        IDisposable
+internal sealed partial class TranslationViewModel : ViewModelBase, IRouteAwareViewModel, IInitializableViewModel
 {
     private readonly ITranslateTextUseCase translateTextUseCase;
     private readonly IGetSupportedLanguagesUseCase getSupportedLanguagesUseCase;
     private readonly ILogger<TranslationViewModel> logger;
 
     private CancellationTokenSource? currentTranslationCts;
-    private bool disposed;
     private LanguageModel? selectedSourceLanguage;
     private LanguageModel? selectedTargetLanguage;
     private string sourceText = string.Empty;
@@ -39,8 +33,22 @@ internal sealed partial class TranslationViewModel
         this.getSupportedLanguagesUseCase = getSupportedLanguagesUseCase;
         this.logger = logger;
 
-        TranslateCommand = new AsyncRelayCommand(ExecuteTranslateAsync, CanExecuteTranslate);
-        SwapLanguagesCommand = new RelayCommand(ExecuteSwapLanguages, CanExecuteSwapLanguages);
+        var translateCommand = new AsyncRelayCommand(ExecuteTranslateAsync, CanExecuteTranslate);
+        translateCommand
+            .ObservesProperty(this, nameof(IsTranslating))
+            .ObservesProperty(this, nameof(SourceText))
+            .ObservesProperty(this, nameof(SelectedSourceLanguage))
+            .ObservesProperty(this, nameof(SelectedTargetLanguage));
+
+        TranslateCommand = translateCommand;
+
+        var swapLanguagesCommand = new RelayCommand(ExecuteSwapLanguages, CanExecuteSwapLanguages);
+        swapLanguagesCommand
+            .ObservesProperty(this, nameof(IsTranslating))
+            .ObservesProperty(this, nameof(SelectedSourceLanguage))
+            .ObservesProperty(this, nameof(SelectedTargetLanguage));
+        SwapLanguagesCommand = swapLanguagesCommand;
+
         InitializeCommand = new AsyncRelayCommand(ExecuteInitializeAsync);
     }
 
@@ -51,39 +59,19 @@ internal sealed partial class TranslationViewModel
     public LanguageModel? SelectedSourceLanguage
     {
         get => selectedSourceLanguage;
-        set
-        {
-            if (SetProperty(ref selectedSourceLanguage, value))
-            {
-                logger.LogInformation("Source language changed to {LanguageModel}", value?.Code);
-                UpdateCommandsCanExecute();
-            }
-        }
+        set => SetProperty(ref selectedSourceLanguage, value);
     }
 
     public LanguageModel? SelectedTargetLanguage
     {
         get => selectedTargetLanguage;
-        set
-        {
-            if (SetProperty(ref selectedTargetLanguage, value))
-            {
-                logger.LogInformation("Target language changed to {LanguageModel}", value?.Code);
-                UpdateCommandsCanExecute();
-            }
-        }
+        set => SetProperty(ref selectedTargetLanguage, value);
     }
 
     public string SourceText
     {
         get => sourceText;
-        set
-        {
-            if (SetProperty(ref sourceText, value))
-            {
-                UpdateCommandsCanExecute();
-            }
-        }
+        set => SetProperty(ref sourceText, value);
     }
 
     public string TranslatedText
@@ -95,35 +83,27 @@ internal sealed partial class TranslationViewModel
     public bool IsTranslating
     {
         get => isTranslating;
-        set
-        {
-            if (SetProperty(ref isTranslating, value))
-            {
-                UpdateCommandsCanExecute();
-            }
-        }
+        set => SetProperty(ref isTranslating, value);
     }
 
-    public ICommand TranslateCommand { get; }
+    public ICommandBase TranslateCommand { get; }
 
-    public ICommand SwapLanguagesCommand { get; }
+    public ICommandBase SwapLanguagesCommand { get; }
 
-    public ICommand InitializeCommand { get; }
+    public ICommandBase InitializeCommand { get; }
 
-    public void Dispose()
+    protected override void Dispose(bool disposing)
     {
-        if (disposed)
+        if (disposing)
         {
-            return;
+            TranslateCommand.Dispose();
+            SwapLanguagesCommand.Dispose();
+            InitializeCommand.Dispose();
+
+            CancelCurrentTranslation();
         }
 
-        (TranslateCommand as IDisposable)?.Dispose();
-        (SwapLanguagesCommand as IDisposable)?.Dispose();
-        (InitializeCommand as IDisposable)?.Dispose();
-
-        CancelCurrentTranslation();
-
-        disposed = true;
+        base.Dispose(disposing);
     }
 
     private async Task ExecuteInitializeAsync(CancellationToken cancellationToken)
@@ -257,11 +237,5 @@ internal sealed partial class TranslationViewModel
     private bool CanExecuteSwapLanguages()
     {
         return !IsTranslating && SelectedSourceLanguage != null && SelectedTargetLanguage != null;
-    }
-
-    private void UpdateCommandsCanExecute()
-    {
-        (TranslateCommand as AsyncRelayCommand)?.NotifyCanExecuteChanged();
-        (SwapLanguagesCommand as RelayCommand)?.NotifyCanExecuteChanged();
     }
 }

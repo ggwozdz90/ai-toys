@@ -1,4 +1,3 @@
-using System.Windows.Input;
 using AiToys.Core.Presentation.Commands;
 using AiToys.Core.Presentation.Events;
 using AiToys.Core.Presentation.Services;
@@ -12,10 +11,10 @@ internal sealed partial class MainViewModel : ViewModelBase
 
     private INavigationItemViewModel? selectedItem;
 
-    public MainViewModel(INavigationService navigationService, AppTitleBarViewModel appTitleBarViewModel)
+    public MainViewModel(INavigationService navigationService)
     {
         this.navigationService = navigationService;
-        AppTitleBarViewModel = appTitleBarViewModel;
+        AppTitleBarViewModel = new AppTitleBarViewModel(navigationService);
 
         NavigationItems = navigationService.GetNavigationItems();
         navigationService.Navigated += OnNavigated;
@@ -25,7 +24,7 @@ internal sealed partial class MainViewModel : ViewModelBase
 
     public AppTitleBarViewModel AppTitleBarViewModel { get; }
     public IReadOnlyList<INavigationItemViewModel> NavigationItems { get; }
-    public ICommand NavigateCommand { get; }
+    public ICommandBase NavigateCommand { get; }
 
     public INavigationItemViewModel? SelectedNavigationItem
     {
@@ -41,6 +40,18 @@ internal sealed partial class MainViewModel : ViewModelBase
         }
 
         navigationService.NavigateTo(route);
+    }
+
+    protected override void Dispose(bool disposing)
+    {
+        if (disposing)
+        {
+            navigationService.Navigated -= OnNavigated;
+            NavigateCommand.Dispose();
+            AppTitleBarViewModel.Dispose();
+        }
+
+        base.Dispose(disposing);
     }
 
     private void OnNavigated(object? sender, NavigatedEventArgs navigatedEventArgs)

@@ -1,4 +1,4 @@
-using System.Windows.Input;
+using AiToys.Core.Presentation.Commands;
 
 namespace AiToys.Core.Presentation.ViewModels;
 
@@ -17,5 +17,5 @@ public interface IInitializableViewModel : IViewModel
     /// <summary>
     /// Gets the command that initializes the view model.
     /// </summary>
-    ICommand InitializeCommand { get; }
+    ICommandBase InitializeCommand { get; }
 }

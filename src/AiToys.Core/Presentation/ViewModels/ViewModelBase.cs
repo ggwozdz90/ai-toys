@@ -1,5 +1,7 @@
+using System.Collections.Concurrent;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using AiToys.Core.Presentation.Commands;
 using Microsoft.UI.Dispatching;
 
 namespace AiToys.Core.Presentation.ViewModels;
@@ -8,9 +10,13 @@ namespace AiToys.Core.Presentation.ViewModels;
 /// Base class for all view models.
 /// Implements <see cref="INotifyPropertyChanged"/> and <see cref="IViewModel"/>.
 /// </summary>
-public partial class ViewModelBase : IViewModel, INotifyPropertyChanged
+public partial class ViewModelBase : IViewModel, INotifyPropertyChanged, IDisposable
 {
     private readonly DispatcherQueue? dispatcherQueue;
+    private readonly ConcurrentDictionary<string, HashSet<ICommandBase>> propertyObservers = new(
+        StringComparer.Ordinal
+    );
+    private bool isDisposed;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="ViewModelBase"/> class.
@@ -24,12 +30,46 @@ public partial class ViewModelBase : IViewModel, INotifyPropertyChanged
     public event PropertyChangedEventHandler? PropertyChanged;
 
     /// <summary>
+    /// Disposes of resources used by the view model.
+    /// </summary>
+    public void Dispose()
+    {
+        Dispose(disposing: true);
+        GC.SuppressFinalize(this);
+    }
+
+    /// <summary>
+    /// Registers a command to be notified when a property changes.
+    /// </summary>
+    /// <param name="propertyName">The name of the property to observe.</param>
+    /// <param name="command">The command to notify.</param>
+    internal void RegisterCommandPropertyObserver(string propertyName, ICommandBase command)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(propertyName);
+        ArgumentNullException.ThrowIfNull(command);
+
+        var commands = propertyObservers.GetOrAdd(propertyName, _ => []);
+
+        commands.Add(command);
+    }
+
+    /// <summary>
     /// Raises the <see cref="PropertyChanged"/> event.
     /// </summary>
     /// <param name="propertyName">The name of the property.</param>
     protected void OnPropertyChanged([CallerMemberName] string? propertyName = null)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
+        if (propertyName == null || !propertyObservers.TryGetValue(propertyName, out var commands))
+        {
+            return;
+        }
+
+        foreach (var command in commands)
+        {
+            NotifyCommandCanExecuteChanged(command);
+        }
     }
 
     /// <summary>
@@ -60,5 +100,39 @@ public partial class ViewModelBase : IViewModel, INotifyPropertyChanged
         }
 
         return true;
+    }
+
+    /// <summary>
+    /// Disposes of resources used by the view model.
+    /// </summary>
+    /// <param name="disposing">True if called from Dispose; false if called from the finalizer.</param>
+    protected virtual void Dispose(bool disposing)
+    {
+        if (!isDisposed)
+        {
+            if (disposing)
+            {
+                propertyObservers.Clear();
+            }
+
+            isDisposed = true;
+        }
+    }
+
+    /// <summary>
+    /// Notifies a command that it should check its CanExecute status.
+    /// Ensures the notification happens on the UI thread.
+    /// </summary>
+    /// <param name="command">The command to notify.</param>
+    private void NotifyCommandCanExecuteChanged(ICommandBase command)
+    {
+        if (dispatcherQueue?.HasThreadAccess == false)
+        {
+            dispatcherQueue.TryEnqueue(command.NotifyCanExecuteChanged);
+        }
+        else
+        {
+            command.NotifyCanExecuteChanged();
+        }
     }
 }

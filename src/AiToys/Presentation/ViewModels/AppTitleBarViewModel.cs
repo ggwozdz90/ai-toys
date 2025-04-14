@@ -13,5 +13,15 @@ internal sealed partial class AppTitleBarViewModel : ViewModelBase
         GoBackCommand = new RelayCommand(navigationService.NavigateBack, () => navigationService.CanNavigateBack);
     }
 
-    public RelayCommand GoBackCommand { get; }
+    public IRelayCommand GoBackCommand { get; }
+
+    protected override void Dispose(bool disposing)
+    {
+        if (disposing)
+        {
+            GoBackCommand.Dispose();
+        }
+
+        base.Dispose(disposing);
+    }
 }

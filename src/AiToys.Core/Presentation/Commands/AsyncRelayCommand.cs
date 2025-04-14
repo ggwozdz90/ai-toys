@@ -1,5 +1,3 @@
-using System.Windows.Input;
-
 namespace AiToys.Core.Presentation.Commands;
 
 /// <summary>
@@ -9,7 +7,7 @@ public sealed partial class AsyncRelayCommand(
     Func<CancellationToken, Task> executeAsync,
     Func<bool>? canExecute = null,
     bool canBeCanceled = false
-) : IAsyncRelayCommand, IDisposable
+) : CommandBase, IAsyncRelayCommand
 {
     private readonly Func<CancellationToken, Task> executeAsync =
         executeAsync ?? throw new ArgumentNullException(nameof(executeAsync));
@@ -18,14 +16,7 @@ public sealed partial class AsyncRelayCommand(
         ? new CancellationTokenSource()
         : null;
 
-    private bool isDisposed;
-
     private Task? executionTask;
-
-    /// <summary>
-    /// Event raised when the ability to execute the command changes.
-    /// </summary>
-    public event EventHandler? CanExecuteChanged;
 
     /// <summary>
     /// Gets a value indicating whether the command is currently executing.
@@ -48,11 +39,6 @@ public sealed partial class AsyncRelayCommand(
     public Task? ExecutionTask => executionTask;
 
     /// <summary>
-    /// Manually raises the CanExecuteChanged event.
-    /// </summary>
-    public void NotifyCanExecuteChanged() => CanExecuteChanged?.Invoke(this, EventArgs.Empty);
-
-    /// <summary>
     /// Determines whether the command can be executed.
     /// </summary>
     /// <returns>True if the command can execute; otherwise, false.</returns>
@@ -63,7 +49,7 @@ public sealed partial class AsyncRelayCommand(
     /// </summary>
     /// <param name="parameter">Parameter that is ignored.</param>
     /// <returns>True if the command can execute; otherwise, false.</returns>
-    bool ICommand.CanExecute(object? parameter) => CanExecute();
+    public override bool CanExecute(object? parameter) => CanExecute();
 
     /// <summary>
     /// Executes the command asynchronously.
@@ -97,7 +83,7 @@ public sealed partial class AsyncRelayCommand(
     /// Executes the command.
     /// </summary>
     /// <param name="parameter">Parameter that is ignored.</param>
-    void ICommand.Execute(object? parameter) => _ = ExecuteAsync();
+    public override void Execute(object? parameter) => _ = ExecuteAsync();
 
     /// <summary>
     /// Cancels the current command execution if possible.
@@ -114,15 +100,17 @@ public sealed partial class AsyncRelayCommand(
     }
 
     /// <summary>
-    /// Disposes the resources used by this instance.
+    /// Releases the unmanaged resources used by the command and optionally releases the managed resources.
     /// </summary>
-    public void Dispose()
+    /// <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources.</param>
+    protected override void Dispose(bool disposing)
     {
-        if (!isDisposed)
+        if (disposing)
         {
             cancellationTokenSource?.Dispose();
-            isDisposed = true;
         }
+
+        base.Dispose(disposing);
     }
 }
 
@@ -134,7 +122,7 @@ public sealed partial class AsyncRelayCommand<T>(
     Func<T?, CancellationToken, Task> executeAsync,
     Predicate<T?>? canExecute = null,
     bool canBeCanceled = false
-) : IAsyncRelayCommand<T>, IDisposable
+) : CommandBase, IAsyncRelayCommand<T>
 {
     private readonly Func<T?, CancellationToken, Task> executeAsync =
         executeAsync ?? throw new ArgumentNullException(nameof(executeAsync));
@@ -142,14 +130,8 @@ public sealed partial class AsyncRelayCommand<T>(
     private readonly CancellationTokenSource? cancellationTokenSource = canBeCanceled
         ? new CancellationTokenSource()
         : null;
-    private bool isDisposed;
 
     private Task? executionTask;
-
-    /// <summary>
-    /// Event raised when the ability to execute the command changes.
-    /// </summary>
-    public event EventHandler? CanExecuteChanged;
 
     /// <summary>
     /// Gets a value indicating whether the command is currently executing.
@@ -172,11 +154,6 @@ public sealed partial class AsyncRelayCommand<T>(
     public Task? ExecutionTask => executionTask;
 
     /// <summary>
-    /// Manually raises the CanExecuteChanged event.
-    /// </summary>
-    public void NotifyCanExecuteChanged() => CanExecuteChanged?.Invoke(this, EventArgs.Empty);
-
-    /// <summary>
     /// Determines whether the command can be executed with the given parameter.
     /// </summary>
     /// <param name="parameter">Data used to determine if the command can be executed.</param>
@@ -188,7 +165,7 @@ public sealed partial class AsyncRelayCommand<T>(
     /// </summary>
     /// <param name="parameter">Data used to determine if the command can be executed.</param>
     /// <returns>True if the command can execute; otherwise, false.</returns>
-    bool ICommand.CanExecute(object? parameter) => parameter is T or null && CanExecute((T?)parameter);
+    public override bool CanExecute(object? parameter) => parameter is T or null && CanExecute((T?)parameter);
 
     /// <summary>
     /// Executes the command asynchronously with the given parameter.
@@ -223,7 +200,7 @@ public sealed partial class AsyncRelayCommand<T>(
     /// Executes the command with the given parameter.
     /// </summary>
     /// <param name="parameter">Data used by the command.</param>
-    void ICommand.Execute(object? parameter)
+    public override void Execute(object? parameter)
     {
         if (parameter is T or null)
         {
@@ -252,14 +229,16 @@ public sealed partial class AsyncRelayCommand<T>(
     }
 
     /// <summary>
-    /// Disposes the resources used by this instance.
+    /// Releases the unmanaged resources used by the command and optionally releases the managed resources.
     /// </summary>
-    public void Dispose()
+    /// <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources.</param>
+    protected override void Dispose(bool disposing)
     {
-        if (!isDisposed)
+        if (disposing)
         {
             cancellationTokenSource?.Dispose();
-            isDisposed = true;
         }
+
+        base.Dispose(disposing);
     }
 }
