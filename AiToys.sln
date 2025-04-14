@@ -40,6 +40,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TranslationApiClient", "..\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TranslationApiClient.Tests", "..\translation-api-client\tests\TranslationApiClient.Tests\TranslationApiClient.Tests.csproj", "{931E4021-E9E9-C0D9-5119-161C57007F14}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "speech-to-text-api-client", "speech-to-text-api-client", "{CAF6CDAD-BC2B-4266-B013-2D067ACF2CCA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeechToTextApiClient", "external\speech-to-text-api-client\src\SpeechToTextApiClient\SpeechToTextApiClient.csproj", "{CC088E43-D95D-4A3E-D8F6-CE3FBAF9CC3A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeechToTextApiClient.Tests", "external\speech-to-text-api-client\tests\SpeechToTextApiClient.Tests\SpeechToTextApiClient.Tests.csproj", "{CB079E45-2952-2F1E-E7F8-6339006F4954}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|ARM64 = Debug|ARM64
@@ -152,6 +158,30 @@ Global
 		{931E4021-E9E9-C0D9-5119-161C57007F14}.Release|x64.Build.0 = Release|Any CPU
 		{931E4021-E9E9-C0D9-5119-161C57007F14}.Release|x86.ActiveCfg = Release|Any CPU
 		{931E4021-E9E9-C0D9-5119-161C57007F14}.Release|x86.Build.0 = Release|Any CPU
+		{CC088E43-D95D-4A3E-D8F6-CE3FBAF9CC3A}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{CC088E43-D95D-4A3E-D8F6-CE3FBAF9CC3A}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{CC088E43-D95D-4A3E-D8F6-CE3FBAF9CC3A}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{CC088E43-D95D-4A3E-D8F6-CE3FBAF9CC3A}.Debug|x64.Build.0 = Debug|Any CPU
+		{CC088E43-D95D-4A3E-D8F6-CE3FBAF9CC3A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{CC088E43-D95D-4A3E-D8F6-CE3FBAF9CC3A}.Debug|x86.Build.0 = Debug|Any CPU
+		{CC088E43-D95D-4A3E-D8F6-CE3FBAF9CC3A}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{CC088E43-D95D-4A3E-D8F6-CE3FBAF9CC3A}.Release|ARM64.Build.0 = Release|Any CPU
+		{CC088E43-D95D-4A3E-D8F6-CE3FBAF9CC3A}.Release|x64.ActiveCfg = Release|Any CPU
+		{CC088E43-D95D-4A3E-D8F6-CE3FBAF9CC3A}.Release|x64.Build.0 = Release|Any CPU
+		{CC088E43-D95D-4A3E-D8F6-CE3FBAF9CC3A}.Release|x86.ActiveCfg = Release|Any CPU
+		{CC088E43-D95D-4A3E-D8F6-CE3FBAF9CC3A}.Release|x86.Build.0 = Release|Any CPU
+		{CB079E45-2952-2F1E-E7F8-6339006F4954}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{CB079E45-2952-2F1E-E7F8-6339006F4954}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{CB079E45-2952-2F1E-E7F8-6339006F4954}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{CB079E45-2952-2F1E-E7F8-6339006F4954}.Debug|x64.Build.0 = Debug|Any CPU
+		{CB079E45-2952-2F1E-E7F8-6339006F4954}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{CB079E45-2952-2F1E-E7F8-6339006F4954}.Debug|x86.Build.0 = Debug|Any CPU
+		{CB079E45-2952-2F1E-E7F8-6339006F4954}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{CB079E45-2952-2F1E-E7F8-6339006F4954}.Release|ARM64.Build.0 = Release|Any CPU
+		{CB079E45-2952-2F1E-E7F8-6339006F4954}.Release|x64.ActiveCfg = Release|Any CPU
+		{CB079E45-2952-2F1E-E7F8-6339006F4954}.Release|x64.Build.0 = Release|Any CPU
+		{CB079E45-2952-2F1E-E7F8-6339006F4954}.Release|x86.ActiveCfg = Release|Any CPU
+		{CB079E45-2952-2F1E-E7F8-6339006F4954}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -166,6 +196,9 @@ Global
 		{58F2F997-A3CB-4A2A-8A5D-DAD4BB76B4B7} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{5D9B64EE-69B3-ABD2-2504-05DFCABCC30F} = {58F2F997-A3CB-4A2A-8A5D-DAD4BB76B4B7}
 		{931E4021-E9E9-C0D9-5119-161C57007F14} = {58F2F997-A3CB-4A2A-8A5D-DAD4BB76B4B7}
+		{CAF6CDAD-BC2B-4266-B013-2D067ACF2CCA} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{CC088E43-D95D-4A3E-D8F6-CE3FBAF9CC3A} = {CAF6CDAD-BC2B-4266-B013-2D067ACF2CCA}
+		{CB079E45-2952-2F1E-E7F8-6339006F4954} = {CAF6CDAD-BC2B-4266-B013-2D067ACF2CCA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2F092648-51E9-4562-BB77-8417DBE60A1D}
