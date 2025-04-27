@@ -14,6 +14,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <TextBlock
@@ -51,5 +52,35 @@
                     TextWrapping="Wrap" />
             </StackPanel>
         </Grid>
+
+        <StackPanel
+            Grid.Row="2"
+            Margin="0,16,0,0"
+            HorizontalAlignment="Right"
+            Orientation="Horizontal"
+            Spacing="8"
+            Visibility="{x:Bind ViewModel.HasFiles, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}">
+
+            <Button Command="{x:Bind ViewModel.StartAllCommand, Mode=OneWay}" ToolTipService.ToolTip="Start Processing All">
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE768;" />
+                    <TextBlock Text="Start All" />
+                </StackPanel>
+            </Button>
+
+            <Button Command="{x:Bind ViewModel.StopAllCommand, Mode=OneWay}" ToolTipService.ToolTip="Stop Processing All">
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE769;" />
+                    <TextBlock Text="Stop All" />
+                </StackPanel>
+            </Button>
+
+            <Button Command="{x:Bind ViewModel.ClearAllCommand, Mode=OneWay}" ToolTipService.ToolTip="Clear Queue">
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE74D;" />
+                    <TextBlock Text="Clear All" />
+                </StackPanel>
+            </Button>
+        </StackPanel>
     </Grid>
 </UserControl>

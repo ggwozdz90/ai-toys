@@ -1,5 +1,7 @@
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.ComponentModel;
+using AiToys.Core.Presentation.Commands;
 using AiToys.Core.Presentation.ViewModels;
 using AiToys.SpeechToText.Domain.Models;
 using AiToys.SpeechToText.Presentation.EventArgs;
@@ -21,6 +23,10 @@ internal sealed partial class FileQueueViewModel : ViewModelBase
 
         Files.CollectionChanged += Files_CollectionChanged;
 
+        StartAllCommand = new AsyncRelayCommand(ExecuteStartAllAsync, CanExecuteStartAll);
+        StopAllCommand = new AsyncRelayCommand(ExecuteStopAllAsync, CanExecuteStopAll);
+        ClearAllCommand = new RelayCommand(ExecuteClearAll, CanExecuteClearAll);
+
         UpdateHasFiles();
     }
 
@@ -32,12 +38,17 @@ internal sealed partial class FileQueueViewModel : ViewModelBase
         private set => SetProperty(ref hasFiles, value);
     }
 
+    public ICommandBase StartAllCommand { get; }
+    public ICommandBase StopAllCommand { get; }
+    public ICommandBase ClearAllCommand { get; }
+
     public void AddFile(FileItemModel fileItem)
     {
         logger.LogInformation("Adding file to queue: {FilePath}", fileItem.FilePath);
 
         var fileItemViewModel = fileItemViewModelFactory.Create(fileItem);
         fileItemViewModel.RemoveRequested += OnFileRemoveRequested;
+        fileItemViewModel.PropertyChanged += OnFileItemPropertyChanged;
 
         ExecuteOnUIThread(() => Files.Add(fileItemViewModel));
     }
@@ -68,10 +79,15 @@ internal sealed partial class FileQueueViewModel : ViewModelBase
             foreach (var file in Files)
             {
                 file.RemoveRequested -= OnFileRemoveRequested;
+                file.PropertyChanged -= OnFileItemPropertyChanged;
                 file.Dispose();
             }
 
             ExecuteOnUIThread(() => Files.Clear());
+
+            StartAllCommand.Dispose();
+            StopAllCommand.Dispose();
+            ClearAllCommand.Dispose();
 
             logger.LogInformation("FileQueueViewModel is being disposed");
         }
@@ -79,9 +95,78 @@ internal sealed partial class FileQueueViewModel : ViewModelBase
         base.Dispose(disposing);
     }
 
+    private void OnFileItemPropertyChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        if (string.Equals(e.PropertyName, nameof(FileItemViewModel.Status), StringComparison.Ordinal))
+        {
+            RaiseCommandsCanExecuteChanged();
+        }
+    }
+
+    private void RaiseCommandsCanExecuteChanged()
+    {
+        ExecuteOnUIThread(() =>
+        {
+            StartAllCommand.NotifyCanExecuteChanged();
+            StopAllCommand.NotifyCanExecuteChanged();
+            ClearAllCommand.NotifyCanExecuteChanged();
+        });
+    }
+
+    private async Task ExecuteStartAllAsync(CancellationToken cancellationToken)
+    {
+        logger.LogInformation("Starting processing of all files in queue");
+
+        var tasks = Files.Select(file =>
+            file.StartProcessingCommand.CanExecute(parameter: null)
+                ? ((AsyncRelayCommand)file.StartProcessingCommand).ExecuteAsync()
+                : Task.CompletedTask
+        );
+
+        await Task.WhenAll(tasks).ConfigureAwait(false);
+
+        logger.LogInformation("All files started processing");
+    }
+
+    private bool CanExecuteStartAll() => Files.Any(file => file.StartProcessingCommand.CanExecute(parameter: null));
+
+    private async Task ExecuteStopAllAsync(CancellationToken cancellationToken)
+    {
+        logger.LogInformation("Stopping processing of all files in queue");
+
+        var tasks = Files.Select(file =>
+            file.StopProcessingCommand.CanExecute(parameter: null)
+                ? ((AsyncRelayCommand)file.StopProcessingCommand).ExecuteAsync()
+                : Task.CompletedTask
+        );
+
+        await Task.WhenAll(tasks).ConfigureAwait(false);
+
+        logger.LogInformation("All files stopped processing");
+    }
+
+    private bool CanExecuteStopAll() => Files.Any(file => file.StopProcessingCommand.CanExecute(parameter: null));
+
+    private void ExecuteClearAll()
+    {
+        logger.LogInformation("Clearing all files from queue");
+
+        foreach (var file in Files.ToList())
+        {
+            file.RemoveRequested -= OnFileRemoveRequested;
+            file.PropertyChanged -= OnFileItemPropertyChanged;
+        }
+
+        ExecuteOnUIThread(() => Files.Clear());
+        logger.LogInformation("All files cleared from queue");
+    }
+
+    private bool CanExecuteClearAll() => Files.Any();
+
     private void Files_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
         UpdateHasFiles();
+        RaiseCommandsCanExecuteChanged();
     }
 
     private void UpdateHasFiles()
@@ -98,6 +183,7 @@ internal sealed partial class FileQueueViewModel : ViewModelBase
             logger.LogInformation("Removing file from queue: {FilePath}", fileItem.FilePath);
 
             fileItem.RemoveRequested -= OnFileRemoveRequested;
+            fileItem.PropertyChanged -= OnFileItemPropertyChanged;
 
             ExecuteOnUIThread(() => Files.Remove(fileItem));
         }
