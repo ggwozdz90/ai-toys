@@ -43,6 +43,7 @@ public static class WinUiHostBuilderExtensions
                 services.AddSingleton<Application>(serviceProvider =>
                     serviceProvider.GetRequiredService<TApplication>()
                 );
+                services.AddSingleton<IWindowProvider, WindowProvider>();
             }
         );
 

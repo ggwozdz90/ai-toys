@@ -9,12 +9,14 @@
     <GenerateAppxPackageOnBuild>False</GenerateAppxPackageOnBuild>
     <EnableMsixTooling>true</EnableMsixTooling>
     <UseWinUI>true</UseWinUI>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\AiToys.Core\AiToys.Core.csproj" />
+    <ProjectReference Include="..\Extensions.Hosting.WinUi\Extensions.Hosting.WinUi.csproj" />
   </ItemGroup>
 
   <Import Project="..\..\.paket\Paket.Restore.targets" />
-  
+
 </Project>

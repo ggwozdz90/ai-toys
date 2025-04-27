@@ -54,6 +54,31 @@ public partial class ViewModelBase : IViewModel, INotifyPropertyChanged, IDispos
     }
 
     /// <summary>
+    /// Executes the specified action on the UI thread.
+    /// If already on the UI thread, executes immediately.
+    /// </summary>
+    /// <param name="action">The action to execute on the UI thread.</param>
+    /// <returns>True if the action was successfully enqueued or executed; otherwise, false.</returns>
+    protected bool ExecuteOnUIThread(Action action)
+    {
+        ArgumentNullException.ThrowIfNull(action);
+
+        if (dispatcherQueue == null)
+        {
+            action();
+            return true;
+        }
+
+        if (dispatcherQueue.HasThreadAccess)
+        {
+            action();
+            return true;
+        }
+
+        return dispatcherQueue.TryEnqueue(() => action());
+    }
+
+    /// <summary>
     /// Raises the <see cref="PropertyChanged"/> event.
     /// </summary>
     /// <param name="propertyName">The name of the property.</param>

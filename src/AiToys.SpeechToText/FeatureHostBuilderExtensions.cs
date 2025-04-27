@@ -1,7 +1,14 @@
 using AiToys.Core;
+using AiToys.SpeechToText.Application.UseCases;
 using AiToys.SpeechToText.Constants;
+using AiToys.SpeechToText.Data.Adapters;
+using AiToys.SpeechToText.Data.Repositories;
+using AiToys.SpeechToText.Domain.Adapters;
+using AiToys.SpeechToText.Domain.Repositories;
+using AiToys.SpeechToText.Presentation.Factories;
 using AiToys.SpeechToText.Presentation.ViewModels;
 using AiToys.SpeechToText.Presentation.Views;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 namespace AiToys.SpeechToText;
@@ -22,9 +29,18 @@ public static class FeatureHostBuilderExtensions
 
         hostBuilder.ConfigureServices(
             (_, services) =>
+            {
+                services.AddScoped<IFilePickerAdapter, FilePickerAdapter>();
+                services.AddScoped<ISpeechToTextRepository, SpeechToTextRepository>();
+                services.AddScoped<ISelectFilesUseCase, SelectFilesUseCase>();
+                services.AddScoped<ISelectFolderUseCase, SelectFolderUseCase>();
+                services.AddScoped<IGetSupportedLanguagesUseCase, GetSupportedLanguagesUseCase>();
+                services.AddSingleton<IFileItemViewModelFactory, FileItemViewModelFactory>();
+
                 services.RegisterView<SpeechToTextPage, SpeechToTextViewModel, SpeechToTextNavigationItemViewModel>(
                     RouteNames.SpeechToTextPage
-                )
+                );
+            }
         );
 
         return hostBuilder;
