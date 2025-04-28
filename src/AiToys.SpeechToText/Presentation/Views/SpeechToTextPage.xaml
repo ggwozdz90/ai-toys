@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8" ?>
 <Page
     x:Class="AiToys.SpeechToText.Presentation.Views.SpeechToTextPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -22,6 +22,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
@@ -30,15 +31,29 @@
             Style="{StaticResource SubtitleTextBlockStyle}"
             Text="Files to Process" />
 
-        <StackPanel
+        <organisms:LanguageSelectionPanel
             Grid.Row="1"
-            Margin="0,8,0,8"
+            Margin="0,24,0,0"
+            Languages="{x:Bind ViewModel.Languages, Mode=OneWay}"
+            SourceLanguage="{x:Bind ViewModel.DefaultSourceLanguage, Mode=TwoWay}"
+            SwapLanguagesCommand="{x:Bind ViewModel.SwapLanguagesCommand, Mode=OneWay}"
+            TargetLanguage="{x:Bind ViewModel.DefaultTargetLanguage, Mode=TwoWay}" />
+
+        <StackPanel
+            Grid.Row="2"
+            Margin="0,16,0,0"
             Orientation="Horizontal"
             Spacing="8">
             <atoms:FileSelector BrowseCommand="{x:Bind ViewModel.BrowseFileCommand}" />
             <atoms:FolderSelector BrowseCommand="{x:Bind ViewModel.BrowseFolderCommand}" />
+            <Button Command="{x:Bind ViewModel.ApplyDefaultLanguagesCommand, Mode=OneWay}" ToolTipService.ToolTip="Apply default languages to all files">
+                <StackPanel Orientation="Horizontal" Spacing="4">
+                    <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE71D;" />
+                    <TextBlock Text="Apply Default Languages" />
+                </StackPanel>
+            </Button>
         </StackPanel>
 
-        <organisms:FileQueuePanel Grid.Row="2" DataContext="{x:Bind ViewModel.FileQueueViewModel}" />
+        <organisms:FileQueuePanel Grid.Row="3" DataContext="{x:Bind ViewModel.FileQueueViewModel}" />
     </Grid>
 </Page>

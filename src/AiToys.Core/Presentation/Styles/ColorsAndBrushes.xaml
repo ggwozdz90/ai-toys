@@ -7,4 +7,9 @@
     <Color x:Key="TileBackgroundColor">#313131</Color>
     <SolidColorBrush x:Key="TileBackgroundBrush" Color="{StaticResource TileBackgroundColor}" />
 
+    <SolidColorBrush x:Key="PendingBrush" Color="#797775" />
+    <SolidColorBrush x:Key="ProcessingBrush" Color="#0078D4" />
+    <SolidColorBrush x:Key="CompletedBrush" Color="#107C10" />
+    <SolidColorBrush x:Key="FailedBrush" Color="#C42B1C" />
+
 </ResourceDictionary>

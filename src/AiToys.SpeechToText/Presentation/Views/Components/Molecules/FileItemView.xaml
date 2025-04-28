@@ -3,45 +3,103 @@
     x:Class="AiToys.SpeechToText.Presentation.Views.Components.Molecules.FileItemView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:atoms="using:AiToys.SpeechToText.Presentation.Views.Components.Atoms"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="using:AiToys.SpeechToText.Presentation.ViewModels"
     d:DataContext="{d:DesignInstance Type=vm:FileItemViewModel}"
     mc:Ignorable="d">
 
-    <Grid Margin="0,4" ColumnSpacing="8">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="Auto" />
-        </Grid.ColumnDefinitions>
+    <StackPanel>
+        <Grid Margin="4" ColumnSpacing="8">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
 
-        <TextBlock
-            Grid.Column="0"
-            VerticalAlignment="Center"
-            Text="{x:Bind ViewModel.FileName, Mode=OneWay}"
-            TextTrimming="CharacterEllipsis" />
+            <atoms:FileItemStatusIcon Grid.Column="0" Status="{x:Bind ViewModel.Status, Mode=OneWay}" />
 
-        <Button
-            Grid.Column="1"
-            Command="{x:Bind ViewModel.StartProcessingCommand, Mode=OneWay}"
-            ToolTipService.ToolTip="Start Processing">
-            <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE768;" />
-        </Button>
+            <TextBlock
+                Grid.Column="1"
+                VerticalAlignment="Center"
+                Text="{x:Bind ViewModel.FileName, Mode=OneWay}"
+                TextTrimming="CharacterEllipsis" />
 
-        <Button
-            Grid.Column="2"
-            Command="{x:Bind ViewModel.StopProcessingCommand, Mode=OneWay}"
-            ToolTipService.ToolTip="Stop Processing">
-            <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE769;" />
-        </Button>
+            <Button
+                Grid.Column="2"
+                Command="{x:Bind ViewModel.StartProcessingCommand, Mode=OneWay}"
+                ToolTipService.ToolTip="Start Processing">
+                <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE768;" />
+            </Button>
 
-        <Button
-            Grid.Column="3"
-            Command="{x:Bind ViewModel.RemoveCommand, Mode=OneWay}"
-            ToolTipService.ToolTip="Remove from Queue">
-            <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE74D;" />
-        </Button>
-    </Grid>
+            <Button
+                Grid.Column="3"
+                Command="{x:Bind ViewModel.StopProcessingCommand, Mode=OneWay}"
+                ToolTipService.ToolTip="Stop Processing">
+                <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE769;" />
+            </Button>
+
+            <Button
+                Grid.Column="4"
+                Command="{x:Bind ViewModel.RemoveCommand, Mode=OneWay}"
+                ToolTipService.ToolTip="Remove from Queue">
+                <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE74D;" />
+            </Button>
+
+            <DropDownButton Grid.Column="5" ToolTipService.ToolTip="Additional Actions">
+                <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE712;" />
+                <DropDownButton.Flyout>
+                    <Flyout>
+                        <Grid Width="280">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock
+                                Grid.Row="0"
+                                Grid.Column="0"
+                                Margin="0,0,12,0"
+                                VerticalAlignment="Center"
+                                Style="{StaticResource CaptionTextBlockStyle}"
+                                Text="Source:" />
+
+                            <ComboBox
+                                Grid.Row="0"
+                                Grid.Column="1"
+                                HorizontalAlignment="Stretch"
+                                DisplayMemberPath="Name"
+                                ItemsSource="{x:Bind ViewModel.AvailableLanguages, Mode=OneWay}"
+                                SelectedItem="{x:Bind ViewModel.SourceLanguage, Mode=TwoWay}" />
+
+                            <TextBlock
+                                Grid.Row="1"
+                                Grid.Column="0"
+                                Margin="0,16,12,0"
+                                VerticalAlignment="Center"
+                                Style="{StaticResource CaptionTextBlockStyle}"
+                                Text="Target:" />
+
+                            <ComboBox
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                Margin="0,16,0,0"
+                                HorizontalAlignment="Stretch"
+                                DisplayMemberPath="Name"
+                                ItemsSource="{x:Bind ViewModel.AvailableLanguages, Mode=OneWay}"
+                                SelectedItem="{x:Bind ViewModel.TargetLanguage, Mode=TwoWay}" />
+                        </Grid>
+                    </Flyout>
+                </DropDownButton.Flyout>
+            </DropDownButton>
+        </Grid>
+    </StackPanel>
 </UserControl>

@@ -7,4 +7,6 @@
     <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     <converters:BooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter" IsInverted="True" />
 
+    <converters:EnumToVisibilityConverter x:Key="EnumToVisibilityConverter" />
+
 </ResourceDictionary>

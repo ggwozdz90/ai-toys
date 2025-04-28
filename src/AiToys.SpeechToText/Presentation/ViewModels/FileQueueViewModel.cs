@@ -26,8 +26,7 @@ internal sealed partial class FileQueueViewModel : ViewModelBase
         StartAllCommand = new AsyncRelayCommand(ExecuteStartAllAsync, CanExecuteStartAll);
         StopAllCommand = new AsyncRelayCommand(ExecuteStopAllAsync, CanExecuteStopAll);
         ClearAllCommand = new RelayCommand(ExecuteClearAll, CanExecuteClearAll);
-
-        UpdateHasFiles();
+        ApplyLanguagesCommand = new RelayCommand(ExecuteApplyLanguages, CanExecuteApplyLanguages);
     }
 
     public ObservableCollection<FileItemViewModel> Files { get; } = [];
@@ -38,15 +37,32 @@ internal sealed partial class FileQueueViewModel : ViewModelBase
         private set => SetProperty(ref hasFiles, value);
     }
 
+    public LanguageModel? SourceLanguage { get; set; }
+    public LanguageModel? TargetLanguage { get; set; }
+    public ObservableCollection<LanguageModel> AvailableLanguages { get; } = [];
+
     public ICommandBase StartAllCommand { get; }
     public ICommandBase StopAllCommand { get; }
     public ICommandBase ClearAllCommand { get; }
+    public ICommandBase ApplyLanguagesCommand { get; }
 
     public void AddFile(FileItemModel fileItem)
     {
+        if (SourceLanguage == null || TargetLanguage == null)
+        {
+            logger.LogWarning("Source or target language is not set. Cannot add file to queue.");
+
+            return;
+        }
+
         logger.LogInformation("Adding file to queue: {FilePath}", fileItem.FilePath);
 
-        var fileItemViewModel = fileItemViewModelFactory.Create(fileItem);
+        var fileItemViewModel = fileItemViewModelFactory.Create(
+            fileItem,
+            SourceLanguage,
+            TargetLanguage,
+            AvailableLanguages
+        );
         fileItemViewModel.RemoveRequested += OnFileRemoveRequested;
         fileItemViewModel.PropertyChanged += OnFileItemPropertyChanged;
 
@@ -88,12 +104,35 @@ internal sealed partial class FileQueueViewModel : ViewModelBase
             StartAllCommand.Dispose();
             StopAllCommand.Dispose();
             ClearAllCommand.Dispose();
+            ApplyLanguagesCommand.Dispose();
 
             logger.LogInformation("FileQueueViewModel is being disposed");
         }
 
         base.Dispose(disposing);
     }
+
+    private void ExecuteApplyLanguages()
+    {
+        if (SourceLanguage == null || TargetLanguage == null)
+        {
+            logger.LogWarning("Source or target language is not set. Cannot apply languages to files.");
+
+            return;
+        }
+
+        logger.LogInformation("Applying default languages to all files in queue");
+
+        foreach (var file in Files)
+        {
+            file.SourceLanguage = SourceLanguage;
+            file.TargetLanguage = TargetLanguage;
+        }
+
+        logger.LogInformation("Default languages applied to all files");
+    }
+
+    private bool CanExecuteApplyLanguages() => Files.Any();
 
     private void OnFileItemPropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
@@ -110,6 +149,7 @@ internal sealed partial class FileQueueViewModel : ViewModelBase
             StartAllCommand.NotifyCanExecuteChanged();
             StopAllCommand.NotifyCanExecuteChanged();
             ClearAllCommand.NotifyCanExecuteChanged();
+            ApplyLanguagesCommand.NotifyCanExecuteChanged();
         });
     }
 
@@ -158,6 +198,7 @@ internal sealed partial class FileQueueViewModel : ViewModelBase
         }
 
         ExecuteOnUIThread(() => Files.Clear());
+
         logger.LogInformation("All files cleared from queue");
     }
 

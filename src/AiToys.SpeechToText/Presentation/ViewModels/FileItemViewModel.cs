@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using System.Windows.Input;
 using AiToys.Core.Presentation.Commands;
 using AiToys.Core.Presentation.ViewModels;
@@ -13,11 +14,23 @@ internal sealed partial class FileItemViewModel : ViewModelBase
     private readonly ILogger<FileItemViewModel> logger;
     private readonly FileItemModel fileModel;
     private FileItemStatus status;
+    private LanguageModel sourceLanguage;
+    private LanguageModel targetLanguage;
 
-    public FileItemViewModel(FileItemModel fileModel, ILogger<FileItemViewModel> logger)
+    public FileItemViewModel(
+        ILogger<FileItemViewModel> logger,
+        FileItemModel fileModel,
+        LanguageModel sourceLanguage,
+        LanguageModel targetLanguage,
+        ObservableCollection<LanguageModel> availableLanguages
+    )
     {
         this.fileModel = fileModel;
         this.logger = logger;
+        this.sourceLanguage = sourceLanguage;
+        this.targetLanguage = targetLanguage;
+
+        AvailableLanguages = availableLanguages;
 
         status = fileModel.Status;
 
@@ -49,6 +62,20 @@ internal sealed partial class FileItemViewModel : ViewModelBase
         }
     }
 
+    public LanguageModel SourceLanguage
+    {
+        get => sourceLanguage;
+        set => SetProperty(ref sourceLanguage, value);
+    }
+
+    public LanguageModel TargetLanguage
+    {
+        get => targetLanguage;
+        set => SetProperty(ref targetLanguage, value);
+    }
+
+    public ObservableCollection<LanguageModel> AvailableLanguages { get; }
+
     public ICommand StartProcessingCommand { get; }
     public ICommand StopProcessingCommand { get; }
     public ICommand RemoveCommand { get; }
@@ -68,6 +95,7 @@ internal sealed partial class FileItemViewModel : ViewModelBase
     private Task ExecuteStartProcessingAsync(CancellationToken cancellationToken)
     {
         logger.LogInformation("Starting processing of file: {FilePath}", FilePath);
+
         Status = FileItemStatus.Processing;
 
         return Task.Delay(2000, cancellationToken);
@@ -78,6 +106,7 @@ internal sealed partial class FileItemViewModel : ViewModelBase
     private Task ExecuteStopProcessingAsync(CancellationToken cancellationToken)
     {
         logger.LogInformation("Stopping processing of file: {FilePath}", FilePath);
+
         Status = FileItemStatus.Pending;
 
         return Task.Delay(2000, cancellationToken);
@@ -88,6 +117,7 @@ internal sealed partial class FileItemViewModel : ViewModelBase
     private void ExecuteRemoveCommand()
     {
         logger.LogInformation("Removing file from queue: {FilePath}", FilePath);
+
         RemoveRequested?.Invoke(this, new FileItemEventArgs(this));
     }
 }

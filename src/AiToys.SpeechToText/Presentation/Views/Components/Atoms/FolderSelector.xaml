@@ -7,10 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Button
-        Margin="24,24,24,0"
-        Command="{x:Bind BrowseCommand, Mode=OneWay}"
-        ToolTipService.ToolTip="Add files from a folder">
+    <Button Command="{x:Bind BrowseCommand, Mode=OneWay}" ToolTipService.ToolTip="Add files from a folder">
         <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE838;" />
     </Button>
 
