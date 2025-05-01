@@ -4,6 +4,7 @@
     <Allowed From="*" To="Microsoft.*" />
     <Allowed From="*" To="Windows.*" />
     <Allowed From="*" To="WinRT.*" />
+    <Allowed From="*" To="System.IO.Abstraction" />
 
     <Allowed From="AiToys.SpeechToText" To="AiToys.Core.*" />
     <Allowed From="AiToys.SpeechToText" To="AiToys.SpeechToText.*" />
@@ -17,6 +18,7 @@
     <Allowed From="AiToys.SpeechToText.Presentation.EventArgs" To="AiToys.SpeechToText.Presentation.ViewModels" />
     <Allowed From="AiToys.SpeechToText.Presentation.ViewModels" To="AiToys.SpeechToText.Presentation.Factories" />
     <Allowed From="AiToys.SpeechToText.Presentation.Factories" To="AiToys.SpeechToText.Presentation.ViewModels" />
+    <Allowed From="AiToys.SpeechToText.Presentation.Factories" To="AiToys.SpeechToText.Application.UseCases" />
     <Allowed From="AiToys.SpeechToText.Presentation.ViewModels" To="AiToys.SpeechToText.Application.*" />
     <Allowed From="AiToys.SpeechToText.Presentation.ViewModels" To="AiToys.SpeechToText.Domain.Exceptions" />
     <Allowed From="AiToys.SpeechToText.Presentation.ViewModels" To="AiToys.SpeechToText.Domain.Enums" />

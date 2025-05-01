@@ -15,6 +15,7 @@
   <ItemGroup>
     <ProjectReference Include="..\AiToys.Core\AiToys.Core.csproj" />
     <ProjectReference Include="..\Extensions.Hosting.WinUi\Extensions.Hosting.WinUi.csproj" />
+    <ProjectReference Include="..\..\external\speech-to-text-api-client\src\SpeechToTextApiClient\SpeechToTextApiClient.csproj" />
   </ItemGroup>
 
   <Import Project="..\..\.paket\Paket.Restore.targets" />

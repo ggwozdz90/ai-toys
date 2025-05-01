@@ -1,3 +1,4 @@
+using System.IO.Abstractions;
 using AiToys.SpeechToText.Domain.Adapters;
 using AiToys.SpeechToText.Domain.Exceptions;
 using AiToys.SpeechToText.Domain.Models;
@@ -10,8 +11,11 @@ internal interface ISelectFolderUseCase
     Task<IList<FileItemModel>> ExecuteAsync(CancellationToken cancellationToken = default);
 }
 
-internal sealed class SelectFolderUseCase(IFilePickerAdapter filePickerAdapter, ILogger<SelectFolderUseCase> logger)
-    : ISelectFolderUseCase
+internal sealed class SelectFolderUseCase(
+    IFilePickerAdapter filePickerAdapter,
+    IFileSystem fileSystem,
+    ILogger<SelectFolderUseCase> logger
+) : ISelectFolderUseCase
 {
     public async Task<IList<FileItemModel>> ExecuteAsync(CancellationToken cancellationToken = default)
     {
@@ -29,8 +33,8 @@ internal sealed class SelectFolderUseCase(IFilePickerAdapter filePickerAdapter, 
 
             logger.LogInformation("Selected folder: {FolderPath}", folderPath);
 
-            var files = Directory.GetFiles(folderPath);
-            var fileItems = files.Select(filePath => new FileItemModel(filePath)).ToList();
+            var files = fileSystem.Directory.GetFiles(folderPath);
+            var fileItems = files.Select(filePath => new FileItemModel(filePath, fileSystem)).ToList();
 
             logger.LogInformation("Found {Count} files in the selected folder", fileItems.Count);
 

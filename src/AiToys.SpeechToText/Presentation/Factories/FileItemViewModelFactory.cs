@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using AiToys.SpeechToText.Application.UseCases;
 using AiToys.SpeechToText.Domain.Models;
 using AiToys.SpeechToText.Presentation.ViewModels;
 using Microsoft.Extensions.Logging;
@@ -15,7 +16,10 @@ internal interface IFileItemViewModelFactory
     );
 }
 
-internal sealed class FileItemViewModelFactory(ILoggerFactory loggerFactory) : IFileItemViewModelFactory
+internal sealed class FileItemViewModelFactory(
+    ILoggerFactory loggerFactory,
+    ITranscribeFileUseCase transcribeFileUseCase
+) : IFileItemViewModelFactory
 {
     public FileItemViewModel Create(
         FileItemModel fileItem,
@@ -26,6 +30,7 @@ internal sealed class FileItemViewModelFactory(ILoggerFactory loggerFactory) : I
     {
         return new FileItemViewModel(
             loggerFactory.CreateLogger<FileItemViewModel>(),
+            transcribeFileUseCase,
             fileItem,
             sourceLanguage,
             targetLanguage,

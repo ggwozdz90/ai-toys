@@ -9,3 +9,6 @@ nuget Microsoft.Extensions.Hosting
 nuget Microsoft.Extensions.Logging
 nuget Microsoft.Extensions.Options
 nuget Microsoft.Xaml.Behaviors.WinUI.Managed
+nuget System.IO.Abstractions
+nuget Refit
+nuget Refit.HttpClientFactory

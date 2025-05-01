@@ -1,3 +1,4 @@
+using System.IO.Abstractions;
 using AiToys.Presentation.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -15,6 +16,7 @@ internal static class AppHostBuilderExtensions
             {
                 services.AddSingleton<MainViewModel>();
                 services.AddSingleton<AppTitleBarViewModel>();
+                services.AddScoped<IFileSystem, FileSystem>();
             }
         );
 

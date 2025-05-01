@@ -10,6 +10,7 @@ using AiToys.SpeechToText.Presentation.ViewModels;
 using AiToys.SpeechToText.Presentation.Views;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using SpeechToTextApiClient.DependencyInjection;
 
 namespace AiToys.SpeechToText;
 
@@ -23,23 +24,29 @@ public static class FeatureHostBuilderExtensions
     /// </summary>
     /// <param name="hostBuilder">The host builder.</param>
     /// <returns>The configured host builder with services registered.</returns>
-    public static IHostBuilder ConfigureAudioFeature(this IHostBuilder hostBuilder)
+    public static IHostBuilder ConfigureSpeechToTextFeature(this IHostBuilder hostBuilder)
     {
         ArgumentNullException.ThrowIfNull(hostBuilder);
 
         hostBuilder.ConfigureServices(
-            (_, services) =>
+            (context, services) =>
             {
                 services.AddScoped<IFilePickerAdapter, FilePickerAdapter>();
+
                 services.AddScoped<ISpeechToTextRepository, SpeechToTextRepository>();
+
                 services.AddScoped<ISelectFilesUseCase, SelectFilesUseCase>();
                 services.AddScoped<ISelectFolderUseCase, SelectFolderUseCase>();
                 services.AddScoped<IGetSupportedLanguagesUseCase, GetSupportedLanguagesUseCase>();
+                services.AddScoped<ITranscribeFileUseCase, TranscribeFileUseCase>();
+
                 services.AddSingleton<IFileItemViewModelFactory, FileItemViewModelFactory>();
 
                 services.RegisterView<SpeechToTextPage, SpeechToTextViewModel, SpeechToTextNavigationItemViewModel>(
                     RouteNames.SpeechToTextPage
                 );
+
+                services.AddSpeechToTextProcessor(context.Configuration);
             }
         );
 

@@ -1,3 +1,4 @@
+using System.IO.Abstractions;
 using AiToys.SpeechToText.Domain.Adapters;
 using AiToys.SpeechToText.Domain.Exceptions;
 using AiToys.SpeechToText.Domain.Models;
@@ -10,8 +11,11 @@ internal interface ISelectFilesUseCase
     Task<IReadOnlyList<FileItemModel>> ExecuteAsync(CancellationToken cancellationToken = default);
 }
 
-internal sealed class SelectFilesUseCase(IFilePickerAdapter filePickerAdapter, ILogger<SelectFilesUseCase> logger)
-    : ISelectFilesUseCase
+internal sealed class SelectFilesUseCase(
+    IFilePickerAdapter filePickerAdapter,
+    IFileSystem fileSystem,
+    ILogger<SelectFilesUseCase> logger
+) : ISelectFilesUseCase
 {
     public async Task<IReadOnlyList<FileItemModel>> ExecuteAsync(CancellationToken cancellationToken = default)
     {
@@ -23,7 +27,7 @@ internal sealed class SelectFilesUseCase(IFilePickerAdapter filePickerAdapter, I
 
             logger.LogInformation("Selected {Count} files", filePaths.Count);
 
-            var fileItems = filePaths.Select(filePath => new FileItemModel(filePath)).ToList();
+            var fileItems = filePaths.Select(filePath => new FileItemModel(filePath, fileSystem)).ToList();
 
             return fileItems;
         }
