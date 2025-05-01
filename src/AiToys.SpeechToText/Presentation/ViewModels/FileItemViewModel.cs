@@ -19,7 +19,6 @@ internal sealed partial class FileItemViewModel : ViewModelBase
     private FileItemStatus status;
     private LanguageModel sourceLanguage;
     private LanguageModel targetLanguage;
-    private string resultText = string.Empty;
     private CancellationTokenSource? currentProcessingCts;
 
     public FileItemViewModel(
@@ -56,6 +55,7 @@ internal sealed partial class FileItemViewModel : ViewModelBase
 
     public string FilePath => fileModel.FilePath;
     public string FileName => fileModel.FileName;
+    public string Transcription => fileModel.Transcription;
 
     public FileItemStatus Status
     {
@@ -79,12 +79,6 @@ internal sealed partial class FileItemViewModel : ViewModelBase
     {
         get => targetLanguage;
         set => SetProperty(ref targetLanguage, value);
-    }
-
-    public string ResultText
-    {
-        get => resultText;
-        private set => SetProperty(ref resultText, value);
     }
 
     public ObservableCollection<LanguageModel> AvailableLanguages { get; }
@@ -151,8 +145,9 @@ internal sealed partial class FileItemViewModel : ViewModelBase
 
             if (!linkedCts.IsCancellationRequested)
             {
-                ResultText = result;
+                fileModel.SetTranscription(result);
                 Status = FileItemStatus.Completed;
+
                 logger.LogInformation("Successfully processed file: {FilePath}", FilePath);
             }
         }
@@ -216,7 +211,7 @@ internal sealed partial class FileItemViewModel : ViewModelBase
     {
         logger.LogError(exception, "{Message} {FilePath}: {ErrorMessage}", logMessage, FilePath, exception.Message);
         Status = newStatus;
-        ResultText = resultMessage;
+        fileModel.SetTranscription(resultMessage);
     }
 
     private bool CanExecuteStartProcessing() => Status is FileItemStatus.Pending or FileItemStatus.Failed;
