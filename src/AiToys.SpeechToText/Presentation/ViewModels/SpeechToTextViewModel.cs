@@ -62,13 +62,25 @@ internal sealed partial class SpeechToTextViewModel : ViewModelBase, IRouteAware
     public LanguageModel? DefaultSourceLanguage
     {
         get => defaultSourceLanguage;
-        set => SetProperty(ref defaultSourceLanguage, value);
+        set
+        {
+            if (SetProperty(ref defaultSourceLanguage, value) && value != null)
+            {
+                FileQueueViewModel.SourceLanguage = value;
+            }
+        }
     }
 
     public LanguageModel? DefaultTargetLanguage
     {
         get => defaultTargetLanguage;
-        set => SetProperty(ref defaultTargetLanguage, value);
+        set
+        {
+            if (SetProperty(ref defaultTargetLanguage, value) && value != null)
+            {
+                FileQueueViewModel.TargetLanguage = value;
+            }
+        }
     }
 
     protected override void Dispose(bool disposing)
