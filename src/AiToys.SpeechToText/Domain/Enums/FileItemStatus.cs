@@ -6,6 +6,11 @@ namespace AiToys.SpeechToText.Domain.Enums;
 internal enum FileItemStatus
 {
     /// <summary>
+    /// The file item has been added to the list.
+    /// </summary>
+    Added,
+
+    /// <summary>
     /// The file item is pending processing.
     /// </summary>
     Pending,

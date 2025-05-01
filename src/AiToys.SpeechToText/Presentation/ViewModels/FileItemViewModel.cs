@@ -138,6 +138,7 @@ internal sealed partial class FileItemViewModel : ViewModelBase
 
         try
         {
+            Status = FileItemStatus.Pending;
             Status = FileItemStatus.Processing;
 
             var targetLanguageCode = GetTargetLanguageCode();
@@ -154,7 +155,7 @@ internal sealed partial class FileItemViewModel : ViewModelBase
         catch (OperationCanceledException ex)
         {
             logger.LogInformation(ex, "Processing of file {FilePath} was canceled", FilePath);
-            Status = FileItemStatus.Pending;
+            Status = FileItemStatus.Added;
         }
         catch (Exception ex)
             when (ex
@@ -214,7 +215,7 @@ internal sealed partial class FileItemViewModel : ViewModelBase
         fileModel.SetTranscription(resultMessage);
     }
 
-    private bool CanExecuteStartProcessing() => Status is FileItemStatus.Pending or FileItemStatus.Failed;
+    private bool CanExecuteStartProcessing() => Status is FileItemStatus.Added or FileItemStatus.Failed;
 
     private Task ExecuteStopProcessingAsync(CancellationToken cancellationToken)
     {
@@ -222,7 +223,7 @@ internal sealed partial class FileItemViewModel : ViewModelBase
 
         CancelCurrentProcessing();
 
-        Status = FileItemStatus.Pending;
+        Status = FileItemStatus.Added;
 
         return Task.CompletedTask;
     }

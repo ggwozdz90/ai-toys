@@ -15,6 +15,13 @@
         VerticalAlignment="Center">
         <FontIcon
             FontFamily="Segoe Fluent Icons"
+            Foreground="{ThemeResource SystemBaseMediumColor}"
+            Glyph="&#xE8FD;"
+            ToolTipService.ToolTip="Added"
+            Visibility="{x:Bind Status, Mode=OneWay, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter=Added}" />
+
+        <FontIcon
+            FontFamily="Segoe Fluent Icons"
             Foreground="{StaticResource PendingBrush}"
             Glyph="&#xE916;"
             ToolTipService.ToolTip="Pending"
