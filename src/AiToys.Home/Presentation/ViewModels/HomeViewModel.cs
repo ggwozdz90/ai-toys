@@ -4,6 +4,7 @@ using AiToys.Core.Presentation.Services;
 using AiToys.Core.Presentation.ViewModels;
 using AiToys.Home.Constants;
 using AiToys.Home.Presentation.Factories;
+using Extensions.Hosting.WinUi;
 
 namespace AiToys.Home.Presentation.ViewModels;
 
@@ -12,7 +13,12 @@ internal sealed partial class HomeViewModel : ViewModelBase, IRouteAwareViewMode
     private readonly INavigationService navigationService;
     private readonly IFeatureTileViewModelFactory featureTileViewModelFactory;
 
-    public HomeViewModel(INavigationService navigationService, IFeatureTileViewModelFactory featureTileViewModelFactory)
+    public HomeViewModel(
+        IDispatcherService dispatcherService,
+        INavigationService navigationService,
+        IFeatureTileViewModelFactory featureTileViewModelFactory
+    )
+        : base(dispatcherService)
     {
         this.navigationService = navigationService;
         this.featureTileViewModelFactory = featureTileViewModelFactory;

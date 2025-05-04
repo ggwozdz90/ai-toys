@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\external\translation-api-client\src\TranslationApiClient\TranslationApiClient.csproj" />
+    <ProjectReference Include="..\Extensions.Hosting.WinUi\Extensions.Hosting.WinUi.csproj" />
     <ProjectReference Include="..\AiToys.Core\AiToys.Core.csproj" />
   </ItemGroup>
 

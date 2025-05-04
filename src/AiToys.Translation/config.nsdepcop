@@ -10,6 +10,7 @@
     <Allowed From="AiToys.Translation.*" To="AiToys.Translation.Domain.Models" />
 
     <Allowed From="AiToys.Translation.Presentation.*" To="AiToys.Core.Presentation.*" />
+    <Allowed From="AiToys.Translation.Presentation.*" To="Extensions.Hosting.WinUi" />
     <Allowed From="AiToys.Translation.Presentation.Views" To="AiToys.Translation.Presentation.ViewModels" />
     <Allowed From="AiToys.Translation.Presentation.ViewModels" To="AiToys.Translation.Application.*" />
     <Allowed From="AiToys.Translation.Presentation.ViewModels" To="AiToys.Translation.Domain.Exceptions" />

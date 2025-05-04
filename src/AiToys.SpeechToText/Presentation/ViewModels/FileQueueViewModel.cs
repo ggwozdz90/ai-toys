@@ -6,6 +6,7 @@ using AiToys.Core.Presentation.ViewModels;
 using AiToys.SpeechToText.Domain.Models;
 using AiToys.SpeechToText.Presentation.EventArgs;
 using AiToys.SpeechToText.Presentation.Factories;
+using Extensions.Hosting.WinUi;
 using Microsoft.Extensions.Logging;
 
 namespace AiToys.SpeechToText.Presentation.ViewModels;
@@ -16,15 +17,20 @@ internal sealed partial class FileQueueViewModel : ViewModelBase
     private readonly IFileItemViewModelFactory fileItemViewModelFactory;
     private bool hasFiles;
 
-    public FileQueueViewModel(ILogger<FileQueueViewModel> logger, IFileItemViewModelFactory fileItemViewModelFactory)
+    public FileQueueViewModel(
+        IDispatcherService dispatcherService,
+        ILogger<FileQueueViewModel> logger,
+        IFileItemViewModelFactory fileItemViewModelFactory
+    )
+        : base(dispatcherService)
     {
         this.logger = logger;
         this.fileItemViewModelFactory = fileItemViewModelFactory;
 
         Files.CollectionChanged += Files_CollectionChanged;
 
-        StartAllCommand = new AsyncRelayCommand(ExecuteStartAllAsync, CanExecuteStartAll);
-        StopAllCommand = new AsyncRelayCommand(ExecuteStopAllAsync, CanExecuteStopAll);
+        StartAllCommand = new RelayCommand(ExecuteStartAll, CanExecuteStartAll);
+        StopAllCommand = new RelayCommand(ExecuteStopAll, CanExecuteStopAll);
         ClearAllCommand = new RelayCommand(ExecuteClearAll, CanExecuteClearAll);
         ApplyLanguagesCommand = new RelayCommand(ExecuteApplyLanguages, CanExecuteApplyLanguages);
     }
@@ -153,34 +159,34 @@ internal sealed partial class FileQueueViewModel : ViewModelBase
         });
     }
 
-    private async Task ExecuteStartAllAsync(CancellationToken cancellationToken)
+    private void ExecuteStartAll()
     {
         logger.LogInformation("Starting processing of all files in queue");
 
-        var tasks = Files.Select(file =>
-            file.StartProcessingCommand.CanExecute(parameter: null)
-                ? ((AsyncRelayCommand)file.StartProcessingCommand).ExecuteAsync()
-                : Task.CompletedTask
-        );
-
-        await Task.WhenAll(tasks).ConfigureAwait(false);
+        foreach (var file in Files)
+        {
+            if (file.StartProcessingCommand.CanExecute(parameter: null))
+            {
+                file.StartProcessingCommand.Execute(parameter: null);
+            }
+        }
 
         logger.LogInformation("All files started processing");
     }
 
     private bool CanExecuteStartAll() => Files.Any(file => file.StartProcessingCommand.CanExecute(parameter: null));
 
-    private async Task ExecuteStopAllAsync(CancellationToken cancellationToken)
+    private void ExecuteStopAll()
     {
         logger.LogInformation("Stopping processing of all files in queue");
 
-        var tasks = Files.Select(file =>
-            file.StopProcessingCommand.CanExecute(parameter: null)
-                ? ((AsyncRelayCommand)file.StopProcessingCommand).ExecuteAsync()
-                : Task.CompletedTask
-        );
-
-        await Task.WhenAll(tasks).ConfigureAwait(false);
+        foreach (var file in Files)
+        {
+            if (file.StopProcessingCommand.CanExecute(parameter: null))
+            {
+                file.StopProcessingCommand.Execute(parameter: null);
+            }
+        }
 
         logger.LogInformation("All files stopped processing");
     }

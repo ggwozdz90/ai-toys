@@ -2,7 +2,7 @@ using System.Collections.Concurrent;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using AiToys.Core.Presentation.Commands;
-using Microsoft.UI.Dispatching;
+using Extensions.Hosting.WinUi;
 
 namespace AiToys.Core.Presentation.ViewModels;
 
@@ -12,18 +12,19 @@ namespace AiToys.Core.Presentation.ViewModels;
 /// </summary>
 public partial class ViewModelBase : IViewModel, INotifyPropertyChanged, IDisposable
 {
-    private readonly DispatcherQueue? dispatcherQueue;
     private readonly ConcurrentDictionary<string, HashSet<ICommandBase>> propertyObservers = new(
         StringComparer.Ordinal
     );
+    private readonly IDispatcherService dispatcherService;
     private bool isDisposed;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="ViewModelBase"/> class.
     /// </summary>
-    public ViewModelBase()
+    /// <param name="dispatcherService">The dispatcher service used to marshal calls to the UI thread.</param>
+    protected ViewModelBase(IDispatcherService dispatcherService)
     {
-        dispatcherQueue = DispatcherQueue.GetForCurrentThread();
+        this.dispatcherService = dispatcherService;
     }
 
     /// <inheritdoc />
@@ -63,19 +64,7 @@ public partial class ViewModelBase : IViewModel, INotifyPropertyChanged, IDispos
     {
         ArgumentNullException.ThrowIfNull(action);
 
-        if (dispatcherQueue == null)
-        {
-            action();
-            return true;
-        }
-
-        if (dispatcherQueue.HasThreadAccess)
-        {
-            action();
-            return true;
-        }
-
-        return dispatcherQueue.TryEnqueue(() => action());
+        return dispatcherService.ExecuteOnUIThread(action);
     }
 
     /// <summary>
@@ -115,14 +104,7 @@ public partial class ViewModelBase : IViewModel, INotifyPropertyChanged, IDispos
 
         field = value;
 
-        if (dispatcherQueue?.HasThreadAccess == false)
-        {
-            dispatcherQueue.TryEnqueue(() => OnPropertyChanged(propertyName));
-        }
-        else
-        {
-            OnPropertyChanged(propertyName);
-        }
+        ExecuteOnUIThread(() => OnPropertyChanged(propertyName));
 
         return true;
     }
@@ -151,13 +133,6 @@ public partial class ViewModelBase : IViewModel, INotifyPropertyChanged, IDispos
     /// <param name="command">The command to notify.</param>
     private void NotifyCommandCanExecuteChanged(ICommandBase command)
     {
-        if (dispatcherQueue?.HasThreadAccess == false)
-        {
-            dispatcherQueue.TryEnqueue(command.NotifyCanExecuteChanged);
-        }
-        else
-        {
-            command.NotifyCanExecuteChanged();
-        }
+        ExecuteOnUIThread(command.NotifyCanExecuteChanged);
     }
 }

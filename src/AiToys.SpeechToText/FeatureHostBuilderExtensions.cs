@@ -1,4 +1,5 @@
 using AiToys.Core;
+using AiToys.SpeechToText.Application.Services;
 using AiToys.SpeechToText.Application.UseCases;
 using AiToys.SpeechToText.Constants;
 using AiToys.SpeechToText.Data.Adapters;
@@ -34,6 +35,9 @@ public static class FeatureHostBuilderExtensions
                 services.AddScoped<IFilePickerAdapter, FilePickerAdapter>();
 
                 services.AddScoped<ISpeechToTextRepository, SpeechToTextRepository>();
+
+                services.AddSingleton<IFileStatusNotifierService, FileStatusNotifierService>();
+                services.AddSingleton<IFileProcessingQueueService, FileProcessingQueueService>();
 
                 services.AddScoped<ISelectFilesUseCase, SelectFilesUseCase>();
                 services.AddScoped<ISelectFolderUseCase, SelectFolderUseCase>();

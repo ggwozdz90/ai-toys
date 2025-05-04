@@ -5,6 +5,7 @@ using AiToys.Translation.Application.UseCases;
 using AiToys.Translation.Constants;
 using AiToys.Translation.Domain.Exceptions;
 using AiToys.Translation.Domain.Models;
+using Extensions.Hosting.WinUi;
 using Microsoft.Extensions.Logging;
 
 namespace AiToys.Translation.Presentation.ViewModels;
@@ -24,10 +25,12 @@ internal sealed partial class TranslationViewModel : ViewModelBase, IRouteAwareV
     private bool isInitialized;
 
     public TranslationViewModel(
+        IDispatcherService dispatcherService,
         ITranslateTextUseCase translateTextUseCase,
         IGetSupportedLanguagesUseCase getSupportedLanguagesUseCase,
         ILogger<TranslationViewModel> logger
     )
+        : base(dispatcherService)
     {
         this.translateTextUseCase = translateTextUseCase;
         this.getSupportedLanguagesUseCase = getSupportedLanguagesUseCase;

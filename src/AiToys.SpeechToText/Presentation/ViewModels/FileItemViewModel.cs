@@ -1,12 +1,12 @@
 using System.Collections.ObjectModel;
-using System.Windows.Input;
 using AiToys.Core.Presentation.Commands;
 using AiToys.Core.Presentation.ViewModels;
-using AiToys.SpeechToText.Application.UseCases;
+using AiToys.SpeechToText.Application.Services;
 using AiToys.SpeechToText.Domain.Enums;
-using AiToys.SpeechToText.Domain.Exceptions;
+using AiToys.SpeechToText.Domain.Events;
 using AiToys.SpeechToText.Domain.Models;
 using AiToys.SpeechToText.Presentation.EventArgs;
+using Extensions.Hosting.WinUi;
 using Microsoft.Extensions.Logging;
 
 namespace AiToys.SpeechToText.Presentation.ViewModels;
@@ -14,24 +14,29 @@ namespace AiToys.SpeechToText.Presentation.ViewModels;
 internal sealed partial class FileItemViewModel : ViewModelBase
 {
     private readonly ILogger<FileItemViewModel> logger;
-    private readonly ITranscribeFileUseCase transcribeFileUseCase;
+    private readonly IFileProcessingQueueService fileProcessingQueueService;
+    private readonly IFileStatusNotifierService fileStatusNotifierService;
     private readonly FileItemModel fileModel;
     private FileItemStatus status;
+    private string errorMessage = string.Empty;
     private LanguageModel sourceLanguage;
     private LanguageModel targetLanguage;
-    private CancellationTokenSource? currentProcessingCts;
 
     public FileItemViewModel(
+        IDispatcherService dispatcherService,
         ILogger<FileItemViewModel> logger,
-        ITranscribeFileUseCase transcribeFileUseCase,
+        IFileProcessingQueueService fileProcessingQueueService,
+        IFileStatusNotifierService fileStatusNotifierService,
         FileItemModel fileModel,
         LanguageModel sourceLanguage,
         LanguageModel targetLanguage,
         ObservableCollection<LanguageModel> availableLanguages
     )
+        : base(dispatcherService)
     {
         this.logger = logger;
-        this.transcribeFileUseCase = transcribeFileUseCase;
+        this.fileProcessingQueueService = fileProcessingQueueService;
+        this.fileStatusNotifierService = fileStatusNotifierService;
         this.fileModel = fileModel;
         this.sourceLanguage = sourceLanguage;
         this.targetLanguage = targetLanguage;
@@ -40,33 +45,34 @@ internal sealed partial class FileItemViewModel : ViewModelBase
 
         status = fileModel.Status;
 
-        var startProcessingCommand = new AsyncRelayCommand(ExecuteStartProcessingAsync, CanExecuteStartProcessing);
+        this.fileStatusNotifierService.FileStatusChanged += OnFileStatusChanged;
+
+        var startProcessingCommand = new RelayCommand(ExecuteStartProcessing, CanExecuteStartProcessing);
         startProcessingCommand.ObservesProperty(this, nameof(Status));
         StartProcessingCommand = startProcessingCommand;
 
-        var stopProcessingCommand = new AsyncRelayCommand(ExecuteStopProcessingAsync, CanExecuteStopProcessing);
+        var stopProcessingCommand = new RelayCommand(ExecuteStopProcessing, CanExecuteStopProcessing);
         stopProcessingCommand.ObservesProperty(this, nameof(Status));
         StopProcessingCommand = stopProcessingCommand;
 
-        RemoveCommand = new RelayCommand(ExecuteRemoveCommand);
+        RemoveCommand = new RelayCommand(ExecuteRemoveCommand, CanExecuteRemoveCommand);
     }
 
     public event EventHandler<FileItemEventArgs>? RemoveRequested;
 
     public string FilePath => fileModel.FilePath;
     public string FileName => fileModel.FileName;
-    public string Transcription => fileModel.Transcription;
+
+    public string ErrorMessage
+    {
+        get => errorMessage;
+        set => SetProperty(ref errorMessage, value);
+    }
 
     public FileItemStatus Status
     {
         get => status;
-        set
-        {
-            if (SetProperty(ref status, value))
-            {
-                fileModel.SetStatus(value);
-            }
-        }
+        set => SetProperty(ref status, value);
     }
 
     public LanguageModel SourceLanguage
@@ -83,175 +89,99 @@ internal sealed partial class FileItemViewModel : ViewModelBase
 
     public ObservableCollection<LanguageModel> AvailableLanguages { get; }
 
-    public ICommand StartProcessingCommand { get; }
-    public ICommand StopProcessingCommand { get; }
-    public ICommand RemoveCommand { get; }
+    public ICommandBase StartProcessingCommand { get; }
+    public ICommandBase StopProcessingCommand { get; }
+    public ICommandBase RemoveCommand { get; }
 
     protected override void Dispose(bool disposing)
     {
         if (disposing)
         {
-            CancelCurrentProcessing();
+            fileStatusNotifierService.FileStatusChanged -= OnFileStatusChanged;
 
-            (StartProcessingCommand as IDisposable)?.Dispose();
-            (StopProcessingCommand as IDisposable)?.Dispose();
-            (RemoveCommand as IDisposable)?.Dispose();
+            StartProcessingCommand.Dispose();
+            StopProcessingCommand.Dispose();
+            RemoveCommand.Dispose();
         }
 
         base.Dispose(disposing);
     }
 
-    private static string GetExceptionLogMessage(Exception exception)
+    private void ExecuteStartProcessing()
     {
-        return exception switch
-        {
-            ArgumentException => "Invalid argument for file",
-            FileNotFoundException => "File not found",
-            IOException => "I/O error for file",
-            UnauthorizedAccessException => "Access denied for file",
-            TranscribeFileException => "Error processing file",
-            _ => "Error processing file",
-        };
-    }
-
-    private static string GetUserFriendlyErrorMessage(Exception exception)
-    {
-        return exception switch
-        {
-            ArgumentException => $"Invalid input: {exception.Message}",
-            FileNotFoundException => $"File not found: {exception.Message}",
-            IOException => $"I/O error: {exception.Message}",
-            UnauthorizedAccessException => $"Access denied: {exception.Message}",
-            TranscribeFileException => $"Error: {exception.Message}",
-            _ => $"Error: {exception.Message}",
-        };
-    }
-
-    private async Task ExecuteStartProcessingAsync(CancellationToken cancellationToken)
-    {
-        logger.LogInformation("Starting processing of file: {FilePath}", FilePath);
-
-        CancelCurrentProcessing();
-
-        var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
-        currentProcessingCts = linkedCts;
+        logger.LogInformation("Adding file to processing queue: {FilePath}", FilePath);
 
         try
         {
-            Status = FileItemStatus.Pending;
-            Status = FileItemStatus.Processing;
-
-            var targetLanguageCode = GetTargetLanguageCode();
-            var result = await ProcessTranscriptionAsync(targetLanguageCode, linkedCts.Token).ConfigureAwait(true);
-
-            if (!linkedCts.IsCancellationRequested)
-            {
-                fileModel.SetTranscription(result);
-                Status = FileItemStatus.Completed;
-
-                logger.LogInformation("Successfully processed file: {FilePath}", FilePath);
-            }
-        }
-        catch (OperationCanceledException ex)
-        {
-            logger.LogInformation(ex, "Processing of file {FilePath} was canceled", FilePath);
-            Status = FileItemStatus.Added;
-        }
-        catch (Exception ex)
-            when (ex
-                    is ArgumentException
-                        or FileNotFoundException
-                        or IOException
-                        or UnauthorizedAccessException
-                        or TranscribeFileException
-            )
-        {
-            HandleProcessingException(
-                ex,
-                GetExceptionLogMessage(ex),
-                FileItemStatus.Failed,
-                GetUserFriendlyErrorMessage(ex)
+            fileProcessingQueueService.EnqueueFile(
+                fileModel,
+                sourceLanguage.Code,
+                !string.Equals(sourceLanguage.Code, targetLanguage.Code, StringComparison.Ordinal)
+                    ? targetLanguage.Code
+                    : null
             );
+
+            logger.LogInformation("File successfully added to processing queue: {FilePath}", FilePath);
         }
-        finally
+        catch (ArgumentException ex)
         {
-            if (currentProcessingCts == linkedCts)
-            {
-                currentProcessingCts = null;
-            }
+            logger.LogError(ex, "Invalid argument error adding file to processing queue: { FilePath}", FilePath);
+            ErrorMessage = $"Error: {ex.Message}";
 
-            linkedCts.Dispose();
+            fileModel.SetStatus(FileItemStatus.Failed);
         }
-    }
-
-    private string? GetTargetLanguageCode()
-    {
-        return !string.Equals(sourceLanguage.Code, targetLanguage.Code, StringComparison.Ordinal)
-            ? targetLanguage.Code
-            : null;
-    }
-
-    private Task<string> ProcessTranscriptionAsync(string? targetLanguageCode, CancellationToken cancellationToken)
-    {
-        logger.LogInformation(
-            "Transcribing file: {FilePath} from {SourceLanguage}{TargetLanguage}",
-            FilePath,
-            sourceLanguage.Code,
-            targetLanguageCode == null ? string.Empty : $" to {targetLanguageCode}"
-        );
-
-        return transcribeFileUseCase.ExecuteAsync(FilePath, sourceLanguage.Code, targetLanguageCode, cancellationToken);
-    }
-
-    private void HandleProcessingException(
-        Exception exception,
-        string logMessage,
-        FileItemStatus newStatus,
-        string resultMessage
-    )
-    {
-        logger.LogError(exception, "{Message} {FilePath}: {ErrorMessage}", logMessage, FilePath, exception.Message);
-        Status = newStatus;
-        fileModel.SetTranscription(resultMessage);
     }
 
     private bool CanExecuteStartProcessing() => Status is FileItemStatus.Added or FileItemStatus.Failed;
 
-    private Task ExecuteStopProcessingAsync(CancellationToken cancellationToken)
+    private void ExecuteStopProcessing()
     {
-        logger.LogInformation("Stopping processing of file: {FilePath}", FilePath);
+        logger.LogInformation("Removing file from processing queue: {FilePath}", FilePath);
 
-        CancelCurrentProcessing();
+        try
+        {
+            fileProcessingQueueService.RemoveFile(fileModel);
 
-        Status = FileItemStatus.Added;
+            logger.LogInformation("File successfully removed from processing queue: {FilePath}", FilePath);
+        }
+        catch (ArgumentException ex)
+        {
+            logger.LogError(ex, "Invalid argument error removing file from processing queue: {FilePath}", FilePath);
+            ErrorMessage = $"Error: {ex.Message}";
 
-        return Task.CompletedTask;
+            fileModel.SetStatus(FileItemStatus.Failed);
+        }
     }
 
-    private bool CanExecuteStopProcessing() => Status == FileItemStatus.Processing;
+    private bool CanExecuteStopProcessing() => Status is FileItemStatus.Pending;
 
     private void ExecuteRemoveCommand()
     {
-        logger.LogInformation("Removing file from queue: {FilePath}", FilePath);
+        logger.LogInformation("Removing file from view: {FilePath}", FilePath);
 
-        CancelCurrentProcessing();
+        fileProcessingQueueService.RemoveFile(fileModel);
 
         RemoveRequested?.Invoke(this, new FileItemEventArgs(this));
     }
 
-    private void CancelCurrentProcessing()
+    private bool CanExecuteRemoveCommand() => Status is not FileItemStatus.Processing;
+
+    private void OnFileStatusChanged(object? sender, FileStatusChangedEventArgs e)
     {
-        if (currentProcessingCts == null)
+        if (!string.Equals(e.FilePath, FilePath, StringComparison.Ordinal))
         {
             return;
         }
 
-        if (!currentProcessingCts.IsCancellationRequested)
-        {
-            currentProcessingCts.Cancel();
-        }
+        logger.LogDebug("File status changed: {FilePath}, {Status}", FilePath, e.Status);
 
-        currentProcessingCts.Dispose();
-        currentProcessingCts = null;
+        Status = e.Status;
+
+        ExecuteOnUIThread(() =>
+        {
+            StartProcessingCommand.NotifyCanExecuteChanged();
+            StopProcessingCommand.NotifyCanExecuteChanged();
+            RemoveCommand.NotifyCanExecuteChanged();
+        });
     }
 }

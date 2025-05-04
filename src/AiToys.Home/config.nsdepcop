@@ -9,6 +9,7 @@
     <Allowed From="AiToys.Home.*" To="AiToys.Home.Constants" />
 
     <Allowed From="AiToys.Home.Presentation.*" To="AiToys.Core.Presentation.*" />
+    <Allowed From="AiToys.Home.Presentation.*" To="Extensions.Hosting.WinUi" />
     <Allowed From="AiToys.Home.Presentation.Views" To="AiToys.Home.Presentation.ViewModels" />
     <Allowed From="AiToys.Home.Presentation.Components.*" To="AiToys.Home.Presentation.ViewModels" />
     <Allowed From="AiToys.Home.Presentation.Factories" To="AiToys.Home.Presentation.ViewModels" />

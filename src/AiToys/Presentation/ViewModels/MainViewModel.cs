@@ -2,6 +2,7 @@ using AiToys.Core.Presentation.Commands;
 using AiToys.Core.Presentation.Events;
 using AiToys.Core.Presentation.Services;
 using AiToys.Core.Presentation.ViewModels;
+using Extensions.Hosting.WinUi;
 
 namespace AiToys.Presentation.ViewModels;
 
@@ -11,10 +12,11 @@ internal sealed partial class MainViewModel : ViewModelBase
 
     private INavigationItemViewModel? selectedItem;
 
-    public MainViewModel(INavigationService navigationService)
+    public MainViewModel(IDispatcherService dispatcherService, INavigationService navigationService)
+        : base(dispatcherService)
     {
         this.navigationService = navigationService;
-        AppTitleBarViewModel = new AppTitleBarViewModel(navigationService);
+        AppTitleBarViewModel = new AppTitleBarViewModel(dispatcherService, navigationService);
 
         NavigationItems = navigationService.GetNavigationItems();
         navigationService.Navigated += OnNavigated;

@@ -7,6 +7,7 @@ using AiToys.SpeechToText.Constants;
 using AiToys.SpeechToText.Domain.Exceptions;
 using AiToys.SpeechToText.Domain.Models;
 using AiToys.SpeechToText.Presentation.Factories;
+using Extensions.Hosting.WinUi;
 using Microsoft.Extensions.Logging;
 
 namespace AiToys.SpeechToText.Presentation.ViewModels;
@@ -22,6 +23,7 @@ internal sealed partial class SpeechToTextViewModel : ViewModelBase, IRouteAware
     private LanguageModel? defaultTargetLanguage;
 
     public SpeechToTextViewModel(
+        IDispatcherService dispatcherService,
         ILogger<SpeechToTextViewModel> logger,
         ILoggerFactory loggerFactory,
         IFileItemViewModelFactory fileItemViewModelFactory,
@@ -29,6 +31,7 @@ internal sealed partial class SpeechToTextViewModel : ViewModelBase, IRouteAware
         ISelectFilesUseCase selectFilesUseCase,
         ISelectFolderUseCase selectFolderUseCase
     )
+        : base(dispatcherService)
     {
         this.logger = logger;
         this.getSupportedLanguagesUseCase = getSupportedLanguagesUseCase;
@@ -36,6 +39,7 @@ internal sealed partial class SpeechToTextViewModel : ViewModelBase, IRouteAware
         this.selectFolderUseCase = selectFolderUseCase;
 
         FileQueueViewModel = new FileQueueViewModel(
+            dispatcherService,
             loggerFactory.CreateLogger<FileQueueViewModel>(),
             fileItemViewModelFactory
         );

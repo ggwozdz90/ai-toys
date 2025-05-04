@@ -1,6 +1,7 @@
 using AiToys.Core.Presentation.Commands;
 using AiToys.Core.Presentation.Services;
 using AiToys.Core.Presentation.ViewModels;
+using Extensions.Hosting.WinUi;
 
 namespace AiToys.Home.Presentation.ViewModels;
 
@@ -14,12 +15,13 @@ internal interface IFeatureTileViewModel : IDisposable
 }
 
 internal sealed partial class FeatureTileViewModel(
+    IDispatcherService dispatcherService,
     INavigationService navigationService,
     string label,
     string route,
     string iconKey,
     string description
-) : ViewModelBase, IFeatureTileViewModel
+) : ViewModelBase(dispatcherService), IFeatureTileViewModel
 {
     public string Label { get; } = label;
 
