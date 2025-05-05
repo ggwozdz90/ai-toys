@@ -30,6 +30,7 @@
     <Allowed From="AiToys.SpeechToText.Application.Services" To="AiToys.SpeechToText.Application.UseCases" />
     <Allowed From="AiToys.SpeechToText.Application.Services" To="AiToys.SpeechToText.Domain.Enums" />
     <Allowed From="AiToys.SpeechToText.Application.Services" To="AiToys.SpeechToText.Domain.Events" />
+    <Allowed From="AiToys.SpeechToText.Application.Services" To="AiToys.SpeechToText.Domain.Exceptions" />
     <Allowed From="AiToys.SpeechToText.Application.UseCases" To="AiToys.SpeechToText.Domain.Repositories" />
     <Allowed From="AiToys.SpeechToText.Application.UseCases" To="AiToys.SpeechToText.Domain.Adapters" />
     <Allowed From="AiToys.SpeechToText.Application.UseCases" To="AiToys.SpeechToText.Domain.Exceptions" />

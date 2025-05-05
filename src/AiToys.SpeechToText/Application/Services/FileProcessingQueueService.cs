@@ -1,6 +1,7 @@
 using System.Collections.Concurrent;
 using AiToys.SpeechToText.Application.UseCases;
 using AiToys.SpeechToText.Domain.Enums;
+using AiToys.SpeechToText.Domain.Exceptions;
 using AiToys.SpeechToText.Domain.Models;
 using Microsoft.Extensions.Logging;
 
@@ -16,6 +17,7 @@ internal interface IFileProcessingQueueService
 internal sealed partial class FileProcessingQueueService : IFileProcessingQueueService, IDisposable
 {
     private readonly ITranscribeFileUseCase transcribeFileUseCase;
+    private readonly ISaveTranscriptionUseCase saveTranscriptionUseCase;
     private readonly IFileStatusNotifierService fileStatusNotifierService;
     private readonly ILogger<FileProcessingQueueService> logger;
     private readonly BlockingCollection<FileItemQueueModel> fileQueue = [];
@@ -25,11 +27,13 @@ internal sealed partial class FileProcessingQueueService : IFileProcessingQueueS
 
     public FileProcessingQueueService(
         ITranscribeFileUseCase transcribeFileUseCase,
+        ISaveTranscriptionUseCase saveTranscriptionUseCase,
         IFileStatusNotifierService fileStatusNotifierService,
         ILogger<FileProcessingQueueService> logger
     )
     {
         this.transcribeFileUseCase = transcribeFileUseCase;
+        this.saveTranscriptionUseCase = saveTranscriptionUseCase;
         this.fileStatusNotifierService = fileStatusNotifierService;
         this.logger = logger;
 
@@ -138,52 +142,89 @@ internal sealed partial class FileProcessingQueueService : IFileProcessingQueueS
                 file.FilePath,
                 file.Status
             );
+
             return;
         }
 
         try
         {
-            file.SetStatus(FileItemStatus.Processing);
-
-            fileStatusNotifierService.NotifyStatusChanged(file.FilePath, FileItemStatus.Processing);
-
-            await transcribeFileUseCase
-                .ExecuteAsync(
-                    file.FilePath,
-                    queueItem.SourceLanguage,
-                    queueItem.TargetLanguage,
-                    cancellationTokenSource.Token
-                )
-                .ConfigureAwait(false);
-
-            if (file.Status == FileItemStatus.Processing)
-            {
-                file.SetStatus(FileItemStatus.Completed);
-
-                fileStatusNotifierService.NotifyStatusChanged(file.FilePath, FileItemStatus.Completed);
-
-                logger.LogInformation("File processing completed: {FilePath}", file.FilePath);
-            }
+            await ProcessPendingFileAsync(queueItem).ConfigureAwait(false);
         }
         catch (OperationCanceledException)
         {
-            logger.LogInformation("File processing was canceled: {FilePath}", file.FilePath);
-
-            if (file.Status == FileItemStatus.Processing)
-            {
-                file.SetStatus(FileItemStatus.Added);
-
-                fileStatusNotifierService.NotifyStatusChanged(file.FilePath, FileItemStatus.Added);
-            }
+            HandleCanceledProcessing(file);
         }
         catch (InvalidOperationException ex)
         {
-            logger.LogError(ex, "Invalid operation error while processing file: {FilePath}", file.FilePath);
-
-            file.SetStatus(FileItemStatus.Failed);
-
-            fileStatusNotifierService.NotifyStatusChanged(file.FilePath, FileItemStatus.Failed);
+            HandleProcessingError(file, ex, "Invalid operation error while processing file");
         }
+        catch (SaveTranscriptionException ex)
+        {
+            HandleProcessingError(file, ex, "Error saving transcription for file");
+        }
+        catch (TranscribeFileException ex)
+        {
+            HandleProcessingError(file, ex, "Error transcribing file");
+        }
+    }
+
+    private async Task ProcessPendingFileAsync(FileItemQueueModel queueItem)
+    {
+        var file = queueItem.FileItem;
+
+        UpdateFileStatus(file, FileItemStatus.Processing);
+
+        var transcription = await transcribeFileUseCase
+            .ExecuteAsync(
+                queueItem.FileItem.FilePath,
+                queueItem.SourceLanguage,
+                queueItem.TargetLanguage,
+                cancellationTokenSource.Token
+            )
+            .ConfigureAwait(false);
+
+        var language =
+            queueItem.TargetLanguage != null
+            && !string.Equals(queueItem.SourceLanguage, queueItem.TargetLanguage, StringComparison.Ordinal)
+                ? queueItem.TargetLanguage
+                : queueItem.SourceLanguage;
+
+        await saveTranscriptionUseCase
+            .ExecuteAsync(queueItem.FileItem.FilePath, transcription, language, cancellationTokenSource.Token)
+            .ConfigureAwait(false);
+
+        file.SetTranscription(transcription);
+
+        if (file.Status == FileItemStatus.Processing)
+        {
+            UpdateFileStatus(file, FileItemStatus.Completed);
+
+            logger.LogInformation("File processing completed: {FilePath}", file.FilePath);
+        }
+    }
+
+    private void HandleCanceledProcessing(FileItemModel file)
+    {
+        logger.LogInformation("File processing was canceled: {FilePath}", file.FilePath);
+
+        if (file.Status == FileItemStatus.Processing)
+        {
+            UpdateFileStatus(file, FileItemStatus.Added);
+        }
+    }
+
+    private void HandleProcessingError(FileItemModel file, Exception ex, string errorMessage)
+    {
+        logger.LogError(ex, "{ErrorMessage}: {FilePath}", errorMessage, file.FilePath);
+
+        UpdateFileStatus(file, FileItemStatus.Failed);
+    }
+
+    private void UpdateFileStatus(FileItemModel file, FileItemStatus status)
+    {
+        file.SetStatus(status);
+
+        fileStatusNotifierService.NotifyStatusChanged(file.FilePath, status);
     }
 
     private record FileItemQueueModel(FileItemModel FileItem, string SourceLanguage, string? TargetLanguage);
