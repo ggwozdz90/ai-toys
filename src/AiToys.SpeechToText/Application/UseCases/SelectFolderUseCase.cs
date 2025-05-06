@@ -8,7 +8,7 @@ namespace AiToys.SpeechToText.Application.UseCases;
 
 internal interface ISelectFolderUseCase
 {
-    Task<IList<FileItemModel>> ExecuteAsync(CancellationToken cancellationToken = default);
+    Task<IList<FileItemModel>> ExecuteAsync(string fileExtensions, CancellationToken cancellationToken = default);
 }
 
 internal sealed class SelectFolderUseCase(
@@ -17,7 +17,10 @@ internal sealed class SelectFolderUseCase(
     ILogger<SelectFolderUseCase> logger
 ) : ISelectFolderUseCase
 {
-    public async Task<IList<FileItemModel>> ExecuteAsync(CancellationToken cancellationToken = default)
+    public async Task<IList<FileItemModel>> ExecuteAsync(
+        string fileExtensions,
+        CancellationToken cancellationToken = default
+    )
     {
         logger.LogInformation("Opening folder selection dialog");
 
@@ -37,6 +40,27 @@ internal sealed class SelectFolderUseCase(
             var fileItems = files.Select(filePath => new FileItemModel(filePath, fileSystem)).ToList();
 
             logger.LogInformation("Found {Count} files in the selected folder", fileItems.Count);
+
+            if (!string.IsNullOrWhiteSpace(fileExtensions))
+            {
+                var extensions = fileExtensions
+                    .Split(',')
+                    .Select(ext => ext.Trim().ToUpperInvariant())
+                    .Where(ext => !string.IsNullOrWhiteSpace(ext))
+                    .Select(ext => ext.StartsWith('.') ? ext : $".{ext}")
+                    .ToHashSet(StringComparer.Ordinal);
+
+                logger.LogInformation("Filtering files by extensions: {Extensions}", string.Join(", ", extensions));
+
+                fileItems =
+                [
+                    .. fileItems.Where(file =>
+                        extensions.Contains(fileSystem.Path.GetExtension(file.FilePath).ToUpperInvariant())
+                    ),
+                ];
+
+                logger.LogInformation("{Count} files match the extension filter", fileItems.Count);
+            }
 
             return fileItems;
         }

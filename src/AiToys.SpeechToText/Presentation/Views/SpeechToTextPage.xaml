@@ -54,6 +54,19 @@
             Spacing="8">
             <atoms:FileSelector BrowseCommand="{x:Bind ViewModel.BrowseFileCommand}" />
             <atoms:FolderSelector BrowseCommand="{x:Bind ViewModel.BrowseFolderCommand}" />
+
+            <StackPanel
+                VerticalAlignment="Center"
+                Orientation="Horizontal"
+                Spacing="8">
+                <TextBlock VerticalAlignment="Center" Text="File Extensions:" />
+                <TextBox
+                    Width="160"
+                    PlaceholderText="mp4, mp3, etc."
+                    Text="{x:Bind ViewModel.FileExtensions, Mode=TwoWay}"
+                    ToolTipService.ToolTip="Enter comma-separated file extensions to filter" />
+            </StackPanel>
+
             <Button Command="{x:Bind ViewModel.ApplyDefaultLanguagesCommand, Mode=OneWay}" ToolTipService.ToolTip="Apply default languages to all files">
                 <StackPanel Orientation="Horizontal" Spacing="4">
                     <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE71D;" />

@@ -36,6 +36,7 @@ public static class FeatureHostBuilderExtensions
 
                 services.AddScoped<ISpeechToTextRepository, SpeechToTextRepository>();
                 services.AddScoped<IFileRepository, FileRepository>();
+                services.AddScoped<IFileExtensionsRepository, FileExtensionsRepository>();
 
                 services.AddSingleton<IFileStatusNotifierService, FileStatusNotifierService>();
                 services.AddSingleton<IFileProcessingQueueService, FileProcessingQueueService>();
@@ -43,6 +44,7 @@ public static class FeatureHostBuilderExtensions
                 services.AddScoped<ISelectFilesUseCase, SelectFilesUseCase>();
                 services.AddScoped<ISelectFolderUseCase, SelectFolderUseCase>();
                 services.AddScoped<IGetSupportedLanguagesUseCase, GetSupportedLanguagesUseCase>();
+                services.AddScoped<IGetDefaultFileExtensionsUseCase, GetDefaultFileExtensionsUseCase>();
                 services.AddScoped<ITranscribeFileUseCase, TranscribeFileUseCase>();
                 services.AddScoped<ISaveTranscriptionUseCase, SaveTranscriptionUseCase>();
 

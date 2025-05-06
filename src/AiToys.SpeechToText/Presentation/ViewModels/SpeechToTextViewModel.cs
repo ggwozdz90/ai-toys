@@ -16,12 +16,14 @@ internal sealed partial class SpeechToTextViewModel : ViewModelBase, IRouteAware
 {
     private readonly ILogger<SpeechToTextViewModel> logger;
     private readonly IGetSupportedLanguagesUseCase getSupportedLanguagesUseCase;
+    private readonly IGetDefaultFileExtensionsUseCase getDefaultFileExtensionsUseCase;
     private readonly ISelectFilesUseCase selectFilesUseCase;
     private readonly ISelectFolderUseCase selectFolderUseCase;
     private bool isInitialized;
     private LanguageModel? defaultSourceLanguage;
     private LanguageModel? defaultTargetLanguage;
     private bool generateBothTranscriptionAndTranslation;
+    private string fileExtensions = string.Empty;
 
     public SpeechToTextViewModel(
         IDispatcherService dispatcherService,
@@ -29,6 +31,7 @@ internal sealed partial class SpeechToTextViewModel : ViewModelBase, IRouteAware
         ILoggerFactory loggerFactory,
         IFileItemViewModelFactory fileItemViewModelFactory,
         IGetSupportedLanguagesUseCase getSupportedLanguagesUseCase,
+        IGetDefaultFileExtensionsUseCase getDefaultFileExtensionsUseCase,
         ISelectFilesUseCase selectFilesUseCase,
         ISelectFolderUseCase selectFolderUseCase
     )
@@ -36,6 +39,7 @@ internal sealed partial class SpeechToTextViewModel : ViewModelBase, IRouteAware
     {
         this.logger = logger;
         this.getSupportedLanguagesUseCase = getSupportedLanguagesUseCase;
+        this.getDefaultFileExtensionsUseCase = getDefaultFileExtensionsUseCase;
         this.selectFilesUseCase = selectFilesUseCase;
         this.selectFolderUseCase = selectFolderUseCase;
 
@@ -100,6 +104,12 @@ internal sealed partial class SpeechToTextViewModel : ViewModelBase, IRouteAware
         }
     }
 
+    public string FileExtensions
+    {
+        get => fileExtensions;
+        set => SetProperty(ref fileExtensions, value);
+    }
+
     protected override void Dispose(bool disposing)
     {
         if (disposing)
@@ -137,9 +147,13 @@ internal sealed partial class SpeechToTextViewModel : ViewModelBase, IRouteAware
 
         try
         {
-            logger.LogInformation("Initializing TranslationViewModel");
+            logger.LogInformation("Initializing SpeechToTextViewModel");
 
             var supportedLanguages = await getSupportedLanguagesUseCase
+                .ExecuteAsync(cancellationToken)
+                .ConfigureAwait(false);
+
+            var defaultFileExtensions = await getDefaultFileExtensionsUseCase
                 .ExecuteAsync(cancellationToken)
                 .ConfigureAwait(false);
 
@@ -158,13 +172,20 @@ internal sealed partial class SpeechToTextViewModel : ViewModelBase, IRouteAware
                 FileQueueViewModel.TargetLanguage = DefaultTargetLanguage;
             }
 
+            FileExtensions = defaultFileExtensions;
+            logger.LogInformation("Default file extensions loaded: {Extensions}", FileExtensions);
+
             isInitialized = true;
 
-            logger.LogInformation("TranslationViewModel initialized successfully");
+            logger.LogInformation("SpeechToTextViewModel initialized successfully");
         }
         catch (GetSupportedLanguagesException ex)
         {
             logger.LogError(ex, "Error retrieving supported languages: {ErrorMessage}", ex.Message);
+        }
+        catch (GetDefaultFileExtensionsException ex)
+        {
+            logger.LogError(ex, "Error retrieving default file extensions: {ErrorMessage}", ex.Message);
         }
     }
 
@@ -193,7 +214,9 @@ internal sealed partial class SpeechToTextViewModel : ViewModelBase, IRouteAware
         {
             logger.LogInformation("Executing browse file command");
 
-            var fileItems = await selectFilesUseCase.ExecuteAsync(cancellationToken).ConfigureAwait(false);
+            var fileItems = await selectFilesUseCase
+                .ExecuteAsync(FileExtensions, cancellationToken)
+                .ConfigureAwait(false);
 
             if (fileItems.Count > 0)
             {
@@ -218,7 +241,9 @@ internal sealed partial class SpeechToTextViewModel : ViewModelBase, IRouteAware
         {
             logger.LogInformation("Executing browse folder command");
 
-            var fileItems = await selectFolderUseCase.ExecuteAsync(cancellationToken).ConfigureAwait(false);
+            var fileItems = await selectFolderUseCase
+                .ExecuteAsync(FileExtensions, cancellationToken)
+                .ConfigureAwait(false);
 
             if (fileItems.Count > 0)
             {
