@@ -18,4 +18,6 @@ internal interface ISpeechToTextRepository
         string targetLanguage,
         CancellationToken cancellationToken = default
     );
+
+    Task<bool> HealthCheckAsync(CancellationToken cancellationToken = default);
 }

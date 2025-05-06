@@ -19,11 +19,13 @@ internal sealed partial class SpeechToTextViewModel : ViewModelBase, IRouteAware
     private readonly IGetDefaultFileExtensionsUseCase getDefaultFileExtensionsUseCase;
     private readonly ISelectFilesUseCase selectFilesUseCase;
     private readonly ISelectFolderUseCase selectFolderUseCase;
+    private readonly IHealthCheckUseCase healthCheckUseCase;
     private bool isInitialized;
     private LanguageModel? defaultSourceLanguage;
     private LanguageModel? defaultTargetLanguage;
     private bool generateBothTranscriptionAndTranslation;
     private string fileExtensions = string.Empty;
+    private bool isApiHealthy;
 
     public SpeechToTextViewModel(
         IDispatcherService dispatcherService,
@@ -33,7 +35,8 @@ internal sealed partial class SpeechToTextViewModel : ViewModelBase, IRouteAware
         IGetSupportedLanguagesUseCase getSupportedLanguagesUseCase,
         IGetDefaultFileExtensionsUseCase getDefaultFileExtensionsUseCase,
         ISelectFilesUseCase selectFilesUseCase,
-        ISelectFolderUseCase selectFolderUseCase
+        ISelectFolderUseCase selectFolderUseCase,
+        IHealthCheckUseCase healthCheckUseCase
     )
         : base(dispatcherService)
     {
@@ -42,6 +45,7 @@ internal sealed partial class SpeechToTextViewModel : ViewModelBase, IRouteAware
         this.getDefaultFileExtensionsUseCase = getDefaultFileExtensionsUseCase;
         this.selectFilesUseCase = selectFilesUseCase;
         this.selectFolderUseCase = selectFolderUseCase;
+        this.healthCheckUseCase = healthCheckUseCase;
 
         FileQueueViewModel = new FileQueueViewModel(
             dispatcherService,
@@ -56,6 +60,7 @@ internal sealed partial class SpeechToTextViewModel : ViewModelBase, IRouteAware
         BrowseFolderCommand = new AsyncRelayCommand(ExecuteBrowseFolderAsync);
         SwapLanguagesCommand = new RelayCommand(ExecuteSwapLanguages);
         ApplyDefaultLanguagesCommand = new RelayCommand(ExecuteApplyDefaultLanguages, CanExecuteApplyDefaultLanguages);
+        CheckApiHealthCommand = new AsyncRelayCommand(ExecuteCheckApiHealthAsync);
     }
 
     public string Route => RouteNames.SpeechToTextPage;
@@ -65,6 +70,7 @@ internal sealed partial class SpeechToTextViewModel : ViewModelBase, IRouteAware
     public ICommandBase BrowseFolderCommand { get; }
     public ICommandBase SwapLanguagesCommand { get; }
     public ICommandBase ApplyDefaultLanguagesCommand { get; }
+    public ICommandBase CheckApiHealthCommand { get; }
     public ObservableCollection<LanguageModel> Languages { get; } = [];
     public FileQueueViewModel FileQueueViewModel { get; }
 
@@ -110,6 +116,12 @@ internal sealed partial class SpeechToTextViewModel : ViewModelBase, IRouteAware
         set => SetProperty(ref fileExtensions, value);
     }
 
+    public bool IsApiHealthy
+    {
+        get => isApiHealthy;
+        private set => SetProperty(ref isApiHealthy, value);
+    }
+
     protected override void Dispose(bool disposing)
     {
         if (disposing)
@@ -121,6 +133,7 @@ internal sealed partial class SpeechToTextViewModel : ViewModelBase, IRouteAware
             BrowseFolderCommand.Dispose();
             SwapLanguagesCommand.Dispose();
             ApplyDefaultLanguagesCommand.Dispose();
+            CheckApiHealthCommand.Dispose();
             FileQueueViewModel.Dispose();
         }
 
@@ -136,6 +149,26 @@ internal sealed partial class SpeechToTextViewModel : ViewModelBase, IRouteAware
         FileQueueViewModel.ApplyLanguagesCommand.Execute(parameter: null);
 
         logger.LogInformation("Default languages applied to all files");
+    }
+
+    private async Task ExecuteCheckApiHealthAsync(CancellationToken cancellationToken)
+    {
+        try
+        {
+            logger.LogInformation("Checking API health");
+
+            IsApiHealthy = await healthCheckUseCase.ExecuteAsync(cancellationToken).ConfigureAwait(false);
+
+            logger.LogInformation(
+                "API health check completed. API is {HealthStatus}",
+                IsApiHealthy ? "healthy" : "unhealthy"
+            );
+        }
+        catch (HealthCheckException ex)
+        {
+            logger.LogError(ex, "Error checking API health: {ErrorMessage}", ex.Message);
+            IsApiHealthy = false;
+        }
     }
 
     private async Task ExecuteInitializeAsync(CancellationToken cancellationToken)
@@ -174,6 +207,8 @@ internal sealed partial class SpeechToTextViewModel : ViewModelBase, IRouteAware
 
             FileExtensions = defaultFileExtensions;
             logger.LogInformation("Default file extensions loaded: {Extensions}", FileExtensions);
+
+            await ExecuteCheckApiHealthAsync(cancellationToken).ConfigureAwait(false);
 
             isInitialized = true;
 

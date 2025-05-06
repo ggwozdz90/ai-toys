@@ -47,6 +47,7 @@ public static class FeatureHostBuilderExtensions
                 services.AddScoped<IGetDefaultFileExtensionsUseCase, GetDefaultFileExtensionsUseCase>();
                 services.AddScoped<ITranscribeFileUseCase, TranscribeFileUseCase>();
                 services.AddScoped<ISaveTranscriptionUseCase, SaveTranscriptionUseCase>();
+                services.AddScoped<IHealthCheckUseCase, HealthCheckUseCase>();
 
                 services.AddSingleton<IFileItemViewModelFactory, FileItemViewModelFactory>();
 

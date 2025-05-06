@@ -11,7 +11,6 @@
     Background="{ThemeResource PageBackgroundBrush}"
     mc:Ignorable="d">
 
-
     <interactivity:Interaction.Behaviors>
         <interactivity:EventTriggerBehavior EventName="Loaded">
             <interactivity:InvokeCommandAction Command="{x:Bind ViewModel.InitializeCommand}" />
@@ -27,10 +26,26 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <TextBlock
-            Grid.Row="0"
-            Style="{StaticResource SubtitleTextBlockStyle}"
-            Text="Files to Process" />
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock
+                Grid.Column="0"
+                VerticalAlignment="Center"
+                Style="{StaticResource SubtitleTextBlockStyle}"
+                Text="Files to Process" />
+
+            <atoms:ApiHealthStatusIcon
+                Grid.Column="1"
+                Margin="12,0,0,0"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Center"
+                Command="{x:Bind ViewModel.CheckApiHealthCommand, Mode=OneWay}"
+                IsHealthy="{x:Bind ViewModel.IsApiHealthy, Mode=OneWay}" />
+        </Grid>
 
         <organisms:LanguageSelectionPanel
             Grid.Row="1"
@@ -40,12 +55,29 @@
             SwapLanguagesCommand="{x:Bind ViewModel.SwapLanguagesCommand, Mode=OneWay}"
             TargetLanguage="{x:Bind ViewModel.DefaultTargetLanguage, Mode=TwoWay}" />
 
-        <CheckBox
-            Grid.Row="2"
-            Margin="0,16,0,0"
-            Content="Generate both transcription and translation"
-            IsChecked="{x:Bind ViewModel.GenerateBothTranscriptionAndTranslation, Mode=TwoWay}"
-            ToolTipService.ToolTip="When checked, both transcription in source language and translation to target language will be generated. When languages are the same, only one file will be generated." />
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <CheckBox
+                Grid.Column="0"
+                Margin="0,16,0,0"
+                Content="Generate both transcription and translation"
+                IsChecked="{x:Bind ViewModel.GenerateBothTranscriptionAndTranslation, Mode=TwoWay}"
+                ToolTipService.ToolTip="When checked, both transcription in source language and translation to target language will be generated. When languages are the same, only one file will be generated." />
+
+            <Button
+                Grid.Column="1"
+                Command="{x:Bind ViewModel.ApplyDefaultLanguagesCommand, Mode=OneWay}"
+                ToolTipService.ToolTip="Apply default languages to all files">
+                <StackPanel Orientation="Horizontal" Spacing="4">
+                    <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE71D;" />
+                    <TextBlock Text="Apply Default Languages" />
+                </StackPanel>
+            </Button>
+        </Grid>
 
         <StackPanel
             Grid.Row="3"
@@ -67,14 +99,10 @@
                     ToolTipService.ToolTip="Enter comma-separated file extensions to filter" />
             </StackPanel>
 
-            <Button Command="{x:Bind ViewModel.ApplyDefaultLanguagesCommand, Mode=OneWay}" ToolTipService.ToolTip="Apply default languages to all files">
-                <StackPanel Orientation="Horizontal" Spacing="4">
-                    <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE71D;" />
-                    <TextBlock Text="Apply Default Languages" />
-                </StackPanel>
-            </Button>
+
         </StackPanel>
 
+        <!--  File Queue Panel  -->
         <organisms:FileQueuePanel Grid.Row="4" DataContext="{x:Bind ViewModel.FileQueueViewModel}" />
     </Grid>
 </Page>
