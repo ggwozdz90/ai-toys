@@ -12,4 +12,6 @@ internal interface ITranslationRepository
         string targetLanguageCode,
         CancellationToken cancellationToken = default
     );
+
+    Task<bool> HealthCheckAsync(CancellationToken cancellationToken = default);
 }

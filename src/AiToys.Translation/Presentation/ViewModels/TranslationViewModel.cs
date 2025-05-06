@@ -14,6 +14,7 @@ internal sealed partial class TranslationViewModel : ViewModelBase, IRouteAwareV
 {
     private readonly ITranslateTextUseCase translateTextUseCase;
     private readonly IGetSupportedLanguagesUseCase getSupportedLanguagesUseCase;
+    private readonly IHealthCheckUseCase healthCheckUseCase;
     private readonly ILogger<TranslationViewModel> logger;
 
     private CancellationTokenSource? currentTranslationCts;
@@ -23,17 +24,20 @@ internal sealed partial class TranslationViewModel : ViewModelBase, IRouteAwareV
     private string translatedText = string.Empty;
     private bool isTranslating;
     private bool isInitialized;
+    private bool isApiHealthy;
 
     public TranslationViewModel(
         IDispatcherService dispatcherService,
         ITranslateTextUseCase translateTextUseCase,
         IGetSupportedLanguagesUseCase getSupportedLanguagesUseCase,
+        IHealthCheckUseCase healthCheckUseCase,
         ILogger<TranslationViewModel> logger
     )
         : base(dispatcherService)
     {
         this.translateTextUseCase = translateTextUseCase;
         this.getSupportedLanguagesUseCase = getSupportedLanguagesUseCase;
+        this.healthCheckUseCase = healthCheckUseCase;
         this.logger = logger;
 
         var translateCommand = new AsyncRelayCommand(ExecuteTranslateAsync, CanExecuteTranslate);
@@ -53,6 +57,8 @@ internal sealed partial class TranslationViewModel : ViewModelBase, IRouteAwareV
         SwapLanguagesCommand = swapLanguagesCommand;
 
         InitializeCommand = new AsyncRelayCommand(ExecuteInitializeAsync);
+
+        CheckApiHealthCommand = new AsyncRelayCommand(ExecuteCheckApiHealthAsync);
     }
 
     public string Route => RouteNames.TranslationPage;
@@ -89,11 +95,19 @@ internal sealed partial class TranslationViewModel : ViewModelBase, IRouteAwareV
         set => SetProperty(ref isTranslating, value);
     }
 
+    public bool IsApiHealthy
+    {
+        get => isApiHealthy;
+        private set => SetProperty(ref isApiHealthy, value);
+    }
+
     public ICommandBase TranslateCommand { get; }
 
     public ICommandBase SwapLanguagesCommand { get; }
 
     public ICommandBase InitializeCommand { get; }
+
+    public ICommandBase CheckApiHealthCommand { get; }
 
     protected override void Dispose(bool disposing)
     {
@@ -102,6 +116,7 @@ internal sealed partial class TranslationViewModel : ViewModelBase, IRouteAwareV
             TranslateCommand.Dispose();
             SwapLanguagesCommand.Dispose();
             InitializeCommand.Dispose();
+            CheckApiHealthCommand.Dispose();
 
             CancelCurrentTranslation();
         }
@@ -134,6 +149,8 @@ internal sealed partial class TranslationViewModel : ViewModelBase, IRouteAwareV
                 SelectedSourceLanguage = Languages[0];
                 SelectedTargetLanguage = Languages.Count > 1 ? Languages[1] : Languages[0];
             }
+
+            await ExecuteCheckApiHealthAsync(cancellationToken).ConfigureAwait(false);
 
             isInitialized = true;
 
@@ -240,5 +257,25 @@ internal sealed partial class TranslationViewModel : ViewModelBase, IRouteAwareV
     private bool CanExecuteSwapLanguages()
     {
         return !IsTranslating && SelectedSourceLanguage != null && SelectedTargetLanguage != null;
+    }
+
+    private async Task ExecuteCheckApiHealthAsync(CancellationToken cancellationToken)
+    {
+        try
+        {
+            logger.LogInformation("Checking translation API health");
+
+            IsApiHealthy = await healthCheckUseCase.ExecuteAsync(cancellationToken).ConfigureAwait(false);
+
+            logger.LogInformation(
+                "API health check completed. API is {HealthStatus}",
+                IsApiHealthy ? "healthy" : "unhealthy"
+            );
+        }
+        catch (HealthCheckException ex)
+        {
+            logger.LogError(ex, "Error checking API health: {ErrorMessage}", ex.Message);
+            IsApiHealthy = false;
+        }
     }
 }

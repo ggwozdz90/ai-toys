@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Button
+    x:Class="AiToys.Translation.Presentation.Views.Components.Atoms.ApiHealthStatusIcon"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Padding="8,4"
+    d:DesignHeight="24"
+    d:DesignWidth="170"
+    Background="Transparent"
+    BorderThickness="0"
+    ToolTipService.ToolTip="Check Translation API health"
+    mc:Ignorable="d">
+
+    <StackPanel
+        VerticalAlignment="Center"
+        Orientation="Horizontal"
+        Spacing="4">
+
+        <FontIcon
+            FontFamily="Segoe Fluent Icons"
+            Foreground="Green"
+            Glyph="&#xEC61;"
+            Visibility="{x:Bind IsHealthy, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}" />
+        <TextBlock
+            Text="API Available"
+            ToolTipService.ToolTip="To use this feature, make sure the Translation API Docker image is running"
+            Visibility="{x:Bind IsHealthy, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}" />
+
+        <FontIcon
+            FontFamily="Segoe Fluent Icons"
+            Foreground="Red"
+            Glyph="&#xEC61;"
+            Visibility="{x:Bind IsHealthy, Mode=OneWay, Converter={StaticResource InverseBooleanToVisibilityConverter}}" />
+        <TextBlock
+            Text="API Unavailable"
+            ToolTipService.ToolTip="To use this feature, make sure the Translation API Docker image is running"
+            Visibility="{x:Bind IsHealthy, Mode=OneWay, Converter={StaticResource InverseBooleanToVisibilityConverter}}" />
+    </StackPanel>
+</Button>

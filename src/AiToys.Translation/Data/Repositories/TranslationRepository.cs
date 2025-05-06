@@ -71,4 +71,16 @@ internal sealed class TranslationRepository(
             throw;
         }
     }
+
+    public async Task<bool> HealthCheckAsync(CancellationToken cancellationToken = default)
+    {
+        logger.LogInformation("Checking API health status");
+
+        var result = await translationAdapter.HealthCheckAsync().ConfigureAwait(false);
+        var isHealthy = string.Equals(result, "OK", StringComparison.Ordinal);
+
+        logger.LogInformation("API health check result: {Result}, IsHealthy: {IsHealthy}", result, isHealthy);
+
+        return isHealthy;
+    }
 }

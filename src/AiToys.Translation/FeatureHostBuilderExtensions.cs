@@ -32,6 +32,7 @@ public static class FeatureHostBuilderExtensions
 
                 services.AddScoped<ITranslateTextUseCase, TranslateTextUseCase>();
                 services.AddScoped<IGetSupportedLanguagesUseCase, GetSupportedLanguagesUseCase>();
+                services.AddScoped<IHealthCheckUseCase, HealthCheckUseCase>();
 
                 services.RegisterView<TranslationPage, TranslationViewModel, TranslationNavigationItemViewModel>(
                     RouteNames.TranslationPage
