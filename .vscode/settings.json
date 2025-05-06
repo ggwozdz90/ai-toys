@@ -56,5 +56,6 @@
         "cmd": "dotnet tool run xstyler --file ${file}"
       }
     ]
-  }
+  },
+  "dotnet.defaultSolution": "AiToys.sln"
 }

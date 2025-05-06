@@ -8,15 +8,20 @@ internal sealed class FileItemModel(string filePath, IFileSystem fileSystem)
     public string FilePath { get; } = filePath;
     public string FileName { get; } = fileSystem.Path.GetFileName(filePath);
     public FileItemStatus Status { get; private set; } = FileItemStatus.Added;
-    public string Transcription { get; private set; } = string.Empty;
+    public Dictionary<string, FileItemStatus> LanguageStatuses { get; } = [];
 
     public void SetStatus(FileItemStatus status)
     {
         Status = status;
     }
 
-    public void SetTranscription(string transcription)
+    public void SetLanguageStatus(string language, FileItemStatus status)
     {
-        Transcription = transcription;
+        LanguageStatuses[language] = status;
+    }
+
+    public void ClearLanguageStatuses()
+    {
+        LanguageStatuses.Clear();
     }
 }

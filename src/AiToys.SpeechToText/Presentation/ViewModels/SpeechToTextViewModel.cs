@@ -21,6 +21,7 @@ internal sealed partial class SpeechToTextViewModel : ViewModelBase, IRouteAware
     private bool isInitialized;
     private LanguageModel? defaultSourceLanguage;
     private LanguageModel? defaultTargetLanguage;
+    private bool generateBothTranscriptionAndTranslation;
 
     public SpeechToTextViewModel(
         IDispatcherService dispatcherService,
@@ -83,6 +84,18 @@ internal sealed partial class SpeechToTextViewModel : ViewModelBase, IRouteAware
             if (SetProperty(ref defaultTargetLanguage, value) && value != null)
             {
                 FileQueueViewModel.TargetLanguage = value;
+            }
+        }
+    }
+
+    public bool GenerateBothTranscriptionAndTranslation
+    {
+        get => generateBothTranscriptionAndTranslation;
+        set
+        {
+            if (SetProperty(ref generateBothTranscriptionAndTranslation, value))
+            {
+                FileQueueViewModel.GenerateBothTranscriptionAndTranslation = value;
             }
         }
     }

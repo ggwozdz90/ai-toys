@@ -58,6 +58,7 @@
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
@@ -96,6 +97,15 @@
                                 DisplayMemberPath="Name"
                                 ItemsSource="{x:Bind ViewModel.AvailableLanguages, Mode=OneWay}"
                                 SelectedItem="{x:Bind ViewModel.TargetLanguage, Mode=TwoWay}" />
+
+                            <CheckBox
+                                Grid.Row="2"
+                                Grid.Column="0"
+                                Grid.ColumnSpan="2"
+                                Margin="0,16,0,0"
+                                Content="Generate both transcription and translation"
+                                IsChecked="{x:Bind ViewModel.GenerateBothTranscriptionAndTranslation, Mode=TwoWay}"
+                                ToolTipService.ToolTip="When checked, both transcription in source language and translation to target language will be generated. When languages are the same, only one file will be generated." />
                         </Grid>
                     </Flyout>
                 </DropDownButton.Flyout>

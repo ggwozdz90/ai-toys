@@ -9,7 +9,7 @@ namespace AiToys.SpeechToText.Application.Services;
 
 internal interface IFileProcessingQueueService
 {
-    void EnqueueFile(FileItemModel file, string sourceLanguage, string? targetLanguage = null);
+    void EnqueueFile(FileItemModel file, string sourceLanguage, IEnumerable<string> targetLanguages);
 
     void RemoveFile(FileItemModel file);
 }
@@ -41,19 +41,29 @@ internal sealed partial class FileProcessingQueueService : IFileProcessingQueueS
         processingTask = Task.Run(ProcessQueueAsync, cancellationTokenSource.Token);
     }
 
-    public void EnqueueFile(FileItemModel file, string sourceLanguage, string? targetLanguage = null)
+    public void EnqueueFile(FileItemModel file, string sourceLanguage, IEnumerable<string> targetLanguages)
     {
         logger.LogInformation("Enqueuing file: {FilePath}", file.FilePath);
 
-        var queueItem = new FileItemQueueModel(file, sourceLanguage, targetLanguage);
+        if (targetLanguages?.Any() != true)
+        {
+            logger.LogWarning("No target languages provided for file: {FilePath}", file.FilePath);
+            return;
+        }
 
-        file.SetStatus(FileItemStatus.Pending);
+        file.ClearLanguageStatuses();
 
-        fileStatusNotifierService.NotifyStatusChanged(file.FilePath, FileItemStatus.Pending);
-
+        var queueItem = new FileItemQueueModel(file, sourceLanguage, targetLanguages);
         fileQueue.Add(queueItem, cancellationTokenSource.Token);
 
-        logger.LogInformation("File enqueued: {FilePath}", file.FilePath);
+        file.SetStatus(FileItemStatus.Pending);
+        fileStatusNotifierService.NotifyStatusChanged(file.FilePath, FileItemStatus.Pending);
+
+        logger.LogInformation(
+            "File enqueued: {FilePath} for languages: {TargetLanguages}",
+            file.FilePath,
+            string.Join(", ", targetLanguages)
+        );
     }
 
     public void RemoveFile(FileItemModel file)
@@ -63,6 +73,7 @@ internal sealed partial class FileProcessingQueueService : IFileProcessingQueueS
         if (file.Status is FileItemStatus.Pending)
         {
             file.SetStatus(FileItemStatus.Added);
+            file.ClearLanguageStatuses();
 
             fileStatusNotifierService.NotifyStatusChanged(file.FilePath, FileItemStatus.Added);
         }
@@ -133,7 +144,11 @@ internal sealed partial class FileProcessingQueueService : IFileProcessingQueueS
     {
         var file = queueItem.FileItem;
 
-        logger.LogInformation("Processing file: {FilePath}", file.FilePath);
+        logger.LogInformation(
+            "Processing file for language {TargetLanguages}: {FilePath}",
+            string.Join(", ", queueItem.TargetLanguages),
+            file.FilePath
+        );
 
         if (file.Status != FileItemStatus.Pending)
         {
@@ -150,9 +165,9 @@ internal sealed partial class FileProcessingQueueService : IFileProcessingQueueS
         {
             await ProcessPendingFileAsync(queueItem).ConfigureAwait(false);
         }
-        catch (OperationCanceledException)
+        catch (OperationCanceledException ex)
         {
-            HandleCanceledProcessing(file);
+            HandleProcessingError(file, ex, "File processing was canceled");
         }
         catch (InvalidOperationException ex)
         {
@@ -174,43 +189,33 @@ internal sealed partial class FileProcessingQueueService : IFileProcessingQueueS
 
         UpdateFileStatus(file, FileItemStatus.Processing);
 
-        var transcription = await transcribeFileUseCase
-            .ExecuteAsync(
-                queueItem.FileItem.FilePath,
-                queueItem.SourceLanguage,
-                queueItem.TargetLanguage,
-                cancellationTokenSource.Token
-            )
-            .ConfigureAwait(false);
-
-        var language =
-            queueItem.TargetLanguage != null
-            && !string.Equals(queueItem.SourceLanguage, queueItem.TargetLanguage, StringComparison.Ordinal)
-                ? queueItem.TargetLanguage
-                : queueItem.SourceLanguage;
-
-        await saveTranscriptionUseCase
-            .ExecuteAsync(queueItem.FileItem.FilePath, transcription, language, cancellationTokenSource.Token)
-            .ConfigureAwait(false);
-
-        file.SetTranscription(transcription);
-
-        if (file.Status == FileItemStatus.Processing)
+        foreach (var targetLanguage in queueItem.TargetLanguages)
         {
-            UpdateFileStatus(file, FileItemStatus.Completed);
+            file.SetLanguageStatus(targetLanguage, FileItemStatus.Processing);
 
-            logger.LogInformation("File processing completed: {FilePath}", file.FilePath);
+            var transcription = await transcribeFileUseCase
+                .ExecuteAsync(
+                    queueItem.FileItem.FilePath,
+                    queueItem.SourceLanguage,
+                    targetLanguage,
+                    cancellationTokenSource.Token
+                )
+                .ConfigureAwait(false);
+
+            await saveTranscriptionUseCase
+                .ExecuteAsync(queueItem.FileItem.FilePath, transcription, targetLanguage, cancellationTokenSource.Token)
+                .ConfigureAwait(false);
+
+            file.SetLanguageStatus(targetLanguage, FileItemStatus.Completed);
+
+            logger.LogInformation(
+                "File processing completed for language {TargetLanguage}: {FilePath}",
+                targetLanguage,
+                file.FilePath
+            );
         }
-    }
 
-    private void HandleCanceledProcessing(FileItemModel file)
-    {
-        logger.LogInformation("File processing was canceled: {FilePath}", file.FilePath);
-
-        if (file.Status == FileItemStatus.Processing)
-        {
-            UpdateFileStatus(file, FileItemStatus.Added);
-        }
+        UpdateFileStatus(file, FileItemStatus.Completed);
     }
 
     private void HandleProcessingError(FileItemModel file, Exception ex, string errorMessage)
@@ -218,6 +223,7 @@ internal sealed partial class FileProcessingQueueService : IFileProcessingQueueS
         logger.LogError(ex, "{ErrorMessage}: {FilePath}", errorMessage, file.FilePath);
 
         UpdateFileStatus(file, FileItemStatus.Failed);
+        file.ClearLanguageStatuses();
     }
 
     private void UpdateFileStatus(FileItemModel file, FileItemStatus status)
@@ -227,5 +233,9 @@ internal sealed partial class FileProcessingQueueService : IFileProcessingQueueS
         fileStatusNotifierService.NotifyStatusChanged(file.FilePath, status);
     }
 
-    private record FileItemQueueModel(FileItemModel FileItem, string SourceLanguage, string? TargetLanguage);
+    private record FileItemQueueModel(
+        FileItemModel FileItem,
+        string SourceLanguage,
+        IEnumerable<string> TargetLanguages
+    );
 }

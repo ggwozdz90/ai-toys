@@ -21,6 +21,7 @@ internal sealed partial class FileItemViewModel : ViewModelBase
     private string errorMessage = string.Empty;
     private LanguageModel sourceLanguage;
     private LanguageModel targetLanguage;
+    private bool generateBothTranscriptionAndTranslation;
 
     public FileItemViewModel(
         IDispatcherService dispatcherService,
@@ -87,6 +88,12 @@ internal sealed partial class FileItemViewModel : ViewModelBase
         set => SetProperty(ref targetLanguage, value);
     }
 
+    public bool GenerateBothTranscriptionAndTranslation
+    {
+        get => generateBothTranscriptionAndTranslation;
+        set => SetProperty(ref generateBothTranscriptionAndTranslation, value);
+    }
+
     public ObservableCollection<LanguageModel> AvailableLanguages { get; }
 
     public ICommandBase StartProcessingCommand { get; }
@@ -113,15 +120,24 @@ internal sealed partial class FileItemViewModel : ViewModelBase
 
         try
         {
-            fileProcessingQueueService.EnqueueFile(
-                fileModel,
+            var targetLanguageIsDifferent = !string.Equals(
                 sourceLanguage.Code,
-                !string.Equals(sourceLanguage.Code, targetLanguage.Code, StringComparison.Ordinal)
-                    ? targetLanguage.Code
-                    : null
+                targetLanguage.Code,
+                StringComparison.Ordinal
             );
 
-            logger.LogInformation("File successfully added to processing queue: {FilePath}", FilePath);
+            if (GenerateBothTranscriptionAndTranslation && targetLanguageIsDifferent)
+            {
+                fileProcessingQueueService.EnqueueFile(
+                    fileModel,
+                    sourceLanguage.Code,
+                    [sourceLanguage.Code, targetLanguage.Code]
+                );
+            }
+            else
+            {
+                fileProcessingQueueService.EnqueueFile(fileModel, sourceLanguage.Code, [targetLanguage.Code]);
+            }
         }
         catch (ArgumentException ex)
         {

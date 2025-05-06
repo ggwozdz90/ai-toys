@@ -46,6 +46,7 @@ internal sealed partial class FileQueueViewModel : ViewModelBase
     public LanguageModel? SourceLanguage { get; set; }
     public LanguageModel? TargetLanguage { get; set; }
     public ObservableCollection<LanguageModel> AvailableLanguages { get; } = [];
+    public bool GenerateBothTranscriptionAndTranslation { get; set; }
 
     public ICommandBase StartAllCommand { get; }
     public ICommandBase StopAllCommand { get; }
@@ -71,6 +72,7 @@ internal sealed partial class FileQueueViewModel : ViewModelBase
         );
         fileItemViewModel.RemoveRequested += OnFileRemoveRequested;
         fileItemViewModel.PropertyChanged += OnFileItemPropertyChanged;
+        fileItemViewModel.GenerateBothTranscriptionAndTranslation = GenerateBothTranscriptionAndTranslation;
 
         ExecuteOnUIThread(() => Files.Add(fileItemViewModel));
     }
