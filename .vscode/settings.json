@@ -26,12 +26,18 @@
   ],
   "github.copilot.chat.reviewSelection.instructions": [
     {
-      "file": ".github/copilot-instructions/copilot-code-and-review-instructions.md"
+      "file": ".github/copilot-instructions/copilot-csharp-instructions.md"
+    },
+    {
+      "file": ".github/copilot-instructions/copilot-mcp-instructions.md"
     }
   ],
   "github.copilot.chat.codeGeneration.instructions": [
     {
-      "file": ".github/copilot-instructions/copilot-code-and-review-instructions.md"
+      "file": ".github/copilot-instructions/copilot-csharp-instructions.md"
+    },
+    {
+      "file": ".github/copilot-instructions/copilot-mcp-instructions.md"
     }
   ],
   "github.copilot.chat.generateTests.codeLens": true,
@@ -50,5 +56,6 @@
         "cmd": "dotnet tool run xstyler --file ${file}"
       }
     ]
-  }
+  },
+  "dotnet.defaultSolution": "AiToys.sln"
 }

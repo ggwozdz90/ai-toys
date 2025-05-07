@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<NsDepCopConfig ChildCanDependOnParentImplicitly="true" CheckAssemblyDependencies="false">
+    <Allowed From="*" To="System.*" />
+    <Allowed From="*" To="Microsoft.*" />
+    <Allowed From="*" To="Windows.*" />
+    <Allowed From="*" To="WinRT.*" />
+    <Allowed From="*" To="System.IO.Abstraction" />
+
+    <Allowed From="AiToys.SpeechToText" To="AiToys.Core.*" />
+    <Allowed From="AiToys.SpeechToText" To="AiToys.SpeechToText.*" />
+    <Allowed From="AiToys.SpeechToText.*" To="AiToys.SpeechToText.Constants" />
+    <Allowed From="AiToys.SpeechToText.*" To="AiToys.SpeechToText.Domain.Models" />
+    
+    <Allowed From="AiToys.SpeechToText.Presentation.*" To="AiToys.Core.Presentation.*" />
+    <Allowed From="AiToys.SpeechToText.Presentation.*" To="Extensions.Hosting.WinUi" />
+    <Allowed From="AiToys.SpeechToText.Presentation.Views.*" To="AiToys.SpeechToText.Presentation.ViewModels" />
+    <Allowed From="AiToys.SpeechToText.Presentation.Views.*" To="AiToys.SpeechToText.Domain.Enums" />
+    <Allowed From="AiToys.SpeechToText.Presentation.ViewModels" To="AiToys.SpeechToText.Presentation.Factories" />
+    <Allowed From="AiToys.SpeechToText.Presentation.ViewModels" To="AiToys.SpeechToText.Presentation.EventArgs" />
+    <Allowed From="AiToys.SpeechToText.Presentation.ViewModels" To="AiToys.SpeechToText.Application.*" />
+    <Allowed From="AiToys.SpeechToText.Presentation.ViewModels" To="AiToys.SpeechToText.Domain.Exceptions" />
+    <Allowed From="AiToys.SpeechToText.Presentation.ViewModels" To="AiToys.SpeechToText.Domain.Enums" />
+    <Allowed From="AiToys.SpeechToText.Presentation.ViewModels" To="AiToys.SpeechToText.Domain.Events" />
+    <Allowed From="AiToys.SpeechToText.Presentation.EventArgs" To="AiToys.SpeechToText.Presentation.ViewModels" />
+    <Allowed From="AiToys.SpeechToText.Presentation.Factories" To="AiToys.SpeechToText.Presentation.ViewModels" />
+    <Allowed From="AiToys.SpeechToText.Presentation.Factories" To="AiToys.SpeechToText.Application.UseCases" />
+    <Allowed From="AiToys.SpeechToText.Presentation.Factories" To="AiToys.SpeechToText.Application.Services" />
+
+
+    <Allowed From="AiToys.SpeechToText.Application.Services" To="AiToys.SpeechToText.Application.UseCases" />
+    <Allowed From="AiToys.SpeechToText.Application.Services" To="AiToys.SpeechToText.Domain.Enums" />
+    <Allowed From="AiToys.SpeechToText.Application.Services" To="AiToys.SpeechToText.Domain.Events" />
+    <Allowed From="AiToys.SpeechToText.Application.Services" To="AiToys.SpeechToText.Domain.Exceptions" />
+    <Allowed From="AiToys.SpeechToText.Application.UseCases" To="AiToys.SpeechToText.Domain.Repositories" />
+    <Allowed From="AiToys.SpeechToText.Application.UseCases" To="AiToys.SpeechToText.Domain.Adapters" />
+    <Allowed From="AiToys.SpeechToText.Application.UseCases" To="AiToys.SpeechToText.Domain.Exceptions" />
+
+    <Allowed From="AiToys.SpeechToText.Domain.Models" To="AiToys.SpeechToText.Domain.Enums" />
+    <Allowed From="AiToys.SpeechToText.Domain.Events" To="AiToys.SpeechToText.Domain.Enums" />
+
+    <Allowed From="AiToys.SpeechToText.Data.Repositories" To="AiToys.SpeechToText.Domain.Repositories" />
+    <Allowed From="AiToys.SpeechToText.Data.Adapters" To="AiToys.SpeechToText.Domain.Adapters" />
+    <Allowed From="AiToys.SpeechToText.Data.Adapters" To="Extensions.Hosting.WinUi" />
+
+    <Allowed From="AiToys.SpeechToText.*" To="SpeechToTextApiClient.*" />
+</NsDepCopConfig>

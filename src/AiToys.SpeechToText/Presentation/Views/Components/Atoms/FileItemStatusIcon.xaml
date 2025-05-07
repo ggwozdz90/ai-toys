@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<UserControl
+    x:Class="AiToys.SpeechToText.Presentation.Views.Components.Atoms.FileItemStatusIcon"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="24"
+    d:DesignWidth="24"
+    mc:Ignorable="d">
+
+    <Grid
+        Width="24"
+        Height="24"
+        VerticalAlignment="Center">
+        <FontIcon
+            FontFamily="Segoe Fluent Icons"
+            Foreground="{ThemeResource SystemBaseMediumColor}"
+            Glyph="&#xE8FD;"
+            ToolTipService.ToolTip="Added"
+            Visibility="{x:Bind Status, Mode=OneWay, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter=Added}" />
+
+        <FontIcon
+            FontFamily="Segoe Fluent Icons"
+            Foreground="{StaticResource PendingBrush}"
+            Glyph="&#xE916;"
+            ToolTipService.ToolTip="Pending"
+            Visibility="{x:Bind Status, Mode=OneWay, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter=Pending}" />
+
+        <ProgressRing
+            Width="20"
+            Height="20"
+            Foreground="{StaticResource ProcessingBrush}"
+            IsActive="True"
+            ToolTipService.ToolTip="Processing"
+            Visibility="{x:Bind Status, Mode=OneWay, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter=Processing}" />
+
+        <FontIcon
+            FontFamily="Segoe Fluent Icons"
+            Foreground="{StaticResource CompletedBrush}"
+            Glyph="&#xE73E;"
+            ToolTipService.ToolTip="Completed"
+            Visibility="{x:Bind Status, Mode=OneWay, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter=Completed}" />
+
+        <FontIcon
+            FontFamily="Segoe Fluent Icons"
+            Foreground="{StaticResource FailedBrush}"
+            Glyph="&#xE783;"
+            ToolTipService.ToolTip="Failed"
+            Visibility="{x:Bind Status, Mode=OneWay, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter=Failed}" />
+    </Grid>
+</UserControl>

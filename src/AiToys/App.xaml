@@ -7,6 +7,10 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
+                <ResourceDictionary Source="Presentation/Styles/ButtonStyles.xaml" />
+                <ResourceDictionary Source="Presentation/Converters/Converters.xaml" />
+                <ResourceDictionary Source="AiToys.Core/Presentation/Styles/ColorsAndBrushes.xaml" />
+                <ResourceDictionary Source="AiToys.Core/Presentation/Converters/Converters.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

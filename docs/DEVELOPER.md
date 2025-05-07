@@ -20,6 +20,13 @@ Based on the [C# Project Template](https://github.com/ggwozdz90/csharp-project-t
 - **Commit Message Guidance**: [Github Copilot Commit Instructions](../.github/copilot-instructions/copilot-commit-instructions.md)
   - Follows [Conventional Commits](https://www.conventionalcommits.org) specification.
 
+### MCP Server Integration
+
+- **Configuration**: [.vscode/mcp.json](../.vscode/mcp.json) defines Docker-based Model Context Protocol servers:
+  - **Context7**: Provides up-to-date code documentation from official sources
+  - **Sequential Thinking**: Enhances reasoning for complex problem-solving
+  - **Knowledge Graph**: Maintains persistent memory across conversations
+
 ### Package Management
 
 - **Paket**: [link](https://fsprojects.github.io/Paket/index.html)
@@ -268,6 +275,7 @@ Based on the [C# Project Template](https://github.com/ggwozdz90/csharp-project-t
   - [Development Environment Setup](#development-environment-setup)
     - [Visual Studio Code](#visual-studio-code)
     - [Code Generation and Assistance](#code-generation-and-assistance)
+    - [MCP Server Integration](#mcp-server-integration)
     - [Package Management](#package-management)
     - [Common Configuration](#common-configuration)
     - [Static Analysis](#static-analysis)

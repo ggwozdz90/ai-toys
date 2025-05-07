@@ -8,6 +8,7 @@
   "maxNumberOfProblems": 1000,
   "ignorePaths": [
     "node_modules",
+    "paket-files",
     "packages",
     "cspell.json",
     "**/bin/**",
@@ -36,6 +37,9 @@
     "appsettings",
     "wapproj",
     "msbuild",
-    "pwsh"
+    "pwsh",
+    "Segoe",
+    "Initializable",
+    "finalizer"
   ]
 }

@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<NsDepCopConfig ChildCanDependOnParentImplicitly="true" CheckAssemblyDependencies="false">
+    <Allowed From="*" To="System.*" />
+    <Allowed From="*" To="Microsoft.*" />
+    <Allowed From="*" To="WinRT" />
+
+    <Allowed From="AiToys.Home" To="AiToys.Core.*" />
+    <Allowed From="AiToys.Home" To="AiToys.Home.Presentation.*" />
+    <Allowed From="AiToys.Home.*" To="AiToys.Home.Constants" />
+
+    <Allowed From="AiToys.Home.Presentation.*" To="AiToys.Core.Presentation.*" />
+    <Allowed From="AiToys.Home.Presentation.*" To="Extensions.Hosting.WinUi" />
+    <Allowed From="AiToys.Home.Presentation.Views" To="AiToys.Home.Presentation.ViewModels" />
+    <Allowed From="AiToys.Home.Presentation.Components.*" To="AiToys.Home.Presentation.ViewModels" />
+    <Allowed From="AiToys.Home.Presentation.Factories" To="AiToys.Home.Presentation.ViewModels" />
+    <Allowed From="AiToys.Home.Presentation.ViewModels" To="AiToys.Home.Presentation.Factories" />
+</NsDepCopConfig>

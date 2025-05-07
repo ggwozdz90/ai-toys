@@ -1,0 +1,34 @@
+{
+  "servers": {
+    "Context7": {
+      "command": "docker",
+      "args": ["run", "-i", "--name", "mcp-context7", "--rm", "mcp/context7"]
+    },
+    "SequentialThinking": {
+      "command": "docker",
+      "args": [
+        "run",
+        "--name",
+        "mcp-sequential-thinking",
+        "--rm",
+        "-i",
+        "mcp/sequentialthinking"
+      ]
+    },
+    "KnowledgeGraph": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--name",
+        "mcp-knowledge-graph",
+        "--rm",
+        "--mount",
+        "type=bind,src=${workspaceFolder}/.vscode,dst=/app/memory",
+        "-e",
+        "MEMORY_FILE_PATH=/app/memory/memory.json",
+        "mcp/memory"
+      ]
+    }
+  }
+}

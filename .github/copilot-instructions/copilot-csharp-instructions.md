@@ -1,5 +1,16 @@
 # GitHub Copilot Code Instructions
 
+## Critical Evaluation and Feedback
+
+- Always approach code review with a critical mindset
+- Focus on identifying potential issues, bugs, and improvement opportunities
+- When asked for code improvements, skip praising what's already working well
+- Immediately propose specific corrections rather than general suggestions
+- Analyze edge cases and potential failure scenarios
+- Consider security implications, performance bottlenecks, and maintainability issues
+- Provide concrete examples when highlighting problems
+- Prioritize feedback based on severity of issues (critical, high, medium, low)
+
 ## Code Style and Best Practices
 
 - Ensure the code follows C# conventions and adheres to StyleCop rules
@@ -16,7 +27,7 @@
   - Domain: Contains business logic and entities
   - Application: Includes service implementations, use cases, and application-specific logic
   - Data: Handles persistence, repositories, and data access
-  - Topmost Layer: Depending on the project, API, Adapters, UI
+  - Topmost Layer: Depending on the project, API, Adapters, Presentation
 - Use design patterns where appropriate
 - Follow SOLID principles strictly for maintainable and scalable code
 - Classes and methods should have clear boundaries and responsibilities

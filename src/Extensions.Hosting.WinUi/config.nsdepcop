@@ -2,5 +2,5 @@
 <NsDepCopConfig ChildCanDependOnParentImplicitly="true" CheckAssemblyDependencies="false">
     <Allowed From="*" To="System.*" />
     <Allowed From="*" To="Microsoft.*" />
-    <Allowed From="*" To="WinRT" />
+    <Allowed From="*" To="WinRT.*" />
 </NsDepCopConfig>

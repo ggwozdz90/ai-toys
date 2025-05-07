@@ -3,11 +3,11 @@ using Microsoft.UI.Xaml;
 
 namespace Extensions.Hosting.WinUi;
 
-internal sealed class WinUIContext
+internal sealed class WinUiContext
 {
-    public Window? MainWindow { get; set; }
-
     public Application? Application { get; set; }
+
+    public Window? MainWindow { get; set; }
 
     public required Type MainWindowType { get; set; }
 

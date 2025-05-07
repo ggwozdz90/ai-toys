@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<UserControl
+    x:Class="AiToys.Home.Presentation.Components.Organisms.FeatureTile"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Button
+        Width="400"
+        Height="150"
+        Margin="18"
+        Padding="10"
+        Background="{StaticResource TileBackgroundBrush}"
+        BorderThickness="0"
+        Command="{x:Bind ViewModel.NavigateCommand}"
+        CommandParameter="{x:Bind ViewModel.Route}"
+        CornerRadius="{StaticResource ControlCornerRadius}">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="60" />
+                <ColumnDefinition Width="10" />
+                <ColumnDefinition Width="300" />
+            </Grid.ColumnDefinitions>
+
+            <FontIcon FontSize="32" Glyph="{x:Bind ViewModel.IconKey}" />
+
+            <StackPanel Grid.Column="2" VerticalAlignment="Top">
+                <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="{x:Bind ViewModel.Label}" />
+                <TextBlock
+                    Margin="0,12,0,0"
+                    Style="{StaticResource BodyTextBlockStyle}"
+                    Text="{x:Bind ViewModel.Description}"
+                    TextWrapping="Wrap" />
+            </StackPanel>
+        </Grid>
+    </Button>
+</UserControl>

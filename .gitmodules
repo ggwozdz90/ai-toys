@@ -1,0 +1,6 @@
+[submodule "external/translation-api-client"]
+	path = external/translation-api-client
+	url = https://github.com/ggwozdz90/translation-api-client.git
+[submodule "external/speech-to-text-api-client"]
+	path = external/speech-to-text-api-client
+	url = https://github.com/ggwozdz90/speech-to-text-api-client.git

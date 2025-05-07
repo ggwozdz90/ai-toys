@@ -2,11 +2,8 @@ using Microsoft.Extensions.Hosting;
 
 namespace Extensions.Hosting.WinUi;
 
-internal sealed class WinUiHostedService(WinUiThread winUIThread, WinUIContext winUIContext) : IHostedService
+internal sealed class WinUiHostedService(WinUiThread winUiThread, WinUiContext winUiContext) : IHostedService
 {
-    private readonly WinUiThread winUIThread = winUIThread;
-    private readonly WinUIContext winUIContext = winUIContext;
-
     public Task StartAsync(CancellationToken cancellationToken)
     {
         if (cancellationToken.IsCancellationRequested)
@@ -14,20 +11,20 @@ internal sealed class WinUiHostedService(WinUiThread winUIThread, WinUIContext w
             return Task.CompletedTask;
         }
 
-        winUIThread.Start();
+        winUiThread.Start();
 
         return Task.CompletedTask;
     }
 
     public async Task StopAsync(CancellationToken cancellationToken)
     {
-        if (winUIContext.IsRunning)
+        if (winUiContext.IsRunning)
         {
             TaskCompletionSource completion = new();
 
-            winUIContext.DispatcherQueue?.TryEnqueue(() =>
+            winUiContext.DispatcherQueue?.TryEnqueue(() =>
             {
-                winUIContext.Application?.Exit();
+                winUiContext.Application?.Exit();
                 completion.SetResult();
             });
 

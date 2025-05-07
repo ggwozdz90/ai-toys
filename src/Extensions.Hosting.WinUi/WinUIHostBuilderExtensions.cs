@@ -30,13 +30,21 @@ public static class WinUiHostBuilderExtensions
         hostBuilder.ConfigureServices(
             (_, services) =>
             {
-                var winUiContext = new WinUIContext { MainWindowType = typeof(TWindow), IsLifetimeLinked = true };
+                var winUiContext = new WinUiContext { MainWindowType = typeof(TWindow), IsLifetimeLinked = true };
 
                 services.AddSingleton(winUiContext);
-                services.AddSingleton(serviceProvider => new WinUiThread(serviceProvider));
+                services.AddSingleton(serviceProvider => new WinUiThread(
+                    serviceProvider,
+                    winUiContext,
+                    serviceProvider.GetRequiredService<IHostApplicationLifetime>()
+                ));
                 services.AddHostedService<WinUiHostedService>();
                 services.AddSingleton<TApplication>();
-                services.AddSingleton<Application>(sp => sp.GetRequiredService<TApplication>());
+                services.AddSingleton<Application>(serviceProvider =>
+                    serviceProvider.GetRequiredService<TApplication>()
+                );
+                services.AddSingleton<IWindowProvider, WindowProvider>();
+                services.AddSingleton<IDispatcherService, DispatcherService>();
             }
         );
 
