@@ -16,6 +16,7 @@ jobs:
         uses: actions/checkout@v4.2.2
         with:
           fetch-depth: 0
+          submodules: recursive
 
       - name: Set up .NET
         uses: actions/setup-dotnet@v4
@@ -49,7 +50,7 @@ jobs:
         run: npx prettier "**/*.{json,yaml}" --check --log-level debug
 
       - name: Run Markdownlint
-        run: npx markdownlint . --dot --ignore node_modules --ignore packages --ignore CHANGELOG.md --disable MD013
+        run: npx markdownlint . --dot --ignore node_modules --ignore external --ignore packages --ignore CHANGELOG.md --disable MD013
 
       - name: Run CSpell
         run: npx cspell "**/*.{md,txt,json,yaml,cs}" --config .config/cspell.json

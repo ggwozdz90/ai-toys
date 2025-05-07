@@ -36,9 +36,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "external", "external", "{02
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "translation-api-client", "translation-api-client", "{58F2F997-A3CB-4A2A-8A5D-DAD4BB76B4B7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TranslationApiClient", "..\translation-api-client\src\TranslationApiClient\TranslationApiClient.csproj", "{5D9B64EE-69B3-ABD2-2504-05DFCABCC30F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TranslationApiClient", "external\translation-api-client\src\TranslationApiClient\TranslationApiClient.csproj", "{5D9B64EE-69B3-ABD2-2504-05DFCABCC30F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TranslationApiClient.Tests", "..\translation-api-client\tests\TranslationApiClient.Tests\TranslationApiClient.Tests.csproj", "{931E4021-E9E9-C0D9-5119-161C57007F14}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TranslationApiClient.Tests", "external\translation-api-client\tests\TranslationApiClient.Tests\TranslationApiClient.Tests.csproj", "{931E4021-E9E9-C0D9-5119-161C57007F14}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "speech-to-text-api-client", "speech-to-text-api-client", "{CAF6CDAD-BC2B-4266-B013-2D067ACF2CCA}"
 EndProject
