@@ -15,17 +15,6 @@
         "mcp/sequentialthinking"
       ]
     },
-    "DuckDuckGoSearch": {
-      "command": "docker",
-      "args": [
-        "run",
-        "-i",
-        "--name",
-        "mcp-duckduckgo",
-        "--rm",
-        "mcp/duckduckgo"
-      ]
-    },
     "KnowledgeGraph": {
       "command": "docker",
       "args": [
@@ -39,20 +28,6 @@
         "-e",
         "MEMORY_FILE_PATH=/app/memory/memory.json",
         "mcp/memory"
-      ]
-    },
-    "FileSystem": {
-      "command": "docker",
-      "args": [
-        "run",
-        "-i",
-        "--name",
-        "mcp-filesystem",
-        "--rm",
-        "--mount",
-        "type=bind,src=${workspaceFolder},dst=/projects/workspace",
-        "mcp/filesystem",
-        "/projects"
       ]
     }
   }
